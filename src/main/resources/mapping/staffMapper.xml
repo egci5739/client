@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.staffMapper">
+    <!--查询单个人员的采集信息-->
+    <select id="getStaffCollectionInfo" parameterType="com.dyw.client.entity.CollectionEntity" resultType="com.dyw.client.entity.CollectionEntity">
+        select * from FaceCollectionTemp where Id=#{Id};
+    </select>
+    <!--新增人员信息-->
+    <insert id="insertStaff" parameterType="com.dyw.client.entity.StaffEntity" useGeneratedKeys="true"
+            keyProperty="StaffId">
+        INSERT INTO
+        Staff
+        (Name,NameEn,CardId,CardNumber,Birthday,Sex,Company,Photo) values
+        (#{Name},#{NameEn},#{CardId},#{CardNumber},#{Birthday},#{Sex},#{Company},#{Photo});
+    </insert>
+    <!--修改人员信息-->
+    <update id="updateStaff" parameterType="com.dyw.client.entity.StaffEntity">
+        UPDATE Staff SET Name=#{Name},NameEn=#{NameEn},CardId=#{CardId},CardNumber=#{CardNumber},Birthday=#{Birthday},
+        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE CardNumber=#{CardNumber};
+    </update>
+    <!--删除人员信息-->
+    <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
+        DELETE FROM Staff WHERE CardNumber=#{CardNumber};
+    </delete>
+</mapper>

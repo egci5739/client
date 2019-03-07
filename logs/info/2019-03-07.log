@@ -1,0 +1,970 @@
+2019-03-07 12:04:23 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 12:04:24 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:00:03 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:00:03 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:06:27 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:06:28 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:06:52 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为130
+2019-03-07 14:06:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为131
+2019-03-07 14:07:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为132
+2019-03-07 14:07:08 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为133
+2019-03-07 14:07:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为134
+2019-03-07 14:09:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为135
+2019-03-07 14:09:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为136
+2019-03-07 14:09:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为137
+2019-03-07 14:09:25 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为138
+2019-03-07 14:09:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为139
+2019-03-07 14:09:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为140
+2019-03-07 14:09:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为141
+2019-03-07 14:09:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为142
+2019-03-07 14:09:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为143
+2019-03-07 14:10:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为144
+2019-03-07 14:16:10 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:16:10 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:16:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为145
+2019-03-07 14:16:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为146
+2019-03-07 14:17:41 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:17:41 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:18:24 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:18:25 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:21:59 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:22:00 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:24:22 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:24:23 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:25:27 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -[2]
+2019-03-07 14:28:42 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:28:43 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:29:54 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -[2]
+2019-03-07 14:31:10 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:31:10 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:31:21 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -1
+2019-03-07 14:33:03 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:33:04 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:33:10 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -0
+2019-03-07 14:35:50 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:35:50 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:38:41 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -0
+2019-03-07 14:40:29 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:40:30 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:40:40 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -0
+2019-03-07 14:41:23 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:41:24 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志强
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -严代林55
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈志林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林特君5739
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林鸿江
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林箫衡
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -袁小林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘泽林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李贵林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -戴林业
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郭秋林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林芳
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林伟
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林海
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张树林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炜锴
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -易林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王金林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林国强
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林树珍
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -苗林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -於成林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -胡从林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -雷林剑
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吕应林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思基
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林松
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林总才
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰东
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林楚发
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建防
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文勇
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林沛文
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈林峰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林鹏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思彤
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林广章
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱健林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炜
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林进强
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晋芳
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -梁诗林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林敏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -尹远林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -许俊林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邓要林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林满良
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -熊国林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨松林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -巫少林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李海林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -田本林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陆林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -霍林林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王湘林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林儒
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林裕兴
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林育秋
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林汉升
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林宝青
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林1
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吴林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -彭望林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -龚林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -温素林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -楚建林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -卢祥林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -石林芬
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林彬
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林家冰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈王林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -尹佳林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨树林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林立
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -静佩林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周吉林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林美芳
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林选明
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘二林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林耶寒
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炯龙
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林红青
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -欧茂林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -许承林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -孙博林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李华林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱华林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林尧炳
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林世松
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志峰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨鹏林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -曾林涛
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄伟林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志铭
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文炼
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李瑞林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李振林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林洁旋
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林3
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周继林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -沈机林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陆桂林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗会林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林彬1
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周林林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨林杰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -文丰林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建平
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭健林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王中林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林向东
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王泽林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林树洋
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陶存林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郭林伟
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林刚
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱正林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -苏林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -龙林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林琦
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林佳
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -薛冬林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林富原
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨成林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -任小林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -申松林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林义超
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -闫刚林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈远林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林哲
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林海峰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晓彤
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邓林波
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -瞿林波
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -包林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邹志林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰盛
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -屈福林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵志林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林君添
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李宗林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郑炳林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄忠林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -艾森林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李续林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林少宏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈巨林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林葛坪
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林强
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李成林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林伟光
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -徐东林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林金涛
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林2
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林山
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林辉
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林1
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张周林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -姜德林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建勇
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林峰
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -漆林海
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈沛林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林浪
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邬胜林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰敏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王堂林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -冯贵林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -卢祖林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张春林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志鹏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭春林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -曾林海
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -贺林波
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -仲东林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林科炎
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -薛林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文杜
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -易湘林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王秀林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林永波
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -蔡茂林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张朝林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵福林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张林宽
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王晓林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志龙
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林嘉慧
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林仲明
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林雪松
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -马明林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张雪林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵林莉
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林旖琪
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林治富
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晓芬
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -昝柏林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -孙春林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗海林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨建林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林灵
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -钱林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李国林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林学津
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林龙鹏
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吴秋林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -毛祥林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄华林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林军
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林汉
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林大侠
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -小林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -小林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林
+2019-03-07 14:41:29 [AWT-EventQueue-0] INFO  com.dyw.client.form.RegisterForm -223
+2019-03-07 14:41:45 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:47 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:49 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:54 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:55 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:55 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:56 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:58 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:41:59 [AWT-EventQueue-0] ERROR com.dyw.client.form.RegisterForm -将搜索结果加载到人员信息出错
+java.lang.NullPointerException: null
+	at com.dyw.client.form.RegisterForm$9.valueChanged(RegisterForm.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:184)
+	at javax.swing.DefaultListSelectionModel.fireValueChanged(DefaultListSelectionModel.java:154)
+	at javax.swing.DefaultListSelectionModel.setValueIsAdjusting(DefaultListSelectionModel.java:685)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.setValueIsAdjusting(BasicTableUI.java:953)
+	at javax.swing.plaf.basic.BasicTableUI$Handler.mouseReleased(BasicTableUI.java:1166)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:290)
+	at java.awt.Component.processMouseEvent(Component.java:6516)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6281)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4872)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4698)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:747)
+	at java.awt.EventQueue.access$300(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:706)
+	at java.awt.EventQueue$3.run(EventQueue.java:704)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.awt.EventQueue$4.run(EventQueue.java:718)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:717)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+2019-03-07 14:43:48 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:43:49 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志强
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -严代林55
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈志林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林特君5739
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林鸿江
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林箫衡
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -袁小林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘泽林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李贵林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -戴林业
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郭秋林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林芳
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林伟
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林海
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张树林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炜锴
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -易林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王金林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林国强
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林树珍
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -苗林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -於成林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -胡从林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -雷林剑
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吕应林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思基
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林松
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林总才
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰东
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林楚发
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建防
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文勇
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林沛文
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈林峰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林鹏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林思彤
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林广章
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱健林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炜
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林进强
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晋芳
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -梁诗林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林敏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -尹远林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -许俊林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邓要林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林满良
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -熊国林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨松林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -巫少林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李海林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -田本林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陆林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -霍林林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王湘林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林儒
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林裕兴
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林育秋
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林汉升
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林宝青
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林1
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吴林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -彭望林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -龚林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -温素林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -楚建林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -卢祥林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -石林芬
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林彬
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林家冰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈王林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -尹佳林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨树林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林立
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -静佩林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周吉林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林美芳
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林选明
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘二林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林耶寒
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林炯龙
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林红青
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -欧茂林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -许承林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -孙博林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李华林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱华林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林尧炳
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林世松
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志峰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨鹏林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -曾林涛
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄伟林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志铭
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文炼
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李瑞林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李振林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林洁旋
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林3
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周继林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -沈机林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陆桂林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗会林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林彬1
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -周林林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨林杰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -文丰林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建平
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭健林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王中林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林向东
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王泽林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林树洋
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陶存林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郭林伟
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林刚
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -朱正林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -苏林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -龙林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林琦
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林佳
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -薛冬林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林富原
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨成林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -任小林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -申松林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林义超
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -闫刚林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈远林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林哲
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林海峰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晓彤
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邓林波
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -瞿林波
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -包林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邹志林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰盛
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -屈福林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵志林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林君添
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李宗林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -郑炳林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄忠林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -艾森林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李续林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林少宏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈巨林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林葛坪
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林强
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李成林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林伟光
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -徐东林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林金涛
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林2
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林山
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -刘林辉
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林1
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张周林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -姜德林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林建勇
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄林峰
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -漆林海
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -陈沛林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林浪
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -邬胜林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林杰敏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王堂林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -冯贵林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -卢祖林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张春林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志鹏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -谭春林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -曾林海
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -贺林波
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -仲东林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林科炎
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -薛林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林文杜
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -易湘林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王秀林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林永波
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -蔡茂林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张朝林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵福林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张林宽
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -王晓林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林志龙
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林嘉慧
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林仲明
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林雪松
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -马明林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -张雪林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -赵林莉
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林旖琪
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林治富
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林晓芬
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -昝柏林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -孙春林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -罗海林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -杨建林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林灵
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -钱林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -李国林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林学津
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林龙鹏
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -吴秋林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -毛祥林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -黄华林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林军
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林汉
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林大侠
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -小林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -小林
+2019-03-07 14:43:54 [AWT-EventQueue-0] INFO  com.dyw.client.service.StaffOperationService -林
+2019-03-07 14:46:02 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:46:02 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:49:06 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:49:07 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:49:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为147
+2019-03-07 14:49:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为148
+2019-03-07 14:51:55 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 14:51:55 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 14:58:01 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 14:58:02 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 14:59:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为149
+2019-03-07 15:07:18 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:07:18 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:07:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为150
+2019-03-07 15:13:49 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:13:50 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:15:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为151
+2019-03-07 15:15:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为152
+2019-03-07 15:15:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为153
+2019-03-07 15:15:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为154
+2019-03-07 15:15:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为155
+2019-03-07 15:15:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为156
+2019-03-07 15:16:19 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:16:19 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:16:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为157
+2019-03-07 15:16:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为158
+2019-03-07 15:16:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为159
+2019-03-07 15:16:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为160
+2019-03-07 15:16:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为161
+2019-03-07 15:16:52 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:16:53 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:28:06 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:28:06 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:28:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为162
+2019-03-07 15:30:18 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:30:18 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:30:37 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为163
+2019-03-07 15:31:45 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:31:46 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:31:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为164
+2019-03-07 15:32:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为165
+2019-03-07 15:33:18 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:33:19 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:33:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为166
+2019-03-07 15:34:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为167
+2019-03-07 15:34:31 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 15:34:32 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 15:41:16 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 15:41:17 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 15:41:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为168
+2019-03-07 15:41:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为169
+2019-03-07 15:41:44 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为170
+2019-03-07 15:41:48 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为171
+2019-03-07 15:41:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为172
+2019-03-07 15:41:52 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为173
+2019-03-07 15:42:16 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 15:42:17 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 15:43:08 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为174
+2019-03-07 15:45:13 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为175
+2019-03-07 15:45:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为176
+2019-03-07 15:45:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为177
+2019-03-07 15:45:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为178
+2019-03-07 15:45:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为179
+2019-03-07 15:45:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为180
+2019-03-07 15:45:25 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为181
+2019-03-07 15:47:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为182
+2019-03-07 15:47:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为183
+2019-03-07 15:47:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为184
+2019-03-07 15:47:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为185
+2019-03-07 15:47:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为186
+2019-03-07 15:47:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为187
+2019-03-07 15:47:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为188
+2019-03-07 15:47:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为189
+2019-03-07 15:47:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为190
+2019-03-07 15:47:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为191
+2019-03-07 15:47:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为192
+2019-03-07 15:47:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为193
+2019-03-07 15:47:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为194
+2019-03-07 15:47:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为195
+2019-03-07 15:47:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为196
+2019-03-07 15:47:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为197
+2019-03-07 15:47:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为198
+2019-03-07 15:47:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为199
+2019-03-07 15:47:41 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为200
+2019-03-07 15:47:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为201
+2019-03-07 15:47:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为202
+2019-03-07 15:47:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为203
+2019-03-07 15:48:00 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为204
+2019-03-07 15:48:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为205
+2019-03-07 15:48:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为206
+2019-03-07 15:48:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为207
+2019-03-07 15:48:13 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为208
+2019-03-07 15:48:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为209
+2019-03-07 15:48:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为210
+2019-03-07 15:48:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为211
+2019-03-07 15:48:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为212
+2019-03-07 15:48:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为213
+2019-03-07 15:48:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为214
+2019-03-07 15:48:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为215
+2019-03-07 15:48:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为216
+2019-03-07 15:48:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为217
+2019-03-07 15:48:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为218
+2019-03-07 15:49:00 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为219
+2019-03-07 15:49:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为220
+2019-03-07 15:49:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为221
+2019-03-07 15:49:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为222
+2019-03-07 15:51:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为223
+2019-03-07 15:58:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为224
+2019-03-07 15:58:51 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为225
+2019-03-07 16:08:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为226
