@@ -1,6 +1,7 @@
 package com.dyw.client.tool;
 
 import com.dyw.client.entity.ConfigEntity;
+import com.dyw.client.entity.PassInfoEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -171,5 +172,20 @@ public class Tool {
      * */
     public static String getSearchCondition(String raw) {
         return "'%" + raw + "%'";
+    }
+
+    /*
+     * 显示通行结果
+     * */
+    public static String displayPassSuccessResult(PassInfoEntity passInfoEntity) {
+        return "<html><body>卡号：" +
+                passInfoEntity.getPassCard() +
+                "<br>姓名：" +
+                passInfoEntity.getPassName() +
+                "<br>时间："
+                + passInfoEntity.getPassTime() +
+                "<br>分值：" +
+                passInfoEntity.getPassPoint() +
+                "</body></html>";
     }
 }

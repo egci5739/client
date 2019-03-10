@@ -968,3 +968,455 @@ java.lang.NullPointerException: null
 2019-03-07 15:58:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为224
 2019-03-07 15:58:51 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为225
 2019-03-07 16:08:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为226
+2019-03-07 17:00:45 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 17:00:46 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 17:01:32 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 17:01:33 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 17:08:01 [Thread-2] ERROR com.dyw.client.service.ReceiveInfoSocketService -服务端关闭连接
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:196)
+	at java.net.SocketInputStream.read(SocketInputStream.java:122)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:283)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:325)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:177)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:154)
+	at java.io.BufferedReader.readLine(BufferedReader.java:317)
+	at java.io.BufferedReader.readLine(BufferedReader.java:382)
+	at com.dyw.client.service.ReceiveInfoSocketService.receiveInfo(ReceiveInfoSocketService.java:54)
+	at com.dyw.client.service.ReceiveInfoSocketService.run(ReceiveInfoSocketService.java:75)
+2019-03-07 17:17:32 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 17:17:33 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 17:18:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为227
+2019-03-07 17:18:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为228
+2019-03-07 17:18:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为229
+2019-03-07 17:18:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为230
+2019-03-07 17:18:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为231
+2019-03-07 17:18:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为232
+2019-03-07 17:18:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为233
+2019-03-07 17:18:37 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为234
+2019-03-07 17:18:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为235
+2019-03-07 17:18:44 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为236
+2019-03-07 17:19:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为237
+2019-03-07 17:19:41 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为238
+2019-03-07 17:19:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为239
+2019-03-07 17:19:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为240
+2019-03-07 17:19:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为241
+2019-03-07 17:19:58 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为242
+2019-03-07 17:20:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为243
+2019-03-07 17:20:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为244
+2019-03-07 17:20:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为245
+2019-03-07 17:20:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为246
+2019-03-07 17:20:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为247
+2019-03-07 17:20:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为248
+2019-03-07 17:20:56 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为249
+2019-03-07 17:20:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为250
+2019-03-07 17:20:58 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为251
+2019-03-07 17:20:58 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为252
+2019-03-07 17:20:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为253
+2019-03-07 17:21:00 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为254
+2019-03-07 17:21:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为255
+2019-03-07 17:21:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为256
+2019-03-07 17:21:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为257
+2019-03-07 17:21:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为258
+2019-03-07 17:21:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为259
+2019-03-07 17:21:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为260
+2019-03-07 17:21:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为261
+2019-03-07 17:21:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为262
+2019-03-07 17:21:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为263
+2019-03-07 17:21:08 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为264
+2019-03-07 17:21:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为265
+2019-03-07 17:21:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为266
+2019-03-07 17:21:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为267
+2019-03-07 17:21:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为268
+2019-03-07 17:21:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为269
+2019-03-07 17:21:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为270
+2019-03-07 17:22:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为271
+2019-03-07 17:22:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为272
+2019-03-07 17:22:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为273
+2019-03-07 17:22:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为274
+2019-03-07 17:22:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为275
+2019-03-07 17:22:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为276
+2019-03-07 17:22:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为277
+2019-03-07 17:22:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为278
+2019-03-07 17:22:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为279
+2019-03-07 17:22:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为280
+2019-03-07 17:22:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为281
+2019-03-07 17:23:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为282
+2019-03-07 17:23:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为283
+2019-03-07 17:23:13 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为284
+2019-03-07 17:23:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为285
+2019-03-07 17:23:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为286
+2019-03-07 17:23:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为287
+2019-03-07 17:23:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为288
+2019-03-07 17:23:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为289
+2019-03-07 17:23:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为290
+2019-03-07 17:23:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为291
+2019-03-07 17:23:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为292
+2019-03-07 17:23:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为293
+2019-03-07 17:23:44 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为294
+2019-03-07 17:23:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为295
+2019-03-07 17:23:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为296
+2019-03-07 17:23:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为297
+2019-03-07 17:24:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为298
+2019-03-07 17:24:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为299
+2019-03-07 17:24:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为300
+2019-03-07 17:24:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为301
+2019-03-07 17:24:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为302
+2019-03-07 17:24:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为303
+2019-03-07 17:24:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为304
+2019-03-07 17:24:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为305
+2019-03-07 17:24:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为306
+2019-03-07 17:24:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为307
+2019-03-07 17:24:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为308
+2019-03-07 17:24:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为309
+2019-03-07 17:24:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为310
+2019-03-07 17:24:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为311
+2019-03-07 17:25:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为312
+2019-03-07 17:25:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为313
+2019-03-07 17:25:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为314
+2019-03-07 17:25:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为315
+2019-03-07 17:25:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为316
+2019-03-07 17:25:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为317
+2019-03-07 17:25:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为318
+2019-03-07 17:25:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为319
+2019-03-07 17:25:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为320
+2019-03-07 17:25:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为321
+2019-03-07 17:25:44 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为322
+2019-03-07 17:25:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为323
+2019-03-07 17:25:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为324
+2019-03-07 17:25:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为325
+2019-03-07 17:25:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为326
+2019-03-07 17:25:51 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为327
+2019-03-07 17:25:52 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为328
+2019-03-07 17:25:52 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为329
+2019-03-07 17:25:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为330
+2019-03-07 17:25:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为331
+2019-03-07 17:25:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为332
+2019-03-07 17:25:56 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为333
+2019-03-07 17:25:56 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为334
+2019-03-07 17:25:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为335
+2019-03-07 17:27:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为336
+2019-03-07 17:27:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为337
+2019-03-07 17:27:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为338
+2019-03-07 17:27:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为339
+2019-03-07 17:27:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为340
+2019-03-07 17:27:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为341
+2019-03-07 17:27:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为342
+2019-03-07 17:27:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为343
+2019-03-07 17:27:41 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为344
+2019-03-07 17:27:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为345
+2019-03-07 17:27:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为346
+2019-03-07 17:27:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为347
+2019-03-07 17:28:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为348
+2019-03-07 17:28:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为349
+2019-03-07 17:28:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为350
+2019-03-07 17:28:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为351
+2019-03-07 17:28:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为352
+2019-03-07 17:28:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为353
+2019-03-07 17:28:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为354
+2019-03-07 17:28:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为355
+2019-03-07 17:28:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为356
+2019-03-07 17:28:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为357
+2019-03-07 17:28:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为358
+2019-03-07 17:28:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为359
+2019-03-07 17:29:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为360
+2019-03-07 17:29:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为361
+2019-03-07 17:29:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为362
+2019-03-07 17:29:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为363
+2019-03-07 17:31:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为364
+2019-03-07 17:31:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为365
+2019-03-07 17:31:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为366
+2019-03-07 17:31:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为367
+2019-03-07 17:31:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为368
+2019-03-07 17:31:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为369
+2019-03-07 17:31:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为370
+2019-03-07 17:31:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为371
+2019-03-07 17:31:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为372
+2019-03-07 17:31:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为373
+2019-03-07 17:31:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为374
+2019-03-07 17:31:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为375
+2019-03-07 17:31:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为376
+2019-03-07 17:31:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为377
+2019-03-07 17:31:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为378
+2019-03-07 17:43:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为379
+2019-03-07 17:43:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为380
+2019-03-07 17:43:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为381
+2019-03-07 17:45:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为382
+2019-03-07 17:45:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为383
+2019-03-07 17:45:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为384
+2019-03-07 17:45:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为385
+2019-03-07 17:45:25 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为386
+2019-03-07 17:45:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为387
+2019-03-07 17:45:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为388
+2019-03-07 17:45:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为389
+2019-03-07 17:45:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为390
+2019-03-07 17:45:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为391
+2019-03-07 17:45:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为392
+2019-03-07 17:45:58 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为393
+2019-03-07 17:46:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为394
+2019-03-07 17:46:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为395
+2019-03-07 17:46:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为396
+2019-03-07 17:46:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为397
+2019-03-07 17:46:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为398
+2019-03-07 17:46:51 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为399
+2019-03-07 17:46:56 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为400
+2019-03-07 17:47:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为401
+2019-03-07 17:47:08 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为402
+2019-03-07 17:47:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为403
+2019-03-07 17:47:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为404
+2019-03-07 17:47:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为405
+2019-03-07 17:47:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为406
+2019-03-07 17:47:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为407
+2019-03-07 17:47:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为408
+2019-03-07 17:47:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为409
+2019-03-07 17:47:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为410
+2019-03-07 17:48:13 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为411
+2019-03-07 17:48:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为412
+2019-03-07 17:48:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为413
+2019-03-07 17:48:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为414
+2019-03-07 17:48:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为415
+2019-03-07 17:48:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为416
+2019-03-07 17:49:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为417
+2019-03-07 17:49:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为418
+2019-03-07 17:49:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为419
+2019-03-07 17:49:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为420
+2019-03-07 17:49:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为421
+2019-03-07 17:49:37 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为422
+2019-03-07 17:49:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为423
+2019-03-07 17:49:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为424
+2019-03-07 17:49:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为425
+2019-03-07 17:50:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为426
+2019-03-07 17:50:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为427
+2019-03-07 17:50:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为428
+2019-03-07 17:50:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为429
+2019-03-07 17:50:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为430
+2019-03-07 17:50:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为431
+2019-03-07 17:50:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为432
+2019-03-07 17:50:48 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为433
+2019-03-07 17:50:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为434
+2019-03-07 17:51:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为435
+2019-03-07 17:51:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为436
+2019-03-07 17:51:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为437
+2019-03-07 17:52:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为438
+2019-03-07 17:52:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为439
+2019-03-07 17:52:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为440
+2019-03-07 18:04:10 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:04:11 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:04:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为447
+2019-03-07 18:04:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为448
+2019-03-07 18:04:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为449
+2019-03-07 18:04:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为450
+2019-03-07 18:04:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为451
+2019-03-07 18:04:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为452
+2019-03-07 18:04:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为453
+2019-03-07 18:04:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为454
+2019-03-07 18:04:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为455
+2019-03-07 18:04:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为456
+2019-03-07 18:04:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为457
+2019-03-07 18:04:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为458
+2019-03-07 18:04:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为459
+2019-03-07 18:04:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为460
+2019-03-07 18:04:25 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为461
+2019-03-07 18:04:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为462
+2019-03-07 18:04:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为463
+2019-03-07 18:04:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为464
+2019-03-07 18:04:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为465
+2019-03-07 18:04:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为466
+2019-03-07 18:04:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为467
+2019-03-07 18:04:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为468
+2019-03-07 18:04:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为469
+2019-03-07 18:04:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为470
+2019-03-07 18:04:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为471
+2019-03-07 18:04:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为472
+2019-03-07 18:04:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为473
+2019-03-07 18:04:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为474
+2019-03-07 18:04:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为475
+2019-03-07 18:04:37 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为476
+2019-03-07 18:04:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为477
+2019-03-07 18:04:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为478
+2019-03-07 18:04:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为479
+2019-03-07 18:04:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为480
+2019-03-07 18:04:41 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为481
+2019-03-07 18:04:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为482
+2019-03-07 18:04:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为483
+2019-03-07 18:04:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为484
+2019-03-07 18:04:44 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为485
+2019-03-07 18:04:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为486
+2019-03-07 18:04:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为487
+2019-03-07 18:04:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为488
+2019-03-07 18:04:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为489
+2019-03-07 18:04:48 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为490
+2019-03-07 18:04:49 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为491
+2019-03-07 18:04:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为492
+2019-03-07 18:04:50 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为493
+2019-03-07 18:04:51 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为494
+2019-03-07 18:04:52 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为495
+2019-03-07 18:04:53 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为496
+2019-03-07 18:04:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为497
+2019-03-07 18:04:54 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为498
+2019-03-07 18:04:55 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为499
+2019-03-07 18:04:56 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为500
+2019-03-07 18:04:57 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为501
+2019-03-07 18:04:58 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为502
+2019-03-07 18:04:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为503
+2019-03-07 18:04:59 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为504
+2019-03-07 18:05:00 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为505
+2019-03-07 18:05:01 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为506
+2019-03-07 18:05:02 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为507
+2019-03-07 18:05:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为508
+2019-03-07 18:05:03 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为509
+2019-03-07 18:05:04 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为510
+2019-03-07 18:05:05 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为511
+2019-03-07 18:05:06 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为512
+2019-03-07 18:05:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为513
+2019-03-07 18:05:07 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为514
+2019-03-07 18:05:08 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为515
+2019-03-07 18:05:09 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为516
+2019-03-07 18:05:10 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为517
+2019-03-07 18:05:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为518
+2019-03-07 18:05:11 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为519
+2019-03-07 18:05:12 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为520
+2019-03-07 18:05:13 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为521
+2019-03-07 18:05:14 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为522
+2019-03-07 18:05:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为523
+2019-03-07 18:05:15 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为524
+2019-03-07 18:05:16 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为525
+2019-03-07 18:05:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为526
+2019-03-07 18:05:18 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为527
+2019-03-07 18:05:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为528
+2019-03-07 18:05:19 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为529
+2019-03-07 18:05:20 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为530
+2019-03-07 18:05:21 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为531
+2019-03-07 18:05:22 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为532
+2019-03-07 18:05:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为533
+2019-03-07 18:05:23 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为534
+2019-03-07 18:05:24 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为535
+2019-03-07 18:05:25 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为536
+2019-03-07 18:05:26 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为537
+2019-03-07 18:05:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为538
+2019-03-07 18:05:27 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为539
+2019-03-07 18:05:28 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为540
+2019-03-07 18:05:29 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为541
+2019-03-07 18:05:30 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为542
+2019-03-07 18:05:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为543
+2019-03-07 18:05:31 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为544
+2019-03-07 18:05:32 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为545
+2019-03-07 18:05:33 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为546
+2019-03-07 18:05:34 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为547
+2019-03-07 18:05:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为548
+2019-03-07 18:05:35 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为549
+2019-03-07 18:05:36 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为550
+2019-03-07 18:05:37 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为551
+2019-03-07 18:05:38 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为552
+2019-03-07 18:05:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为553
+2019-03-07 18:05:39 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为554
+2019-03-07 18:05:40 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为555
+2019-03-07 18:05:41 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为556
+2019-03-07 18:05:42 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为557
+2019-03-07 18:05:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为558
+2019-03-07 18:05:43 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为559
+2019-03-07 18:06:56 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:06:56 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:07:20 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:07:20 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:08:35 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:08:35 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:09:17 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为560
+2019-03-07 18:10:21 [Timer-0] INFO  com.dyw.client.task.PingTask -采集设备网络异常
+2019-03-07 18:10:41 [Timer-0] INFO  com.dyw.client.task.PingTask -采集设备网络异常
+2019-03-07 18:12:18 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:12:18 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:13:02 [Timer-0] INFO  com.dyw.client.task.PingTask -采集设备网络异常
+2019-03-07 18:13:44 [Timer-0] INFO  com.dyw.client.task.PingTask -采集设备网络异常
+2019-03-07 18:14:08 [Thread-2] ERROR com.dyw.client.service.ReceiveInfoSocketService -服务端关闭连接
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:196)
+	at java.net.SocketInputStream.read(SocketInputStream.java:122)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:283)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:325)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:177)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:154)
+	at java.io.BufferedReader.readLine(BufferedReader.java:317)
+	at java.io.BufferedReader.readLine(BufferedReader.java:382)
+	at com.dyw.client.service.ReceiveInfoSocketService.receiveInfo(ReceiveInfoSocketService.java:54)
+	at com.dyw.client.service.ReceiveInfoSocketService.run(ReceiveInfoSocketService.java:75)
+2019-03-07 18:18:42 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:18:43 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:18:45 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为561
+2019-03-07 18:18:46 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为562
+2019-03-07 18:19:02 [Thread-2] ERROR com.dyw.client.service.ReceiveInfoSocketService -服务端关闭连接
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:196)
+	at java.net.SocketInputStream.read(SocketInputStream.java:122)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:283)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:325)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:177)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:154)
+	at java.io.BufferedReader.readLine(BufferedReader.java:317)
+	at java.io.BufferedReader.readLine(BufferedReader.java:382)
+	at com.dyw.client.service.ReceiveInfoSocketService.receiveInfo(ReceiveInfoSocketService.java:54)
+	at com.dyw.client.service.ReceiveInfoSocketService.run(ReceiveInfoSocketService.java:75)
+2019-03-07 18:38:47 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 18:38:47 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 18:39:13 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 18:40:47 [Thread-2] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为563
+2019-03-07 18:41:14 [Thread-2] ERROR com.dyw.client.service.ReceiveInfoSocketService -服务端关闭连接
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:196)
+	at java.net.SocketInputStream.read(SocketInputStream.java:122)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:283)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:325)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:177)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:154)
+	at java.io.BufferedReader.readLine(BufferedReader.java:317)
+	at java.io.BufferedReader.readLine(BufferedReader.java:382)
+	at com.dyw.client.service.ReceiveInfoSocketService.receiveInfo(ReceiveInfoSocketService.java:54)
+	at com.dyw.client.service.ReceiveInfoSocketService.run(ReceiveInfoSocketService.java:77)
+2019-03-07 18:41:49 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为564
+2019-03-07 18:41:49 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为565
+2019-03-07 18:41:59 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为566
+2019-03-07 18:42:02 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为567
+2019-03-07 18:42:23 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为568
+2019-03-07 18:43:09 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 18:43:29 [AWT-EventQueue-0] INFO  com.dyw.client.service.SendInfoSocketService -接收到的消息为success
+2019-03-07 18:45:13 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 18:45:33 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 18:45:53 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 18:46:17 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为569
+2019-03-07 18:46:18 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为570
+2019-03-07 18:46:20 [Thread-5] INFO  com.dyw.client.service.ReceiveInfoSocketService -接收到的消息为571
+2019-03-07 22:57:54 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 22:57:56 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 22:57:58 [main] ERROR com.dyw.client.service.ReceiveInfoSocketService -创建消息发送体出错
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:208)
+	at com.dyw.client.service.ReceiveInfoSocketService.<init>(ReceiveInfoSocketService.java:26)
+	at com.dyw.client.form.RegisterForm.<init>(RegisterForm.java:96)
+	at com.dyw.client.controller.Egci.initClient(Egci.java:40)
+	at com.dyw.client.controller.Egci.main(Egci.java:51)
+2019-03-07 22:59:12 [main] INFO  com.dyw.client.service.DatabaseService -连接数据库成功
+2019-03-07 22:59:14 [main] INFO  com.dyw.client.service.SessionService -session对象创建成功
+2019-03-07 22:59:20 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 22:59:40 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:00:00 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:00:20 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:00:40 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:01:00 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:01:20 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:01:40 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:02:00 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常
+2019-03-07 23:02:20 [Timer-0] INFO  com.dyw.client.task.PingTask -网络异常

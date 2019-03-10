@@ -4,6 +4,7 @@ import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.form.RegisterForm;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
+import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -17,11 +18,14 @@ public class Egci {
     public static Statement statement;
     public static SqlSession session;
     private static RegisterForm registerForm;
+    public static int workStatus;
 
     /*
      * 初始化客户端程序
      * */
     public static void initClient() {
+        //初始化状态
+        workStatus = 0;
         //初始化日志对象
         logger = LoggerFactory.getLogger(Egci.class);
         //获取配置文件
@@ -35,6 +39,9 @@ public class Egci {
         //创建客户端
         registerForm = new RegisterForm();
         registerForm.init();
+        //启用ping功能
+        PingTimer pingTimer = new PingTimer(registerForm);
+        pingTimer.open();
     }
 
     /*

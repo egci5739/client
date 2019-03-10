@@ -63,6 +63,8 @@ public class ReceiveInfoSocketService extends Thread {
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
+                Egci.workStatus = 1;
+                registerForm.changeCommunicationStatus(1);
                 break;
             }
         }
@@ -70,6 +72,8 @@ public class ReceiveInfoSocketService extends Thread {
 
     @Override
     public void run() {
+        registerForm.changeCommunicationStatus(0);
+        Egci.workStatus = 0;
         receiveInfo();
     }
 }

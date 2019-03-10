@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.RegisterForm">
   <grid id="27dc6" binding="main" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1037" height="817"/>
+      <xy x="20" y="20" width="1187" height="817"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -371,6 +371,16 @@
                   <font size="18"/>
                   <selected value="true"/>
                   <text value="是否刷身份证"/>
+                </properties>
+              </component>
+              <component id="40ad9" class="javax.swing.JButton" binding="communicationStatusButton">
+                <constraints>
+                  <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="30" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="18"/>
+                  <text value="通信状态"/>
                 </properties>
               </component>
             </children>

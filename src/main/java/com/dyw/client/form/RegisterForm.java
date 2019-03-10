@@ -5,7 +5,6 @@ import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.tool.Tool;
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +12,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.Socket;
@@ -87,6 +87,7 @@ public class RegisterForm {
     private JLabel idValidityPeriodLabel;
     private JLabel idOrganizationLabel;
     private JLabel identityPhotoLabel;
+    private JButton communicationStatusButton;
     private StaffEntity staffEntity;
 
     public RegisterForm() {
@@ -215,6 +216,24 @@ public class RegisterForm {
                 }
             }
         });
+        //重新连接服务程序
+        communicationStatusButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                reconnectToServer();
+            }
+        });
+    }
+
+    /*
+     * 重新连接到服务程序
+     * */
+    private void reconnectToServer() {
+        if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
+            ReceiveInfoSocketService receiveInfoSocketService = new ReceiveInfoSocketService(this);
+            receiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+            receiveInfoSocketService.start();
+            useIdCardCheckBox.setSelected(true);
+        }
     }
 
     /*
@@ -464,5 +483,37 @@ public class RegisterForm {
         sexText.setEnabled(true);
         companyText.setEnabled(true);
         IdPhoto.setEnabled(true);
+    }
+
+    /*
+     * 更改通信状态
+     * */
+    public void changeCommunicationStatus(int status) {
+        /*
+         *状态说明：
+         * 0：通信正常
+         * 1：服务程序断开
+         * 2：服务器网络异常
+         * 3：采集设备网络异常
+         * */
+        switch (status) {
+            case 0:
+                communicationStatusButton.setBackground(Color.green);
+                communicationStatusButton.setText("通信正常");
+                communicationStatusButton.setEnabled(false);
+                break;
+            case 1:
+                communicationStatusButton.setBackground(Color.red);
+                communicationStatusButton.setText("服务程序断开");
+                communicationStatusButton.setEnabled(true);
+                break;
+            case 2:
+                communicationStatusButton.setBackground(Color.red);
+                communicationStatusButton.setText("网络异常");
+                communicationStatusButton.setEnabled(false);
+                break;
+            default:
+                break;
+        }
     }
 }
