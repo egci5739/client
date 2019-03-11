@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.eventMapper">
+    <!--查询所有启用的事件-->
+    <select id="getEventOn" resultType="com.dyw.client.entity.EventEntity">
+        select * from Event where eventStatus = 1;
+    </select>
+</mapper>

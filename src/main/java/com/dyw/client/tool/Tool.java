@@ -171,7 +171,7 @@ public class Tool {
      * 拼接搜索条件
      * */
     public static String getSearchCondition(String raw) {
-        return "'%" + raw + "%'";
+        return "%" + raw + "%";
     }
 
     /*

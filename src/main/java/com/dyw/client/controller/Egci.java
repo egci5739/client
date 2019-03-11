@@ -1,6 +1,7 @@
 package com.dyw.client.controller;
 
 import com.dyw.client.entity.ConfigEntity;
+import com.dyw.client.form.MonitorForm;
 import com.dyw.client.form.RegisterForm;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
@@ -19,6 +20,7 @@ public class Egci {
     public static SqlSession session;
     private static RegisterForm registerForm;
     public static int workStatus;
+    private static MonitorForm monitorForm;
 
     /*
      * 初始化客户端程序
@@ -36,12 +38,15 @@ public class Egci {
         //创建session对象
         SessionService sessionService = new SessionService();
         session = sessionService.createSession();
-        //创建客户端
+        //创建办证客户端
         registerForm = new RegisterForm();
         registerForm.init();
         //启用ping功能
         PingTimer pingTimer = new PingTimer(registerForm);
         pingTimer.open();
+        //创建监控客户端
+        monitorForm = new MonitorForm();
+        monitorForm.init();
     }
 
     /*

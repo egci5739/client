@@ -122,7 +122,7 @@ public class RegisterForm {
                     return;
                 }
                 if (staffOperationService.getWaitStaffMap().get(waitStaffList.getSelectedValue()) != null) {
-                    fillStaffInfo(waitStaffMap.get(waitStaffList.getSelectedValue()));
+                    fillStaffInfo(staffOperationService.getWaitStaffMap().get(waitStaffList.getSelectedValue()));
                 }
             }
         });

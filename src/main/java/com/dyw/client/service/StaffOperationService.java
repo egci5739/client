@@ -48,27 +48,12 @@ public class StaffOperationService {
      * 获取待拍照人员列表
      * */
     public void getWaitStaffList() {
-        try {
-            waitStaffMap.clear();
-            cardNumbers.clear();
-            String sql = "select * from TemporaryStaff";
-            ResultSet rs = null;
-            rs = Egci.statement.executeQuery(sql);
-            while (rs.next()) {
-                //如果对象中有数据，就会循环打印出来
-                StaffEntity staffEntity = new StaffEntity();
-                staffEntity.setName(rs.getString("Name"));
-                staffEntity.setNameEn(rs.getString("NameEn"));
-                staffEntity.setCardId(rs.getString("CardId"));
-                staffEntity.setCardNumber(rs.getString("CardNumber"));
-                staffEntity.setBirthday(rs.getString("Birthday"));
-                staffEntity.setSex(rs.getString("Sex"));
-                staffEntity.setCompany(rs.getString("Company"));
-                waitStaffMap.put(rs.getString("CardNumber"), staffEntity);
-                cardNumbers.add(rs.getString("CardNumber"));
-            }
-        } catch (Exception e) {
-            logger.error("获取待拍照人员列表失败", e);
+        waitStaffMap.clear();
+        cardNumbers.clear();
+        List<StaffEntity> waitStaffList = Egci.session.selectList("mapping.staffMapper.getTemporaryStaff");
+        for (StaffEntity staffEntity : waitStaffList) {
+            waitStaffMap.put(staffEntity.getCardNumber(), staffEntity);
+            cardNumbers.add(staffEntity.getCardNumber());
         }
     }
 
@@ -78,40 +63,28 @@ public class StaffOperationService {
     public void search(String name, String card) {
         resultStaffMap.clear();
         vectorList.clear();
-        String sql = null;
+        System.out.println(name + card);
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setName(Tool.getSearchCondition(name));
+        staffEntity.setCardNumber(Tool.getSearchCondition(card));
+        List<StaffEntity> resultStaffList = null;
         if (!name.equals("") && !card.equals("")) {
-            sql = "select * from Staff WHERE Name LIKE " + Tool.getSearchCondition(name) + " OR CardNumber LIKE " + Tool.getSearchCondition(card);
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCardAndName", staffEntity);
         } else if (!name.equals("")) {
-            sql = "select * from Staff WHERE Name LIKE " + Tool.getSearchCondition(name);
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithName", staffEntity);
         } else if (!card.equals("")) {
-            sql = "select * from Staff WHERE CardNumber LIKE " + Tool.getSearchCondition(card);
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", staffEntity);
         }
-        try {
-            ResultSet rs = null;
-            rs = Egci.statement.executeQuery(sql);
-            int i = 0;
-            while (rs.next()) {
-                //如果对象中有数据，就会循环打印出来
-                StaffEntity staffEntity = new StaffEntity();
-                staffEntity.setStaffId(rs.getInt("StaffId"));
-                staffEntity.setName(rs.getString("Name"));
-                staffEntity.setNameEn(rs.getString("NameEn"));
-                staffEntity.setCardId(rs.getString("CardId"));
-                staffEntity.setCardNumber(rs.getString("CardNumber"));
-                staffEntity.setBirthday(rs.getString("Birthday"));
-                staffEntity.setSex(rs.getString("Sex"));
-                staffEntity.setCompany(rs.getString("Company"));
-                staffEntity.setPhoto(rs.getBytes("Photo"));
-                resultStaffMap.put(i + "", staffEntity);
-                Vector v = new Vector();
-                v.add(0, rs.getString("CardNumber"));
-                v.add(1, rs.getString("Name"));
-                v.add(2, rs.getString("CardId"));
-                vectorList.add(v);
-                i = i + 1;
-            }
-        } catch (Exception e) {
-            logger.error("获取人员列表失败", e);
+        int i = 0;
+        assert resultStaffList != null;
+        for (StaffEntity staffEntity1 : resultStaffList) {
+            resultStaffMap.put(i + "", staffEntity1);
+            Vector v = new Vector();
+            v.add(0, staffEntity1.getCardNumber());
+            v.add(1, staffEntity1.getName());
+            v.add(2, staffEntity1.getCardId());
+            vectorList.add(v);
+            i = i + 1;
         }
     }
 
@@ -119,20 +92,15 @@ public class StaffOperationService {
      * 保存人员信息
      * */
     public void save(StaffEntity staffEntity, String oldCard) {
-        String sql = "select * from Staff where CardNumber = " + "'" + staffEntity.getCardNumber() + "'";
-        try {
-            ResultSet rs = Egci.statement.executeQuery(sql);
-            if (rs.next()) {
-                //更新
-                Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
-                Egci.session.commit();
-            } else {
-                //新增
-                Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
-                Egci.session.commit();
-            }
-        } catch (SQLException e) {
-            logger.error("查询失败", e);
+        List<StaffEntity> resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", oldCard);
+        if (resultStaffList.size() > 0) {
+            //更新
+            Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
+            Egci.session.commit();
+        } else {
+            //新增
+            Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
+            Egci.session.commit();
         }
         try {
             if (!oldCard.equals("0")) {

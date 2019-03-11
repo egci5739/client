@@ -4,7 +4,8 @@
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.staffMapper">
     <!--查询单个人员的采集信息-->
-    <select id="getStaffCollectionInfo" parameterType="com.dyw.client.entity.CollectionEntity" resultType="com.dyw.client.entity.CollectionEntity">
+    <select id="getStaffCollectionInfo" parameterType="com.dyw.client.entity.CollectionEntity"
+            resultType="com.dyw.client.entity.CollectionEntity">
         select * from FaceCollectionTemp where Id=#{Id};
     </select>
     <!--新增人员信息-->
@@ -24,4 +25,20 @@
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
         DELETE FROM Staff WHERE CardNumber=#{CardNumber};
     </delete>
+    <!--查询待拍照人员列表-->
+    <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity">
+        SELECT * FROM TemporaryStaff;
+    </select>
+    <!--依据卡号和姓名查询人员-->
+    <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+        select * from Staff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
+    </select>
+    <!--依据姓名查询人员-->
+    <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+        select * from Staff WHERE Name LIKE #{name};
+    </select>
+    <!--依据卡号查询人员-->
+    <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+        select * from Staff WHERE CardNumber LIKE #{CardNumber};
+    </select>
 </mapper>

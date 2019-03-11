@@ -1,10 +1,9 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.DateSelector;
+import com.dyw.client.controller.Egci;
 import com.dyw.client.controller.PhotoTableCellRenderer;
-import com.dyw.client.entity.ConfigEntity;
-import com.dyw.client.entity.PassInfoEntity;
-import com.dyw.client.entity.StaffEntity;
+import com.dyw.client.entity.*;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -18,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 public class MonitorForm {
@@ -65,18 +65,25 @@ public class MonitorForm {
     private JButton searchButton;
     private StaffEntity staffEntity;
 
-    public static void main(String[] args) {
-
-    }
-
     /*
      * 构造函数
      * */
     public MonitorForm() {
-        equipmentSelectionCombo.addItem("--请选择--");    //向下拉列表中添加一项
-        equipmentSelectionCombo.addItem("身份证");
-        equipmentSelectionCombo.addItem("驾驶证");
-        equipmentSelectionCombo.addItem("军官证");
+        //初始化设备选择下拉框
+        List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", "2");
+        EquipmentEntity equipmentEntity1 = new EquipmentEntity();
+        equipmentEntity1.setName("--请选择设备--");
+        equipmentEntityList.add(equipmentEntity1);
+        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+            equipmentSelectionCombo.addItem(equipmentEntity.getName());
+        }
+        //初始化事件选择下拉框
+        List<EventEntity> eventEntityList = Egci.session.selectList("mapping.eventMapper.getEventOn");
+        EventEntity eventEntity1 = new EventEntity();
+        eventEntity1.setEventName("--请选择事件类型--");
+        for (EventEntity eventEntity : eventEntityList) {
+            eventSelectionCombo.addItem(eventEntity.getEventName());
+        }
 
         configEntity = Tool.getConfig(System.getProperty("user.dir") + "/config/config.xml");
         //创建数据库连接对象
