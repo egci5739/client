@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class ReceiveInfoSocketService extends Thread {
-    private Logger logger = LoggerFactory.getLogger(ReceiveInfoSocketService.class);
+public class RegisterReceiveInfoSocketService extends Thread {
+    private Logger logger = LoggerFactory.getLogger(RegisterReceiveInfoSocketService.class);
     private OutputStream os;
     private Socket socket;
     private RegisterForm registerForm;
@@ -21,7 +21,7 @@ public class ReceiveInfoSocketService extends Thread {
     /*
      * 构造函数
      * */
-    public ReceiveInfoSocketService(RegisterForm registerForm) {
+    public RegisterReceiveInfoSocketService(RegisterForm registerForm) {
         try {
             socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerPort());
             this.registerForm = registerForm;

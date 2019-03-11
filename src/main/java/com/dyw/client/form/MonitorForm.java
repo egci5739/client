@@ -2,9 +2,10 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.DateSelector;
 import com.dyw.client.controller.Egci;
-import com.dyw.client.controller.PhotoTableCellRenderer;
+import com.dyw.client.service.HistoryPhotoTableCellRenderer;
+import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.entity.*;
-import com.dyw.client.service.DatabaseService;
+import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
 
@@ -12,22 +13,25 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.event.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class MonitorForm {
     private DefaultTableModel passSuccessModel;
     private DefaultTableModel passFaultModel;
+    private DefaultTableModel resultModel;
     private JPanel monitor;
     private ConfigEntity configEntity;
     private Statement statement;
     private String passCardSelectionDefaultHint = "请输入卡号";
     private String nameSelectionDefaultHint = "请输入姓名";
+    private Map<Integer, String> conditionEquipmentMap;
+    private Map<Integer, Integer> conditionEventMap;
 
     private JPanel TabbedPane;
     private JTabbedPane tabbedPane1;
@@ -59,84 +63,45 @@ public class MonitorForm {
     private JTextField passCardSelectionText;
     private JTextField nameSelectionText;
     private JLabel startTimeSelectionLabel;
-    private JButton startTimeSelectionButton;
+    private DateSelector startTimeSelectionButton;
     private JLabel endTimeSelectionLabel;
-    private JButton endTimeSelectionButton;
+    private DateSelector endTimeSelectionButton;
     private JButton searchButton;
+    private JScrollPane resultContentScroll;
+    private JTable resultContentTable;
     private StaffEntity staffEntity;
 
     /*
      * 构造函数
      * */
     public MonitorForm() {
-        //初始化设备选择下拉框
-        List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", "2");
-        EquipmentEntity equipmentEntity1 = new EquipmentEntity();
-        equipmentEntity1.setName("--请选择设备--");
-        equipmentEntityList.add(equipmentEntity1);
-        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-            equipmentSelectionCombo.addItem(equipmentEntity.getName());
-        }
-        //初始化事件选择下拉框
-        List<EventEntity> eventEntityList = Egci.session.selectList("mapping.eventMapper.getEventOn");
-        EventEntity eventEntity1 = new EventEntity();
-        eventEntity1.setEventName("--请选择事件类型--");
-        for (EventEntity eventEntity : eventEntityList) {
-            eventSelectionCombo.addItem(eventEntity.getEventName());
-        }
-
-        configEntity = Tool.getConfig(System.getProperty("user.dir") + "/config/config.xml");
-        //创建数据库连接对象
-        DatabaseService databaseService = new DatabaseService(configEntity.getDataBaseIp(), configEntity.getDataBasePort(), configEntity.getDataBaseName(), configEntity.getDataBasePass(), configEntity.getDataBaseLib());
-        statement = databaseService.connection();
-        String sql = "select * from Staff WHERE CardNumber = '666666'";
-        ResultSet rs = null;
-        staffEntity = new StaffEntity();
-        try {
-            rs = statement.executeQuery(sql);
-            while (rs.next()) {
-                //如果对象中有数据，就会循环打印出来
-                staffEntity.setName(rs.getString("Name"));
-                staffEntity.setNameEn(rs.getString("NameEn"));
-                staffEntity.setCardId(rs.getString("CardId"));
-                staffEntity.setCardNumber(rs.getString("CardNumber"));
-                staffEntity.setBirthday(rs.getString("Birthday"));
-                staffEntity.setSex(rs.getString("Sex"));
-                staffEntity.setPhoto(rs.getBytes("Photo"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //初始化结果表
-        String[] columnNames = {"人员底图", "抓拍图片", "比对信息"};
+        conditionEquipmentMap = new HashMap<Integer, String>();
+        conditionEventMap = new HashMap<Integer, Integer>();
+        /*
+         * 实时通行部分
+         * */
+        //创建接收通行信息的socket对象
+        MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService(this);
+        monitorReceiveInfoSocketService.sendInfo("8#1#0#0#");
+        monitorReceiveInfoSocketService.start();
+        //初始化通行结果表格
+        String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息"};
         passSuccessModel = new DefaultTableModel();
-        passSuccessModel.setColumnIdentifiers(columnNames);
+        passSuccessModel.setColumnIdentifiers(columnPassInfo);
         passSuccessContentTable.setModel(passSuccessModel);
         passFaultModel = new DefaultTableModel();
-        passFaultModel.setColumnIdentifiers(columnNames);
+        passFaultModel.setColumnIdentifiers(columnPassInfo);
         passFaultContentTable.setModel(passFaultModel);
-
-        TableCellRenderer tableCellRenderer = new PhotoTableCellRenderer();
-        passSuccessContentTable.setDefaultRenderer(Object.class, tableCellRenderer);
-
-
-        System.out.println(staffEntity.getPhoto().toString());
-        Vector v = new Vector();
-//        v.add(0, Base64.encodeBytes(staffEntity.getPhoto()));
-//        v.add(1, Base64.encodeBytes(staffEntity.getPhoto()));
-//        v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
-//        passSuccessModel.addRow(v);
-//        passSuccessModel.addRow(v);
-//        passSuccessModel.addRow(v);
+        //表格中显示图片
+        TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
+        passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
+        passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
         button1.setText("按钮");
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                 PassInfoEntity passInfoEntity = new PassInfoEntity();
-                passInfoEntity.setPassName("egci");
-                passInfoEntity.setPassCard("666666");
-                passInfoEntity.setPassTime(df.format(new Date()));
                 Vector v = new Vector();
                 v.add(0, Base64.encodeBytes(staffEntity.getPhoto()));
                 v.add(1, Base64.encodeBytes(staffEntity.getPhoto()));
@@ -144,20 +109,31 @@ public class MonitorForm {
                 passSuccessModel.addRow(v);
             }
         });
-        //设备选择下拉框
-        equipmentSelectionCombo.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    String itemSize = (String) e.getItem();
-                    try {
-                        System.out.println(itemSize);
-                    } catch (Exception ex) {
-
-                    }
-                }
-            }
-        });
+        /*
+         * 历史查询部分
+         * */
+        //初始化设备选择下拉框
+        List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", "2");
+        EquipmentEntity equipmentEntity1 = new EquipmentEntity();
+        equipmentEntity1.setName("--全部设备--");
+        equipmentEntityList.add(0, equipmentEntity1);
+        int i = 0;
+        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+            equipmentSelectionCombo.addItem(equipmentEntity.getName());
+            conditionEquipmentMap.put(i, equipmentEntity.getIP());
+            i++;
+        }
+        //初始化事件选择下拉框
+        List<EventEntity> eventEntityList = Egci.session.selectList("mapping.eventMapper.getEventOn");
+        EventEntity eventEntity1 = new EventEntity();
+        eventEntity1.setEventName("--全部事件--");
+        eventEntityList.add(0, eventEntity1);
+        int j = 0;
+        for (EventEntity eventEntity : eventEntityList) {
+            eventSelectionCombo.addItem(eventEntity.getEventName());
+            conditionEventMap.put(j, eventEntity.getEventId());
+            j++;
+        }
         //输入卡号框选中/未选中时
         passCardSelectionText.setText(passCardSelectionDefaultHint);
         passCardSelectionText.addFocusListener(new FocusAdapter() {
@@ -194,6 +170,68 @@ public class MonitorForm {
                 }
             }
         });
+        //初始化历史查询结果表格
+        String[] columnHistoryInfo = {"卡号", "姓名", "时间", "事件", "分值", "设备", "底图", "抓拍"};
+        resultModel = new DefaultTableModel();
+        resultModel.setColumnIdentifiers(columnHistoryInfo);
+        resultContentTable.setModel(resultModel);
+        //表格中显示图片
+        TableCellRenderer historyTableCellRenderer = new HistoryPhotoTableCellRenderer();
+        resultContentTable.setDefaultRenderer(Object.class, historyTableCellRenderer);
+        //点击查询历史记录
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                search();
+            }
+        });
+    }
+
+    /*
+     * 查询历史记录
+     * */
+    private void search() {
+        PassInfoEntity condition = new PassInfoEntity();
+        condition.setIP(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
+        condition.setEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
+        if (!passCardSelectionText.getText().equals(passCardSelectionDefaultHint)) {
+            condition.setCardNumber(passCardSelectionText.getText());
+        }
+        if (!nameSelectionText.getText().equals(nameSelectionDefaultHint)) {
+            condition.setStaffName(nameSelectionText.getText());
+        }
+        condition.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
+        condition.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
+        resultModel.setRowCount(0);
+        List<PassInfoEntity> passInfoEntityList = Egci.session.selectList("mapping.passInfoMapper.getHistoryPassInfo", condition);
+        for (PassInfoEntity passInfoEntity : passInfoEntityList) {
+            Vector v = new Vector();
+            v.add(0, passInfoEntity.getCardNumber());
+            v.add(1, passInfoEntity.getStaffName());
+            v.add(2, passInfoEntity.getDate());
+            v.add(3, passInfoEntity.getEventTypeId());
+            v.add(4, passInfoEntity.getSimilarity());
+            v.add(5, passInfoEntity.getEquipmentName());
+            v.add(6, Base64.encodeBytes(passInfoEntity.getPhoto()));
+            v.add(7, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
+            resultModel.addRow(v);
+        }
+    }
+
+    /*
+     * 新增通行记录
+     * */
+    public void addPassInfo(PassInfoEntity passInfoEntity) {
+        Vector v = new Vector();
+        v.add(0, Base64.encodeBytes(passInfoEntity.getPhoto()));
+        v.add(1, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
+        if (passInfoEntity.getPass()) {
+            v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
+            passSuccessModel.addRow(v);
+        } else {
+            v.add(2, Tool.displayPassFaultResult(passInfoEntity));
+            passFaultModel.addRow(v);
+        }
     }
 
     /*
@@ -201,12 +239,11 @@ public class MonitorForm {
      * */
     public void init() {
         JFrame frame = new JFrame("MonitorForm");
-        frame.setContentPane(new MonitorForm().monitor);
+        frame.setContentPane(this.monitor);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
-
 
     private void createUIComponents() {
         // TODO: place custom component creation code here

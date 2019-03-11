@@ -26,6 +26,8 @@ public class PingTask extends TimerTask {
                 logger.info("网络异常");
             } else if (Egci.workStatus == 0) {
                 registerForm.changeCommunicationStatus(0);
+                logger.info("网络正常");
+
             }
         } catch (Exception e) {
             logger.error("error", e);

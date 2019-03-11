@@ -14,11 +14,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.net.Socket;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 import java.util.List;
 
@@ -92,9 +87,9 @@ public class RegisterForm {
 
     public RegisterForm() {
         //创建接收采集信息的socket对象
-        ReceiveInfoSocketService receiveInfoSocketService = new ReceiveInfoSocketService(this);
-        receiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
-        receiveInfoSocketService.start();
+        RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
+        registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+        registerReceiveInfoSocketService.start();
         //初始化人员操作对象
         staffOperationService = new StaffOperationService();
         //初始化拍照模式切换对象
@@ -229,9 +224,9 @@ public class RegisterForm {
      * */
     private void reconnectToServer() {
         if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
-            ReceiveInfoSocketService receiveInfoSocketService = new ReceiveInfoSocketService(this);
-            receiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
-            receiveInfoSocketService.start();
+            RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
+            registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+            registerReceiveInfoSocketService.start();
             useIdCardCheckBox.setSelected(true);
         }
     }

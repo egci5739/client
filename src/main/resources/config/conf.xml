@@ -22,6 +22,7 @@
         <mapper resource="mapping/staffMapper.xml"/>
         <mapper resource="mapping/equipmentMapper.xml"/>
         <mapper resource="mapping/eventMapper.xml"/>
+        <mapper resource="mapping/passInfoMapper.xml"/>
     </mappers>
 
 </configuration>

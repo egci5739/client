@@ -1,4 +1,4 @@
-package com.dyw.client.controller;
+package com.dyw.client.service;
 
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -8,12 +8,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 
-public class PhotoTableCellRenderer extends DefaultTableCellRenderer {
+public class HistoryPhotoTableCellRenderer extends DefaultTableCellRenderer {
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 
     public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus, int row, int column) {
-        if (column == 0 || column == 1) {
+        if (column == 6 || column == 7) {
             //调用基类方法
             ImageIcon imageIcon = null;
             try {

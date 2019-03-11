@@ -1,5 +1,6 @@
 package com.dyw.client.controller;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.DateFormat;
@@ -39,6 +40,7 @@ import javax.swing.border.LineBorder;
 public class DateSelector extends JButton {
     private DateChooser dateChooser = null;
     private String preLabel = "";
+    private int newDay;
 
     public DateSelector() {
         this(getNowDate());
@@ -75,7 +77,8 @@ public class DateSelector extends JButton {
     }
 
     private static SimpleDateFormat getDefaultDateFormat() {
-        return new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+//        return new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     public void setText(String s) {
@@ -185,7 +188,7 @@ public class DateSelector extends JButton {
         private JPanel createWeekAndDayPanal() {
             String colname[] = {"日", "一", "二", "三", "四", "五", "六"};
             JPanel result = new JPanel();
-// 设置固定字体，以免调用环境改变影响界面美观
+            // 设置固定字体，以免调用环境改变影响界面美观
             result.setFont(new Font("宋体", Font.PLAIN, 12));
             result.setLayout(new GridLayout(7, 7));
             result.setBackground(Color.white);
@@ -365,7 +368,7 @@ public class DateSelector extends JButton {
             if (source.getName().equals("Year"))
                 c.set(Calendar.YEAR, getSelectedYear());
             else
-// (source.getName().equals("Month"))
+                // (source.getName().equals("Month"))
                 c.set(Calendar.MONTH, getSelectedMonth() - 1);
             setDate(c.getTime());
             flushWeekAndDay();
@@ -376,10 +379,20 @@ public class DateSelector extends JButton {
             if (source.getText().length() == 0) return;
             dayColorUpdate(true);
             source.setForeground(todayBackColor);
-            int newDay = Integer.parseInt(source.getText());
+            newDay = Integer.parseInt(source.getText());
             Calendar c = getCalendar();
             c.set(Calendar.DAY_OF_MONTH, newDay);
             setDate(c.getTime());
+            System.out.println("时间戳：" + c.getTimeInMillis());
+        }
+
+        /*
+         *获取选定事件的时间戳
+         * */
+        public java.sql.Timestamp getTimestamp() {
+            Calendar c = getCalendar();
+            c.set(Calendar.DAY_OF_MONTH, newDay);
+            return new Timestamp(c.getTimeInMillis());
         }
     }
 }

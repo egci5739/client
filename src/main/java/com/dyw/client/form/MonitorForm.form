@@ -252,13 +252,13 @@
                           <text value="开始时间"/>
                         </properties>
                       </component>
-                      <component id="f8ebd" class="javax.swing.JButton" binding="startTimeSelectionButton" custom-create="true">
+                      <component id="f8ebd" class="com.dyw.client.controller.DateSelector" binding="startTimeSelectionButton" custom-create="true">
                         <constraints>
                           <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag top="0" left="10" bottom="0" right="10" weightx="0.1" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="2019-03-11 21:45:18"/>
                         </properties>
                       </component>
                       <component id="47c2c" class="javax.swing.JLabel" binding="endTimeSelectionLabel">
@@ -270,13 +270,13 @@
                           <text value="结束时间"/>
                         </properties>
                       </component>
-                      <component id="a0232" class="javax.swing.JButton" binding="endTimeSelectionButton" custom-create="true">
+                      <component id="a0232" class="com.dyw.client.controller.DateSelector" binding="endTimeSelectionButton" custom-create="true">
                         <constraints>
                           <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag top="0" left="10" bottom="0" right="10" weightx="0.1" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="2019-03-11 21:45:18"/>
                         </properties>
                       </component>
                       <component id="8c754" class="javax.swing.JButton" binding="searchButton">
@@ -297,7 +297,25 @@
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <scrollpane id="f89b" binding="resultContentScroll">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="1.0" weighty="1.0"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="1c045" class="javax.swing.JTable" binding="resultContentTable">
+                            <constraints/>
+                            <properties>
+                              <font size="18" style="1"/>
+                              <rowHeight value="160"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
                   </grid>
                   <grid id="4340d" binding="pageSelectionPanel" layout-manager="GridBagLayout">
                     <constraints>

@@ -175,17 +175,34 @@ public class Tool {
     }
 
     /*
-     * 显示通行结果
+     * 显示通行成功结果
      * */
     public static String displayPassSuccessResult(PassInfoEntity passInfoEntity) {
         return "<html><body>卡号：" +
-                passInfoEntity.getPassCard() +
+                passInfoEntity.getCardNumber() +
                 "<br>姓名：" +
-                passInfoEntity.getPassName() +
-                "<br>时间："
-                + passInfoEntity.getPassTime() +
-                "<br>分值：" +
-                passInfoEntity.getPassPoint() +
+                passInfoEntity.getStaffName() +
+                "<br>时间：" +
+                passInfoEntity.getDate() +
+//                "<br>分值：" +
+//                passInfoEntity.getSimilarity() +
+                "</body></html>";
+    }
+
+    /*
+     * 显示通行失败结果
+     * */
+    public static String displayPassFaultResult(PassInfoEntity passInfoEntity) {
+        return "<html><body>卡号：" +
+                passInfoEntity.getCardNumber() +
+                "<br>姓名：" +
+                passInfoEntity.getStaffName() +
+                "<br>时间：" +
+                passInfoEntity.getDate() +
+//                "<br>分值：" +
+//                passInfoEntity.getSimilarity() +
+                "<br>原因：" +
+                passInfoEntity.getEventTypeId() +
                 "</body></html>";
     }
 }

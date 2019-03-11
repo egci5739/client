@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.passInfoMapper">
+    <!--获取通行信息-->
+    <select id="getPassInfo" resultType="com.dyw.client.entity.PassInfoEntity">
+        select * from PassRecord INNER JOIN Staff ON PassRecord.CardNumber=Staff.CardNumber where PassRecord.Id=#{Id};
+    </select>
+    <!--获取历史通行记录-->
+    <select id="getHistoryPassInfo" resultType="com.dyw.client.entity.PassInfoEntity">
+        select * from PassRecord INNER JOIN Staff ON PassRecord.CardNumber=Staff.CardNumber
+        where PassRecord.Date &gt; #{startDate} and PassRecord.Date &lt; #{endDate}
+        <if test="IP != null">
+            and PassRecord.IP=#{IP}
+        </if>
+        <if test="EventTypeId != 0">
+            and PassRecord.EventTypeId=#{EventTypeId}
+        </if>
+        <if test="CardNumber != null">
+            and PassRecord.CardNumber=#{CardNumber}
+        </if>
+        <if test="StaffName != null">
+            and PassRecord.StaffName=#{StaffName}
+        </if>
+        <!--where PassRecord.Date &gt; #{startDate} and PassRecord.Date &lt; #{endDate}-->
+        <!--<choose>-->
+        <!--&lt;!&ndash;<when test="IP!=null or EventTypeId!=0 or CardNumber!=null or StaffName!=null">&ndash;&gt;-->
+        <!--&lt;!&ndash;where&ndash;&gt;-->
+        <!--&lt;!&ndash;</when>&ndash;&gt;-->
+        <!--<when test="IP != null">-->
+        <!--and PassRecord.IP=#{IP}-->
+        <!--</when>-->
+        <!--<when test="EventTypeId  !=0">-->
+        <!--and PassRecord.EventTypeId=#{EventTypeId}-->
+        <!--</when>-->
+        <!--<when test="CardNumber != null">-->
+        <!--and PassRecord.CardNumber=#{CardNumber}-->
+        <!--</when>-->
+        <!--<when test="StaffName != null">-->
+        <!--and PassRecord.StaffName=#{StaffName}-->
+        <!--</when>-->
+        <!--</choose>-->
+    </select>
+</mapper>
