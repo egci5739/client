@@ -5,6 +5,7 @@ import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.form.LoginForm;
 import com.dyw.client.form.MonitorForm;
 import com.dyw.client.form.RegisterForm;
+import com.dyw.client.form.SystemForm;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.timer.PingTimer;
@@ -47,6 +48,9 @@ public class Egci {
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();
+
+        SystemForm systemForm = new SystemForm();
+        systemForm.init();
     }
 
     /*

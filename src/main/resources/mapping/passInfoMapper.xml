@@ -23,23 +23,13 @@
         <if test="StaffName != null">
             and PassRecord.StaffName=#{StaffName}
         </if>
-        <!--where PassRecord.Date &gt; #{startDate} and PassRecord.Date &lt; #{endDate}-->
-        <!--<choose>-->
-        <!--&lt;!&ndash;<when test="IP!=null or EventTypeId!=0 or CardNumber!=null or StaffName!=null">&ndash;&gt;-->
-        <!--&lt;!&ndash;where&ndash;&gt;-->
-        <!--&lt;!&ndash;</when>&ndash;&gt;-->
-        <!--<when test="IP != null">-->
-        <!--and PassRecord.IP=#{IP}-->
-        <!--</when>-->
-        <!--<when test="EventTypeId  !=0">-->
-        <!--and PassRecord.EventTypeId=#{EventTypeId}-->
-        <!--</when>-->
-        <!--<when test="CardNumber != null">-->
-        <!--and PassRecord.CardNumber=#{CardNumber}-->
-        <!--</when>-->
-        <!--<when test="StaffName != null">-->
-        <!--and PassRecord.StaffName=#{StaffName}-->
-        <!--</when>-->
-        <!--</choose>-->
+    </select>
+    <!--获取单台设备通行总数-->
+    <select id="getPassNumberCount" resultType="Integer">
+        select count(*) from PassRecord where IP=#{IP} and PassRecord.Date &gt; #{startDate} and PassRecord.Date &lt;
+        #{endDate}
+        <if test="EventTypeId!=0">
+            and EventTypeId=#{EventTypeId}
+        </if>
     </select>
 </mapper>

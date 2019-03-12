@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.SystemForm">
+  <grid id="27dc6" binding="system" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="1064" height="768"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="56203" binding="tabbedPane1" default-binding="true">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="c02a5" binding="equipmentManagementPanel" layout-manager="GridBagLayout">
+            <constraints>
+              <tabbedpane title="设备管理"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="54bab" binding="equipmentManagementToolBarPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <grid id="52265" binding="equipmentManagementContentPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.9"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="6443c" binding="equipmentManagementContentScroll">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="5798d" class="javax.swing.JTable" binding="equipmentManagementContentTable">
+                        <constraints/>
+                        <properties>
+                          <font size="20"/>
+                          <rowHeight value="45"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="f7146" binding="accountManagementPanel" layout-manager="GridBagLayout">
+            <constraints>
+              <tabbedpane title="用户管理"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="27b26" binding="dataAnalysisPanel" layout-manager="GridBagLayout">
+            <constraints>
+              <tabbedpane title="数据分析"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="477eb" binding="dataAnalysisDateSelectionPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="20f0f" class="javax.swing.JLabel" binding="startTimeSelectionLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="20"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="开始时间"/>
+                    </properties>
+                  </component>
+                  <component id="99749" class="com.dyw.client.service.DateSelectorButtonService" binding="startTimeSelectionButton" custom-create="true">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="0" bottom="0" right="50" weightx="0.0" weighty="0.0" ipadx="20"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="2019-03-12 22:43:11"/>
+                    </properties>
+                  </component>
+                  <component id="a57a1" class="javax.swing.JLabel" binding="endTimeSelectionLabel">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="20"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="结束时间"/>
+                    </properties>
+                  </component>
+                  <component id="c245c" class="com.dyw.client.service.DateSelectorButtonService" binding="endTimeSelectionButton" custom-create="true">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="0" bottom="0" right="50" weightx="0.0" weighty="0.0" ipadx="20"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="2019-03-12 22:43:46"/>
+                    </properties>
+                  </component>
+                  <component id="5ab86" class="javax.swing.JButton" binding="searchButton">
+                    <constraints>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="20"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="查询"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="11ec" binding="dataAnalysisContentPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.9"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="991f1" binding="dataAnalysisContentScroll">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="bbccd" class="javax.swing.JTable" binding="dataAnalysisContentTable">
+                        <constraints/>
+                        <properties>
+                          <font size="20"/>
+                          <rowHeight value="30"/>
+                          <rowSelectionAllowed value="true"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="8aa33" binding="ConfigurationManagementPanel" layout-manager="GridBagLayout">
+            <constraints>
+              <tabbedpane title="配置管理"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>

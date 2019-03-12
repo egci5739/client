@@ -7,4 +7,12 @@
     <select id="getAllEquipmentWithCondition" resultType="com.dyw.client.entity.EquipmentEntity">
         select * from Equipment where GroupId = #{GroupId};
     </select>
+    <!--查询所有设备信息-->
+    <select id="getAllEquipment" resultType="com.dyw.client.entity.EquipmentEntity">
+        select * from Equipment;
+    </select>
+    <!--更新设备信息-->
+    <update id="updateEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
+        update Equipment set Name=#{Name},IP=#{IP},StatusSwitchSocketIP=#{StatusSwitchSocketIP} where Id=#{Id};
+    </update>
 </mapper>

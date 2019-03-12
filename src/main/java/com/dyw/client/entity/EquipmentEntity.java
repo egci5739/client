@@ -1,9 +1,19 @@
 package com.dyw.client.entity;
 
 public class EquipmentEntity {
-    private int GroupId;
-    private String Name;
-    private String IP;
+    private int Id;//id
+    private int GroupId;//核数
+    private String Name;//设备名称
+    private String IP;//设备ip
+    private String StatusSwitchSocketIP;//切换器ip
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
 
     public int getGroupId() {
         return GroupId;
@@ -27,5 +37,13 @@ public class EquipmentEntity {
 
     public void setIP(String IP) {
         this.IP = IP;
+    }
+
+    public String getStatusSwitchSocketIP() {
+        return StatusSwitchSocketIP;
+    }
+
+    public void setStatusSwitchSocketIP(String statusSwitchSocketIP) {
+        StatusSwitchSocketIP = statusSwitchSocketIP;
     }
 }
