@@ -4,6 +4,7 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.service.*;
+import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -277,6 +278,9 @@ public class RegisterForm {
 
     //初始化页面
     public void init() {
+        //启用ping功能
+        PingTimer pingTimer = new PingTimer(this);
+        pingTimer.open();
         JFrame frame = new JFrame("RegisterForm");
         frame.setContentPane(this.main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -496,16 +500,19 @@ public class RegisterForm {
                 communicationStatusButton.setBackground(Color.green);
                 communicationStatusButton.setText("通信正常");
                 communicationStatusButton.setEnabled(false);
+                useIdCardCheckBox.setEnabled(true);
                 break;
             case 1:
                 communicationStatusButton.setBackground(Color.red);
                 communicationStatusButton.setText("服务程序断开");
                 communicationStatusButton.setEnabled(true);
+                useIdCardCheckBox.setEnabled(false);
                 break;
             case 2:
                 communicationStatusButton.setBackground(Color.red);
                 communicationStatusButton.setText("网络异常");
                 communicationStatusButton.setEnabled(false);
+                useIdCardCheckBox.setEnabled(false);
                 break;
             default:
                 break;

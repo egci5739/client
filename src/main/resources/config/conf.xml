@@ -23,6 +23,7 @@
         <mapper resource="mapping/equipmentMapper.xml"/>
         <mapper resource="mapping/eventMapper.xml"/>
         <mapper resource="mapping/passInfoMapper.xml"/>
+        <mapper resource="mapping/accountMapper.xml"/>
     </mappers>
 
 </configuration>

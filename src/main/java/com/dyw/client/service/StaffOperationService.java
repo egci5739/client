@@ -63,7 +63,6 @@ public class StaffOperationService {
     public void search(String name, String card) {
         resultStaffMap.clear();
         vectorList.clear();
-        System.out.println(name + card);
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setName(Tool.getSearchCondition(name));
         staffEntity.setCardNumber(Tool.getSearchCondition(card));

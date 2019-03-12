@@ -1,9 +1,8 @@
-package com.dyw.client.controller;
+package com.dyw.client.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Calendar;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.awt.Color;
@@ -13,22 +12,17 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
 
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent; //import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
-import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
@@ -37,25 +31,25 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.border.LineBorder;
 
 
-public class DateSelector extends JButton {
+public class DateSelectorButtonService extends JButton {
     private DateChooser dateChooser = null;
     private String preLabel = "";
     private int newDay;
 
-    public DateSelector() {
+    public DateSelectorButtonService() {
         this(getNowDate());
     }
 
-    public DateSelector(SimpleDateFormat df, String dateString) {
+    public DateSelectorButtonService(SimpleDateFormat df, String dateString) {
         this();
         setText(df, dateString);
     }
 
-    public DateSelector(Date date) {
+    public DateSelectorButtonService(Date date) {
         this("", date);
     }
 
-    public DateSelector(String preLabel, Date date) {
+    public DateSelectorButtonService(String preLabel, Date date) {
         if (preLabel != null)
             this.preLabel = preLabel;
         setDate(date);
@@ -270,7 +264,7 @@ public class DateSelector extends JButton {
 
         void showDateChooser(Point position) {
             Frame owner = (Frame) SwingUtilities
-                    .getWindowAncestor(DateSelector.this);
+                    .getWindowAncestor(DateSelectorButtonService.this);
             if (dialog == null || dialog.getOwner() != owner)
                 dialog = createDialog(owner);
             dialog.setLocation(getAppropriateLocation(owner, position));
@@ -383,7 +377,6 @@ public class DateSelector extends JButton {
             Calendar c = getCalendar();
             c.set(Calendar.DAY_OF_MONTH, newDay);
             setDate(c.getTime());
-            System.out.println("时间戳：" + c.getTimeInMillis());
         }
 
         /*

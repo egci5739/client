@@ -1,15 +1,13 @@
 package com.dyw.client.form;
 
-import com.dyw.client.controller.DateSelector;
+import com.dyw.client.service.*;
 import com.dyw.client.controller.Egci;
-import com.dyw.client.service.HistoryPhotoTableCellRenderer;
-import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.entity.*;
-import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.event.*;
@@ -32,6 +30,8 @@ public class MonitorForm {
     private String nameSelectionDefaultHint = "请输入姓名";
     private Map<Integer, String> conditionEquipmentMap;
     private Map<Integer, Integer> conditionEventMap;
+    private List<PassInfoEntity> passInfoHistoryList;
+    private PageSelectionService pageSelectionService;
 
     private JPanel TabbedPane;
     private JTabbedPane tabbedPane1;
@@ -56,19 +56,29 @@ public class MonitorForm {
     private JButton button1;
     private JPanel conditionSelectionPanel;
     private JPanel resultContentPanel;
-    private JPanel pageSelectionPanel;
+    private JPanel pageSelectionBottomPanel;
     private JButton dateChoserButton;
     private JComboBox equipmentSelectionCombo;
     private JComboBox eventSelectionCombo;
     private JTextField passCardSelectionText;
     private JTextField nameSelectionText;
     private JLabel startTimeSelectionLabel;
-    private DateSelector startTimeSelectionButton;
+    private DateSelectorButtonService startTimeSelectionButton;
     private JLabel endTimeSelectionLabel;
-    private DateSelector endTimeSelectionButton;
+    private DateSelectorButtonService endTimeSelectionButton;
     private JButton searchButton;
     private JScrollPane resultContentScroll;
     private JTable resultContentTable;
+    private JButton previousPageButton;
+    private JButton nextPageButton;
+    private JButton firstPageButton;
+    private JSpinner perPageNumberSpinner;
+    private JPanel pageSelectionPanel;
+    private JPanel perPageNumberPanel;
+    private JLabel perPageNumberLabel;
+    private JButton perPageNumberButton;
+    private JPanel passTotalNumberPanel;
+    private JLabel passTotalNumberLabel;
     private StaffEntity staffEntity;
 
     /*
@@ -77,6 +87,8 @@ public class MonitorForm {
     public MonitorForm() {
         conditionEquipmentMap = new HashMap<Integer, String>();
         conditionEventMap = new HashMap<Integer, Integer>();
+        pageSelectionService = new PageSelectionService();
+        perPageNumberSpinner.setValue(1);//每页默认显示数量
         /*
          * 实时通行部分
          * */
@@ -185,6 +197,35 @@ public class MonitorForm {
                 search();
             }
         });
+        //点击首页
+        firstPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
+            }
+        });
+        //点击上一页
+        previousPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displaySearchResult(pageSelectionService.previousPage(passInfoHistoryList));
+            }
+        });
+        //点击下一页
+        nextPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displaySearchResult(pageSelectionService.nextPage(passInfoHistoryList));
+            }
+        });
+        //更改每页显示的页数
+        perPageNumberButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pageSelectionService.setPerPageNumber((Integer) perPageNumberSpinner.getValue());
+                displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
+            }
+        });
     }
 
     /*
@@ -203,19 +244,8 @@ public class MonitorForm {
         condition.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
         condition.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
         resultModel.setRowCount(0);
-        List<PassInfoEntity> passInfoEntityList = Egci.session.selectList("mapping.passInfoMapper.getHistoryPassInfo", condition);
-        for (PassInfoEntity passInfoEntity : passInfoEntityList) {
-            Vector v = new Vector();
-            v.add(0, passInfoEntity.getCardNumber());
-            v.add(1, passInfoEntity.getStaffName());
-            v.add(2, passInfoEntity.getDate());
-            v.add(3, passInfoEntity.getEventTypeId());
-            v.add(4, passInfoEntity.getSimilarity());
-            v.add(5, passInfoEntity.getEquipmentName());
-            v.add(6, Base64.encodeBytes(passInfoEntity.getPhoto()));
-            v.add(7, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
-            resultModel.addRow(v);
-        }
+        passInfoHistoryList = Egci.session.selectList("mapping.passInfoMapper.getHistoryPassInfo", condition);
+        displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
     }
 
     /*
@@ -235,6 +265,26 @@ public class MonitorForm {
     }
 
     /*
+     * 将查询结果显示在结果框中
+     * */
+    public void displaySearchResult(List<PassInfoEntity> passInfoEntityList) {
+        resultModel.setRowCount(0);
+        for (PassInfoEntity passInfoEntity : passInfoEntityList) {
+            Vector v = new Vector();
+            v.add(0, passInfoEntity.getCardNumber());
+            v.add(1, passInfoEntity.getStaffName());
+            v.add(2, passInfoEntity.getDate());
+            v.add(3, passInfoEntity.getEventTypeId());
+            v.add(4, passInfoEntity.getSimilarity());
+            v.add(5, passInfoEntity.getEquipmentName());
+            v.add(6, Base64.encodeBytes(passInfoEntity.getPhoto()));
+            v.add(7, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
+            resultModel.addRow(v);
+        }
+        passTotalNumberLabel.setText("共有： " + passInfoHistoryList.size() + " 条记录");
+    }
+
+    /*
      * 初始化函数
      * */
     public void init() {
@@ -247,8 +297,8 @@ public class MonitorForm {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        dateChoserButton = new DateSelector();
-        startTimeSelectionButton = new DateSelector();
-        endTimeSelectionButton = new DateSelector();
+        dateChoserButton = new DateSelectorButtonService();
+        startTimeSelectionButton = new DateSelectorButtonService();
+        endTimeSelectionButton = new DateSelectorButtonService();
     }
 }
