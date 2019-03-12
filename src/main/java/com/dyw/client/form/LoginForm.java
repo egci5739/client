@@ -55,7 +55,10 @@ public class LoginForm {
             return;
         }
         //判断登陆的客户端：0：系统管理；1：办证客户端；2：监控客户端
-        if (Egci.accountEntity.getAccountRole() == 1) {
+        if (Egci.accountEntity.getAccountRole() == 0) {
+            Egci.systemForm.init();
+            frame.setVisible(false);
+        } else if (Egci.accountEntity.getAccountRole() == 1) {
             Egci.registerForm.init();
             frame.setVisible(false);
         } else if (Egci.accountEntity.getAccountRole() == 2) {

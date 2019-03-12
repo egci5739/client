@@ -25,6 +25,7 @@ public class Egci {
     public static MonitorForm monitorForm;
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
+    public static SystemForm systemForm;
 
     /*
      * 初始化客户端程序
@@ -45,12 +46,12 @@ public class Egci {
         //创建监控客户端
         monitorForm = new MonitorForm();
 //        monitorForm.init();
+        //创建系统客户端
+        systemForm = new SystemForm();
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();
 
-        SystemForm systemForm = new SystemForm();
-        systemForm.init();
     }
 
     /*
