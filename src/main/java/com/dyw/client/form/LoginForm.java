@@ -55,15 +55,27 @@ public class LoginForm {
             return;
         }
         //判断登陆的客户端：0：系统管理；1：办证客户端；2：监控客户端
-        if (Egci.accountEntity.getAccountRole() == 0) {
-            Egci.systemForm.init();
-            frame.setVisible(false);
-        } else if (Egci.accountEntity.getAccountRole() == 1) {
-            Egci.registerForm.init();
-            frame.setVisible(false);
-        } else if (Egci.accountEntity.getAccountRole() == 2) {
-            Egci.monitorForm.init();
-            frame.setVisible(false);
+        switch (Egci.accountEntity.getAccountRole()) {
+            case 0:
+                //创建系统客户端
+                Egci.systemForm = new SystemForm();
+                Egci.systemForm.init();
+                frame.setVisible(false);
+                break;
+            case 1:
+                //创建办证客户端
+                Egci.registerForm = new RegisterForm();
+                Egci.registerForm.init();
+                frame.setVisible(false);
+                break;
+            case 2:
+                //创建监控客户端
+                Egci.monitorForm = new MonitorForm();
+                Egci.monitorForm.init();
+                frame.setVisible(false);
+                break;
+            default:
+                break;
         }
     }
 
@@ -83,6 +95,8 @@ public class LoginForm {
         frame.setContentPane(this.Login);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        //点击回车键登陆
+        frame.getRootPane().setDefaultButton(loginButton);
         frame.setVisible(true);
     }
 }

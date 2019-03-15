@@ -79,7 +79,8 @@
                               <component id="2e19b" class="javax.swing.JTable" binding="passSuccessContentTable">
                                 <constraints/>
                                 <properties>
-                                  <font size="20" style="1"/>
+                                  <autoCreateRowSorter value="true"/>
+                                  <font size="16" style="1"/>
                                   <rowHeight value="160"/>
                                 </properties>
                               </component>
@@ -183,17 +184,7 @@
                         </constraints>
                         <properties/>
                         <border type="none"/>
-                        <children>
-                          <component id="81749" class="javax.swing.JButton" binding="button1" default-binding="true">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                              <gridbag weightx="0.0" weighty="0.0"/>
-                            </constraints>
-                            <properties>
-                              <text value="Button"/>
-                            </properties>
-                          </component>
-                        </children>
+                        <children/>
                       </grid>
                     </children>
                   </grid>
@@ -273,7 +264,7 @@
                         </constraints>
                         <properties>
                           <font size="20"/>
-                          <text value="2019-03-11 21:45:18"/>
+                          <text value="2019-03-14 20:01:40"/>
                         </properties>
                       </component>
                       <component id="47c2c" class="javax.swing.JLabel" binding="endTimeSelectionLabel">
@@ -293,7 +284,7 @@
                         </constraints>
                         <properties>
                           <font size="20"/>
-                          <text value="2019-03-11 21:45:18"/>
+                          <text value="2019-03-14 20:01:51"/>
                         </properties>
                       </component>
                       <component id="8c754" class="javax.swing.JButton" binding="searchButton">

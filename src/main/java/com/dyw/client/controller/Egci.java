@@ -31,6 +31,7 @@ public class Egci {
      * 初始化客户端程序
      * */
     public static void initClient() {
+        accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
         //初始化日志对象
@@ -40,18 +41,9 @@ public class Egci {
         //创建session对象
         SessionService sessionService = new SessionService();
         session = sessionService.createSession();
-        //创建办证客户端
-        registerForm = new RegisterForm();
-//        registerForm.init();
-        //创建监控客户端
-        monitorForm = new MonitorForm();
-//        monitorForm.init();
-        //创建系统客户端
-        systemForm = new SystemForm();
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();
-
     }
 
     /*

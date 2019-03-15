@@ -60,7 +60,7 @@ public class DateSelectorButtonService extends JButton {
                 if (dateChooser == null)
                     dateChooser = new DateChooser();
                 Point p = getLocationOnScreen();
-                p.y = p.y + 30;
+                p.y = p.y + 60;
                 dateChooser.showDateChooser(p);
             }
         });
@@ -112,11 +112,12 @@ public class DateSelectorButtonService extends JButton {
     public void addActionListener(ActionListener listener) {
     }
 
+    //内部类==========================================================================
     private class DateChooser extends JPanel implements ActionListener, ChangeListener {
         int startYear = 1980; // 默认【最小】显示年份
         int lastYear = 2050; // 默认【最大】显示年份
-        int width = 200; // 界面宽度
-        int height = 200; // 界面高度
+        int width = 350; // 界面宽度
+        int height = 350; // 界面高度
         Color backGroundColor = Color.gray; // 底色
         // 月历表格配色----------------//
         Color palletTableColor = Color.white; // 日历表底色
@@ -144,15 +145,15 @@ public class DateSelectorButtonService extends JButton {
             setBorder(new LineBorder(backGroundColor, 2));
             setBackground(backGroundColor);
             /*上中下布局*/
-            JPanel topYearAndMonth = createYearAndMonthPanal();
+            JPanel topYearAndMonth = createYearAndMonthPanel();
             add(topYearAndMonth, BorderLayout.NORTH);
-            JPanel centerWeekAndDay = createWeekAndDayPanal();
+            JPanel centerWeekAndDay = createWeekAndDayPanel();
             add(centerWeekAndDay, BorderLayout.CENTER);
-            JPanel southMinAndSec = createMinuteAndsecondPanal();
+            JPanel southMinAndSec = createMinuteAndSecondPanel();
             add(southMinAndSec, BorderLayout.SOUTH);
         }
 
-        private JPanel createYearAndMonthPanal() {
+        private JPanel createYearAndMonthPanel() {
             Calendar c = getCalendar();
             int currentYear = c.get(Calendar.YEAR);//年
             int currentMonth = c.get(Calendar.MONTH) + 1;//月
@@ -179,7 +180,7 @@ public class DateSelectorButtonService extends JButton {
             return result;
         }
 
-        private JPanel createWeekAndDayPanal() {
+        private JPanel createWeekAndDayPanel() {
             String colname[] = {"日", "一", "二", "三", "四", "五", "六"};
             JPanel result = new JPanel();
             // 设置固定字体，以免调用环境改变影响界面美观
@@ -218,7 +219,7 @@ public class DateSelectorButtonService extends JButton {
             return result;
         }
 
-        private JPanel createMinuteAndsecondPanal() {
+        private JPanel createMinuteAndSecondPanel() {
             Calendar c = getCalendar();
             int currentHour = c.get(Calendar.HOUR_OF_DAY);//时
             int currentMin = c.get(Calendar.MINUTE);//分

@@ -93,6 +93,7 @@ public class StaffOperationService {
     public void save(StaffEntity staffEntity, String oldCard) {
         List<StaffEntity> resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", oldCard);
         if (resultStaffList.size() > 0) {
+            staffEntity.setOldCard(oldCard);
             //更新
             Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
             Egci.session.commit();

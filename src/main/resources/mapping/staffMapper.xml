@@ -19,7 +19,7 @@
     <!--修改人员信息-->
     <update id="updateStaff" parameterType="com.dyw.client.entity.StaffEntity">
         UPDATE Staff SET Name=#{Name},NameEn=#{NameEn},CardId=#{CardId},CardNumber=#{CardNumber},Birthday=#{Birthday},
-        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE CardNumber=#{CardNumber};
+        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE CardNumber=#{OldCard};
     </update>
     <!--删除人员信息-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">

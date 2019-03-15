@@ -15,7 +15,7 @@ public class PageSelectionService {
         this.perPageNumber = perPageNumber;
     }
 
-    private int perPageNumber = 1;        //每页显示条数
+    private int perPageNumber = 5;        //每页显示条数
     private int pageCount;           //总页数
     private int recordCount;           //总记录条数
 

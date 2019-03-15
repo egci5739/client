@@ -156,6 +156,7 @@
                       <component id="bbccd" class="javax.swing.JTable" binding="dataAnalysisContentTable">
                         <constraints/>
                         <properties>
+                          <autoCreateRowSorter value="false"/>
                           <font size="20"/>
                           <rowHeight value="30"/>
                           <rowSelectionAllowed value="true"/>

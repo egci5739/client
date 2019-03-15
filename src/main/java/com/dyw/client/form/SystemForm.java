@@ -4,11 +4,14 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.service.DateSelectorButtonService;
+import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
@@ -21,6 +24,7 @@ public class SystemForm {
     private List<EquipmentEntity> equipmentEntityList;
     private DefaultTableModel dataAnalysisModel;
     private DecimalFormat df = new DecimalFormat("#.00");
+    private RowSorter<TableModel> sorter;
 
     private JPanel system;
     private JTabbedPane tabbedPane1;
@@ -86,9 +90,27 @@ public class SystemForm {
          * 数据分析
          * */
         String[] columnDataAnalysisInfo = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "成功率", "失败率"};
-        dataAnalysisModel = new DefaultTableModel();
+        dataAnalysisModel = new DefaultTableModel() {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+                return returnValue;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         dataAnalysisModel.setColumnIdentifiers(columnDataAnalysisInfo);
         dataAnalysisContentTable.setModel(dataAnalysisModel);
+        sorter = new TableRowSorter<TableModel>(dataAnalysisModel);
+        dataAnalysisContentTable.setRowSorter(sorter);
         //查询数据分析结果
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -102,6 +124,8 @@ public class SystemForm {
      * 查询数据分析结果
      * */
     private void search() {
+
+        dataAnalysisContentTable.setRowSorter(null);
         dataAnalysisModel.setRowCount(0);
         for (int i = 0; i < equipmentEntityList.size(); i++) {
             Vector v = new Vector();
@@ -127,12 +151,13 @@ public class SystemForm {
             passInfoEntity.setEventTypeId(9);
             int noCardNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(4, noCardNumber);
-            dataAnalysisModel.addRow(v);
             //成功率
             v.add(5, df.format((float) successNumber / (successNumber + faultNumber) * 100) + "%");
             //失败率
             v.add(6, df.format((float) faultNumber / (successNumber + faultNumber) * 100) + "%");
+            dataAnalysisModel.addRow(v);
         }
+        dataAnalysisContentTable.setRowSorter(sorter);
     }
 
     /*
@@ -144,6 +169,8 @@ public class SystemForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        startTimeSelectionButton.setText(Tool.getCurrentDate() + " 00:00:00");
+        endTimeSelectionButton.setText(Tool.getCurrentDate() + " 23:59:59");
     }
 
     private void createUIComponents() {

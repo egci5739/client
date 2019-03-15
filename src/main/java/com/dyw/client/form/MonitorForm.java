@@ -14,10 +14,7 @@ import java.awt.event.*;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class MonitorForm {
     private DefaultTableModel passSuccessModel;
@@ -53,11 +50,9 @@ public class MonitorForm {
     private JScrollPane passSuccessContentScroll;
     private JScrollPane passFaultContentScroll;
     private JTable passFaultContentTable;
-    private JButton button1;
     private JPanel conditionSelectionPanel;
     private JPanel resultContentPanel;
     private JPanel pageSelectionBottomPanel;
-    private JButton dateChoserButton;
     private JComboBox equipmentSelectionCombo;
     private JComboBox eventSelectionCombo;
     private JTextField passCardSelectionText;
@@ -88,13 +83,13 @@ public class MonitorForm {
         conditionEquipmentMap = new HashMap<Integer, String>();
         conditionEventMap = new HashMap<Integer, Integer>();
         pageSelectionService = new PageSelectionService();
-        perPageNumberSpinner.setValue(1);//每页默认显示数量
+        perPageNumberSpinner.setValue(5);//每页默认显示数量
         /*
          * 实时通行部分
          * */
         //创建接收通行信息的socket对象
         MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService(this);
-        monitorReceiveInfoSocketService.sendInfo("8#1#0#0#");
+        monitorReceiveInfoSocketService.sendInfo(Tool.getAccessPermissionInfo(Egci.accountEntity.getAccountPermission()));
         monitorReceiveInfoSocketService.start();
         //初始化通行结果表格
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息"};
@@ -108,24 +103,11 @@ public class MonitorForm {
         TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
         passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
         passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
-        button1.setText("按钮");
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                PassInfoEntity passInfoEntity = new PassInfoEntity();
-                Vector v = new Vector();
-                v.add(0, Base64.encodeBytes(staffEntity.getPhoto()));
-                v.add(1, Base64.encodeBytes(staffEntity.getPhoto()));
-                v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
-                passSuccessModel.addRow(v);
-            }
-        });
         /*
          * 历史查询部分
          * */
         //初始化设备选择下拉框
-        List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", "2");
+        List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", Tool.getGroupId(Egci.accountEntity.getAccountPermission()));
         EquipmentEntity equipmentEntity1 = new EquipmentEntity();
         equipmentEntity1.setName("--全部设备--");
         equipmentEntityList.add(0, equipmentEntity1);
@@ -184,7 +166,12 @@ public class MonitorForm {
         });
         //初始化历史查询结果表格
         String[] columnHistoryInfo = {"卡号", "姓名", "时间", "事件", "分值", "设备", "底图", "抓拍"};
-        resultModel = new DefaultTableModel();
+        resultModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         resultModel.setColumnIdentifiers(columnHistoryInfo);
         resultContentTable.setModel(resultModel);
         //表格中显示图片
@@ -274,7 +261,7 @@ public class MonitorForm {
             v.add(0, passInfoEntity.getCardNumber());
             v.add(1, passInfoEntity.getStaffName());
             v.add(2, passInfoEntity.getDate());
-            v.add(3, passInfoEntity.getEventTypeId());
+            v.add(3, Tool.eventIdToEventName(passInfoEntity.getEventTypeId()));
             v.add(4, passInfoEntity.getSimilarity());
             v.add(5, passInfoEntity.getEquipmentName());
             v.add(6, Base64.encodeBytes(passInfoEntity.getPhoto()));
@@ -293,11 +280,12 @@ public class MonitorForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        startTimeSelectionButton.setText(Tool.getCurrentDate() + " 00:00:00");
+        endTimeSelectionButton.setText(Tool.getCurrentDate() + " 23:59:59");
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        dateChoserButton = new DateSelectorButtonService();
         startTimeSelectionButton = new DateSelectorButtonService();
         endTimeSelectionButton = new DateSelectorButtonService();
     }

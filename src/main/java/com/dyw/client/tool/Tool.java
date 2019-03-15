@@ -1,5 +1,6 @@
 package com.dyw.client.tool;
 
+import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import org.w3c.dom.Document;
@@ -13,8 +14,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class Tool {
+    private static String eventName;
+
     /*
      * 读取本地配置文件
      * */
@@ -184,8 +188,8 @@ public class Tool {
                 passInfoEntity.getStaffName() +
                 "<br>时间：" +
                 passInfoEntity.getDate() +
-//                "<br>分值：" +
-//                passInfoEntity.getSimilarity() +
+                "<br>设备：" +
+                passInfoEntity.getEquipmentName() +
                 "</body></html>";
     }
 
@@ -199,10 +203,84 @@ public class Tool {
                 passInfoEntity.getStaffName() +
                 "<br>时间：" +
                 passInfoEntity.getDate() +
-//                "<br>分值：" +
-//                passInfoEntity.getSimilarity() +
+                "<br>设备：" +
+                passInfoEntity.getEquipmentName() +
                 "<br>原因：" +
-                passInfoEntity.getEventTypeId() +
+                Tool.eventIdToEventName(passInfoEntity.getEventTypeId()) +
                 "</body></html>";
+    }
+
+    /*
+     * 历史遗留问题
+     * 核数和sortid不配对
+     * */
+    public static int getGroupId(int value) {
+        int result = 0;
+        if (value == 1)
+            result = 2;
+        else if (value == 2)
+            result = 3;
+        else if (value == 3)
+            result = 4;
+        return result;
+    }
+
+    /*
+     * 将事件id转为事件名称
+     * */
+    public static String eventIdToEventName(int value) {
+        switch (value) {
+            case 9:
+                eventName = "卡号不存在";
+                break;
+            case 105:
+                eventName = "比对通过";
+                break;
+            case 112:
+                eventName = "比对失败";
+            default:
+                break;
+        }
+        return eventName;
+    }
+
+    /*
+     * 根据用户权限查看实时通行记录
+     * */
+    public static String getAccessPermissionInfo(int value) {
+        String result = null;
+        switch (value) {
+            case 0:
+                result = "8#1#1#1";
+                break;
+            case 1:
+                result = "8#1#0#0";
+                break;
+            case 2:
+                result = "8#0#1#0";
+                break;
+            case 3:
+                result = "8#0#0#1";
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    /*
+     * 获取当天日期：2019-3-14 格式
+     * */
+    public static String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
+    }
+
+    /*
+     * 获取当前时间
+     * */
+    public static String getCurrentTime() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE) + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND);
     }
 }

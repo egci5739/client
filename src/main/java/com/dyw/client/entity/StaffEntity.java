@@ -1,6 +1,7 @@
 package com.dyw.client.entity;
 
 public class StaffEntity {
+    private String OldCard;
     private int StaffId;
     private String Name;
     private String NameEn;
@@ -12,6 +13,14 @@ public class StaffEntity {
     private byte[] Photo;
     private String organization;
     private String validityPeriod;
+
+    public String getOldCard() {
+        return OldCard;
+    }
+
+    public void setOldCard(String oldCard) {
+        OldCard = oldCard;
+    }
 
     public int getStaffId() {
         return StaffId;

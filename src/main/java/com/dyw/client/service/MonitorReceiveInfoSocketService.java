@@ -8,6 +8,7 @@ import com.dyw.client.form.RegisterForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,6 +31,8 @@ public class MonitorReceiveInfoSocketService extends Thread {
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
+            JOptionPane.showMessageDialog(null, "连接服务程序失败", "错误提示", 0);
+            return;
         }
     }
 

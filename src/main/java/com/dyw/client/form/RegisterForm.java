@@ -267,6 +267,7 @@ public class RegisterForm {
      * */
     private void update() {
         oldCard = passCardText.getText();//获取旧卡号
+        System.out.println("旧卡号为：" + oldCard);
         inputEnable();
         deleteButton.setEnabled(false);
         saveButton.setEnabled(true);
@@ -285,6 +286,8 @@ public class RegisterForm {
         frame.setContentPane(this.main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        //点击回车键搜索
+        frame.getRootPane().setDefaultButton(searchButton);
         frame.setVisible(true);
     }
 
@@ -367,6 +370,8 @@ public class RegisterForm {
             IdPhoto.setIcon(null);
             takePhotoLabel.setIcon(null);
             model.setRowCount(0);
+            staffPhoto = null;//清空缓存的图片
+            takePhoto = null;//清空缓存的图片
         } catch (Exception e) {
             logger.error("清空表格出错", e);
         }
