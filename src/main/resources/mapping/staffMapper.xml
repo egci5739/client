@@ -26,7 +26,7 @@
         DELETE FROM Staff WHERE CardNumber=#{CardNumber};
     </delete>
     <!--查询待拍照人员列表-->
-    <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity">
+    <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
         SELECT * FROM TemporaryStaff;
     </select>
     <!--依据卡号和姓名查询人员-->
@@ -41,4 +41,15 @@
     <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
         select * from Staff WHERE CardNumber LIKE #{CardNumber};
     </select>
+    <!--根据卡号查询待拍照人员表人员-->
+    <select id="getWaitStaffWithCard" resultType="com.dyw.client.entity.StaffEntity">
+        SELECT * FROM TemporaryStaff where CardNumber=#{CardNumber};
+    </select>
+    <!--新增待拍照人员-->
+    <insert id="insertWaitStaff" parameterType="com.dyw.client.entity.StaffEntity">
+        INSERT INTO
+        TemporaryStaff
+        (Name,NameEn,CardId,CardNumber,Birthday,Sex,Company) values
+        (#{Name},#{NameEn},#{CardId},#{CardNumber},#{Birthday},#{Sex},#{Company});
+    </insert>
 </mapper>

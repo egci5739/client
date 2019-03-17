@@ -131,4 +131,20 @@ public class StaffOperationService {
         deleteSendInfoSocketService.sendInfo("2#" + staffEntity.getCardNumber());
         deleteSendInfoSocketService.receiveInfoOnce();
     }
+
+    /*
+     * 新增或更新待拍照人员表
+     * */
+    public Boolean addWaitStaff(StaffEntity staffEntity) {
+        Boolean status = false;
+        //判断是否卡号已经存在
+        StaffEntity staffEntityStaff = Egci.session.selectOne("mapping.staffMapper.getResultStaffWithCard", staffEntity);
+        StaffEntity staffEntityTemporary = Egci.session.selectOne("mapping.staffMapper.getWaitStaffWithCard", staffEntity);
+        if (staffEntityStaff == null && staffEntityTemporary == null) {
+            Egci.session.insert("mapping.staffMapper.insertWaitStaff", staffEntity);
+            Egci.session.commit();
+            status = true;
+        }
+        return status;
+    }
 }

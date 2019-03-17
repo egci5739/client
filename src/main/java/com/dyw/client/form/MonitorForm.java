@@ -29,6 +29,10 @@ public class MonitorForm {
     private Map<Integer, Integer> conditionEventMap;
     private List<PassInfoEntity> passInfoHistoryList;
     private PageSelectionService pageSelectionService;
+    private JScrollBar passSuccessScrollBar;//通行成功滚动条
+    private int passSuccessRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
+    private JScrollBar passFaultScrollBar;//通行成功滚动条
+    private int passFaultRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
 
     private JPanel TabbedPane;
     private JTabbedPane tabbedPane1;
@@ -74,6 +78,10 @@ public class MonitorForm {
     private JButton perPageNumberButton;
     private JPanel passTotalNumberPanel;
     private JLabel passTotalNumberLabel;
+    private JButton paaSuccessClearButton;
+    private JCheckBox passSuccessRollingCheckBox;
+    private JCheckBox passFaultRollingCheckBox;
+    private JButton paaFaultClearButton;
     private StaffEntity staffEntity;
 
     /*
@@ -93,16 +101,28 @@ public class MonitorForm {
         monitorReceiveInfoSocketService.start();
         //初始化通行结果表格
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息"};
-        passSuccessModel = new DefaultTableModel();
+        passSuccessModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         passSuccessModel.setColumnIdentifiers(columnPassInfo);
         passSuccessContentTable.setModel(passSuccessModel);
-        passFaultModel = new DefaultTableModel();
+        passFaultModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         passFaultModel.setColumnIdentifiers(columnPassInfo);
         passFaultContentTable.setModel(passFaultModel);
         //表格中显示图片
         TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
         passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
         passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
+        passSuccessScrollBar = passSuccessContentScroll.getVerticalScrollBar();
+        passFaultScrollBar = passFaultContentScroll.getVerticalScrollBar();
         /*
          * 历史查询部分
          * */
@@ -165,7 +185,7 @@ public class MonitorForm {
             }
         });
         //初始化历史查询结果表格
-        String[] columnHistoryInfo = {"卡号", "姓名", "时间", "事件", "分值", "设备", "底图", "抓拍"};
+        String[] columnHistoryInfo = {"时间", "姓名", "卡号", "事件", "分值", "设备", "底图", "抓拍"};
         resultModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -213,6 +233,50 @@ public class MonitorForm {
                 displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
             }
         });
+        resultContentTable.addContainerListener(new ContainerAdapter() {
+        });
+        resultContentTable.addComponentListener(new ComponentAdapter() {
+        });
+        //通行成功是否滚动
+        passSuccessRollingCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox jcb = (JCheckBox) e.getItem();
+                // 判断是否被选择
+                if (jcb.isSelected()) {
+                    passSuccessRollingStatus = 1;
+                } else {
+                    passSuccessRollingStatus = 0;
+                }
+            }
+        });
+        //清空通行成功记录
+        paaSuccessClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passSuccessModel.setRowCount(0);
+            }
+        });
+        //通行失败是否滚动
+        passFaultRollingCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox jcb = (JCheckBox) e.getItem();
+                // 判断是否被选择
+                if (jcb.isSelected()) {
+                    passFaultRollingStatus = 1;
+                } else {
+                    passFaultRollingStatus = 0;
+                }
+            }
+        });
+        //清空通行失败记录
+        paaFaultClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passFaultModel.setRowCount(0);
+            }
+        });
     }
 
     /*
@@ -245,9 +309,15 @@ public class MonitorForm {
         if (passInfoEntity.getPass()) {
             v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
             passSuccessModel.addRow(v);
+            if (passSuccessRollingStatus == 1) {
+                moveScrollBarToBottom(passSuccessScrollBar);
+            }
         } else {
             v.add(2, Tool.displayPassFaultResult(passInfoEntity));
             passFaultModel.addRow(v);
+            if (passFaultRollingStatus == 1) {
+                moveScrollBarToBottom(passFaultScrollBar);
+            }
         }
     }
 
@@ -258,9 +328,9 @@ public class MonitorForm {
         resultModel.setRowCount(0);
         for (PassInfoEntity passInfoEntity : passInfoEntityList) {
             Vector v = new Vector();
-            v.add(0, passInfoEntity.getCardNumber());
+            v.add(0, passInfoEntity.getDate());
             v.add(1, passInfoEntity.getStaffName());
-            v.add(2, passInfoEntity.getDate());
+            v.add(2, passInfoEntity.getCardNumber());
             v.add(3, Tool.eventIdToEventName(passInfoEntity.getEventTypeId()));
             v.add(4, passInfoEntity.getSimilarity());
             v.add(5, passInfoEntity.getEquipmentName());
@@ -288,5 +358,14 @@ public class MonitorForm {
         // TODO: place custom component creation code here
         startTimeSelectionButton = new DateSelectorButtonService();
         endTimeSelectionButton = new DateSelectorButtonService();
+    }
+
+    /*
+     * 将滚动条移到底部
+     * */
+    private void moveScrollBarToBottom(JScrollBar jScrollBar) {
+        if (jScrollBar != null) {
+            jScrollBar.setValue(jScrollBar.getMaximum());
+        }
     }
 }

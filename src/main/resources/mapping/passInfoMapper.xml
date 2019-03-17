@@ -23,6 +23,7 @@
         <if test="StaffName != null">
             and PassRecord.StaffName=#{StaffName}
         </if>
+        ORDER BY PassRecord.Date;
     </select>
     <!--获取单台设备通行总数-->
     <select id="getPassNumberCount" resultType="Integer">

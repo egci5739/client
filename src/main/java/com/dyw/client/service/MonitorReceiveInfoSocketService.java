@@ -5,6 +5,7 @@ import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.form.MonitorForm;
 import com.dyw.client.form.RegisterForm;
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,9 +61,13 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 if (info == null) {
                 } else {
                     logger.info("接收到的消息为" + info);
-                    PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
-                    if (passInfoEntity != null) {
-                        monitorForm.addPassInfo(passInfoEntity);
+                    try {
+                        PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
+                        if (passInfoEntity != null) {
+                            monitorForm.addPassInfo(passInfoEntity);
+                        }
+                    } catch (TooManyResultsException ignored) {
+
                     }
                 }
             } catch (IOException e) {

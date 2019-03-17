@@ -120,4 +120,10 @@ public class PassInfoEntity {
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "姓名:" + StaffName + ";卡号:" + CardNumber + ";通行时间:" + Date + ";开始时间:" + startDate
+                + ";结束时间:" + endDate + ";相似度值:" + Similarity + ";事件id:" + EventTypeId + ";设备名称:" + EquipmentName;
+    }
 }

@@ -27,6 +27,7 @@ public class RegisterForm {
     private byte[] staffPhoto;
     private byte[] takePhoto;
     private StaffOperationService staffOperationService;
+    private int addWaitStaffStatus = 0;
 
     private JPanel main;
     private JPanel waitStaffPanel;
@@ -84,6 +85,8 @@ public class RegisterForm {
     private JLabel idOrganizationLabel;
     private JLabel identityPhotoLabel;
     private JButton communicationStatusButton;
+    private JScrollPane waitStaffScroll;
+    private JButton addWaitStaffButton;
     private StaffEntity staffEntity;
 
     public RegisterForm() {
@@ -218,6 +221,42 @@ public class RegisterForm {
                 reconnectToServer();
             }
         });
+        //点击新增待拍照人员
+        addWaitStaffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addWaitStaff();
+            }
+        });
+    }
+
+    //新增待拍照人员
+    private void addWaitStaff() {
+        if (addWaitStaffStatus == 0) {
+            inputEnable();
+            searchButton.setEnabled(false);
+            addButton.setEnabled(false);
+            addWaitStaffButton.setText("确认");
+            addWaitStaffStatus = 1;
+        } else {
+            if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
+                StaffEntity staffEntity = getStaffEntity();
+                if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("")) {
+                    JOptionPane.showMessageDialog(null, "中文名或卡号缺失！", "错误 ", 0);
+                    return;
+                } else {
+                    if (staffOperationService.addWaitStaff(staffEntity)) {
+                        cancel();
+                        addWaitStaffButton.setText("新增人员");
+                        staffOperationService.getWaitStaffList();
+                        waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
+                        addWaitStaffStatus = 0;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "卡号已经存在！", "错误 ", 0);
+                    }
+                }
+            }
+        }
     }
 
     /*
@@ -248,6 +287,9 @@ public class RegisterForm {
         chineseNameText.setEnabled(true);
         passCardText.setEnabled(true);
         changePhotoButton.setEnabled(false);
+        addWaitStaffButton.setText("新增人员");
+        addWaitStaffStatus = 0;
+        addWaitStaffButton.setEnabled(true);
     }
 
     /*
@@ -409,6 +451,7 @@ public class RegisterForm {
         saveButton.setEnabled(true);
         addButton.setEnabled(false);
         changePhotoButton.setEnabled(true);
+        addWaitStaffButton.setEnabled(false);
     }
 
     /*
@@ -444,6 +487,7 @@ public class RegisterForm {
         for (Vector v : staffOperationService.getVectorList()) {
             model.addRow(v);
         }
+        addWaitStaffButton.setEnabled(false);
     }
 
     /*

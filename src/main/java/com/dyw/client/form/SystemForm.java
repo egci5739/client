@@ -9,6 +9,7 @@ import com.dyw.client.tool.Tool;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -25,6 +26,7 @@ public class SystemForm {
     private DefaultTableModel dataAnalysisModel;
     private DecimalFormat df = new DecimalFormat("#.00");
     private RowSorter<TableModel> sorter;
+    private DefaultTableCellRenderer dataAnalysisTableCellRenderer;
 
     private JPanel system;
     private JTabbedPane tabbedPane1;
@@ -59,6 +61,9 @@ public class SystemForm {
         equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
         equipmentManagementContentTable.setModel(equipmentManagerModel);
         equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
+        DefaultTableCellRenderer equipmentInfoTableCellRenderer = new DefaultTableCellRenderer();
+        equipmentInfoTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        equipmentManagementContentTable.setDefaultRenderer(Object.class, equipmentInfoTableCellRenderer);
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {
             Vector v = new Vector();
             v.add(0, equipmentEntity.getName());
@@ -109,6 +114,9 @@ public class SystemForm {
         };
         dataAnalysisModel.setColumnIdentifiers(columnDataAnalysisInfo);
         dataAnalysisContentTable.setModel(dataAnalysisModel);
+        dataAnalysisTableCellRenderer = new DefaultTableCellRenderer();
+        dataAnalysisTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        dataAnalysisContentTable.setDefaultRenderer(Object.class, dataAnalysisTableCellRenderer);
         sorter = new TableRowSorter<TableModel>(dataAnalysisModel);
         dataAnalysisContentTable.setRowSorter(sorter);
         //查询数据分析结果
@@ -124,7 +132,6 @@ public class SystemForm {
      * 查询数据分析结果
      * */
     private void search() {
-
         dataAnalysisContentTable.setRowSorter(null);
         dataAnalysisModel.setRowCount(0);
         for (int i = 0; i < equipmentEntityList.size(); i++) {
@@ -139,7 +146,7 @@ public class SystemForm {
             passInfoEntity.setEventTypeId(0);
             int totalNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(1, totalNumber);
-//            获取通过数量
+            //获取通过数量
             passInfoEntity.setEventTypeId(105);
             int successNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(2, successNumber);

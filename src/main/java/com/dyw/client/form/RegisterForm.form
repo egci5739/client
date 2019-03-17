@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.RegisterForm">
   <grid id="27dc6" binding="main" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1187" height="817"/>
+      <xy x="20" y="20" width="1223" height="817"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -43,17 +43,22 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="4651e" class="javax.swing.JList" binding="waitStaffList">
+              <scrollpane id="b4b64" binding="waitStaffScroll">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
-                <properties>
-                  <font size="20"/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="4651e" class="javax.swing.JList" binding="waitStaffList">
+                    <constraints/>
+                    <properties>
+                      <font size="20"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="8f032" binding="waitStaffButtonPanel" layout-manager="GridBagLayout">
@@ -67,11 +72,20 @@
               <component id="be47" class="javax.swing.JButton" binding="refreshButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font/>
                   <text value="重新加载"/>
+                </properties>
+              </component>
+              <component id="1cd7e" class="javax.swing.JButton" binding="addWaitStaffButton">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="新增人员"/>
                 </properties>
               </component>
             </children>
