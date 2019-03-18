@@ -3,12 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.faceCollectionMapper">
-    <!-- 插入一个商品 -->
-    <insert id="insertFaceCollection" parameterType="com.dyw.queue.entity.FaceCollectionEntity" useGeneratedKeys="true"
-            keyProperty="Id">
-        INSERT INTO
-        FaceCollectionTemp
-        (Similation,Name,CardId,Nation,Sex,Birthday,ExpirationDate,IdentificationPhoto,Organization,StaffPhoto) values
-        (#{Similation},#{Name},#{CardId},#{Nation},#{Sex},#{Birthday},#{ExpirationDate},#{IdentificationPhoto},#{Organization},#{StaffPhoto});
-    </insert>
+    <!-- 插入获取全部采集设备信息 -->
+    <select id="getAllFaceCollection" resultType="com.dyw.client.entity.FaceCollectionEntity">
+        select * from FaceCollection;
+    </select>
+    <!--修改采集设备信息-->
+    <update id="updateFaceCollection" parameterType="com.dyw.client.entity.FaceCollectionEntity">
+        update FaceCollection set
+        faceCollectionName=#{faceCollectionName},faceCollectionIp=#{faceCollectionIp},hostIp=#{hostIp}
+        where id=#{id};
+    </update>
+    <!--获取采集设备信息-->
+    <select id="getFaceCollectionWithHostIp" parameterType="String"
+            resultType="com.dyw.client.entity.FaceCollectionEntity">
+        select * from FaceCollection where hostIp=#{hostIp};
+    </select>
 </mapper>

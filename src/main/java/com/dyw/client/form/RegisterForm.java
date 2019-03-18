@@ -2,6 +2,7 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
+import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
@@ -15,6 +16,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 
@@ -90,6 +93,18 @@ public class RegisterForm {
     private StaffEntity staffEntity;
 
     public RegisterForm() {
+        //获取采集设备的ip
+        try {
+            FaceCollectionEntity faceCollectionEntity = Egci.session.selectOne("mapping.faceCollectionMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
+            if (faceCollectionEntity == null) {
+                JOptionPane.showMessageDialog(null, "该主机未绑定采集设备", "错误", 0);
+                Egci.configEntity.setFaceCollectionIp("0.0.0.0");
+            } else {
+                Egci.configEntity.setFaceCollectionIp(faceCollectionEntity.getFaceCollectionIp());
+            }
+        } catch (UnknownHostException e) {
+            logger.error("获取采集设备ip出错", e);
+        }
         //创建接收采集信息的socket对象
         RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
         registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
@@ -113,7 +128,7 @@ public class RegisterForm {
         //获取待拍照人员列表
         staffOperationService.getWaitStaffList();
         waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
-//        getWaitStaffList();
+        //getWaitStaffList();
         //点击待拍照人员后自动填充人员信息
         waitStaffList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {

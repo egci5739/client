@@ -283,4 +283,49 @@ public class Tool {
         Calendar cal = Calendar.getInstance();
         return cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE) + " " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND);
     }
+
+    /*
+     * 将用户角色id转为中文
+     * */
+    public static String accountRoleIdToName(int value) {
+        String name = "";
+        switch (value) {
+            case 0:
+                name = "管理员";
+                break;
+            case 1:
+                name = "办证端";
+                break;
+            case 2:
+                name = "监控端";
+                break;
+            default:
+                break;
+        }
+        return name;
+    }
+
+    /*
+     * 将用户权限id转为中文
+     * */
+    public static String accountPermissionIdToName(int value) {
+        String name = "";
+        switch (value) {
+            case 0:
+                name = "全局";
+                break;
+            case 1:
+                name = "一核";
+                break;
+            case 2:
+                name = "二核";
+                break;
+            case 3:
+                name = "三核";
+                break;
+            default:
+                break;
+        }
+        return name;
+    }
 }

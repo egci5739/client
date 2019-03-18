@@ -68,7 +68,44 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="324e9" binding="accountManagementToolBarPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <grid id="35113" binding="accountManagementContentPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.9"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="54400" binding="accountManagementContentScroll">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="61808" class="javax.swing.JTable" binding="accountManagementContentTable">
+                        <constraints/>
+                        <properties>
+                          <font size="20"/>
+                          <rowHeight value="45"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
           </grid>
           <grid id="27b26" binding="dataAnalysisPanel" layout-manager="GridBagLayout">
             <constraints>
@@ -168,13 +205,58 @@
               </grid>
             </children>
           </grid>
-          <grid id="8aa33" binding="ConfigurationManagementPanel" layout-manager="GridBagLayout">
+          <grid id="8aa33" binding="configurationManagementPanel" layout-manager="GridBagLayout">
             <constraints>
               <tabbedpane title="配置管理"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children/>
+          </grid>
+          <grid id="4777f" binding="faceCollectionManagementPanel" layout-manager="GridBagLayout">
+            <constraints>
+              <tabbedpane title="采集设备管理"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="b7a13" binding="faceCollectionManagementToolBarPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <grid id="91958" binding="faceCollectionManagementContentPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.9"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="4f263" binding="faceCollectionManagementContentScroll">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="1.0"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="3f1e4" class="javax.swing.JTable" binding="faceCollectionManagementContentTable">
+                        <constraints/>
+                        <properties>
+                          <font size="20"/>
+                          <rowHeight value="45"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
           </grid>
         </children>
       </tabbedpane>

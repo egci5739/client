@@ -1,7 +1,9 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
+import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.service.DateSelectorButtonService;
 import com.dyw.client.tool.Tool;
@@ -27,6 +29,10 @@ public class SystemForm {
     private DecimalFormat df = new DecimalFormat("#.00");
     private RowSorter<TableModel> sorter;
     private DefaultTableCellRenderer dataAnalysisTableCellRenderer;
+    private DefaultTableModel accountManagementModel;
+    private List<AccountEntity> accountEntityList;
+    private DefaultTableModel faceCollectionModel;
+    private List<FaceCollectionEntity> faceCollectionEntityList;
 
     private JPanel system;
     private JTabbedPane tabbedPane1;
@@ -37,7 +43,7 @@ public class SystemForm {
     private JTable equipmentManagementContentTable;
     private JPanel accountManagementPanel;
     private JPanel dataAnalysisPanel;
-    private JPanel ConfigurationManagementPanel;
+    private JPanel configurationManagementPanel;
     private JPanel dataAnalysisDateSelectionPanel;
     private JPanel dataAnalysisContentPanel;
     private JScrollPane dataAnalysisContentScroll;
@@ -47,6 +53,15 @@ public class SystemForm {
     private JLabel endTimeSelectionLabel;
     private DateSelectorButtonService endTimeSelectionButton;
     private JButton searchButton;
+    private JPanel accountManagementToolBarPanel;
+    private JPanel accountManagementContentPanel;
+    private JScrollPane accountManagementContentScroll;
+    private JTable accountManagementContentTable;
+    private JPanel faceCollectionManagementPanel;
+    private JPanel faceCollectionManagementToolBarPanel;
+    private JPanel faceCollectionManagementContentPanel;
+    private JScrollPane faceCollectionManagementContentScroll;
+    private JTable faceCollectionManagementContentTable;
 
     /*
      * 构造函数
@@ -88,6 +103,59 @@ public class SystemForm {
                     equipmentEntity.setStatusSwitchSocketIP((String) equipmentManagerModel.getValueAt(row, col));
                 }
                 Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
+                Egci.session.commit();
+            }
+        });
+        /*
+         * 用户管理
+         * */
+        //初始化用户管理表格
+        String[] columnAccountInfo = {"用户名", "密码", "角色", "权限"};
+        accountManagementModel = new DefaultTableModel();
+        accountManagementModel.setColumnIdentifiers(columnAccountInfo);
+        accountManagementContentTable.setModel(accountManagementModel);
+        DefaultTableCellRenderer accountTableCellRenderer = new DefaultTableCellRenderer();
+        accountTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        accountManagementContentTable.setDefaultRenderer(Object.class, accountTableCellRenderer);
+        accountEntityList = Egci.session.selectList("mapping.accountMapper.getAllAccount");
+        for (AccountEntity accountEntity : accountEntityList) {
+            Vector v = new Vector();
+            v.add(0, accountEntity.getAccountName());
+            v.add(1, accountEntity.getAccountPass());
+            v.add(2, Tool.accountRoleIdToName(accountEntity.getAccountRole()));
+            v.add(3, Tool.accountPermissionIdToName(accountEntity.getAccountPermission()));
+            accountManagementModel.addRow(v);
+        }
+        /*
+         * 采集设备管理
+         * */
+        String[] columnFaceCollectionInfo = {"设备名称", "设备IP", "关联主机IP"};
+        faceCollectionModel = new DefaultTableModel();
+        faceCollectionModel.setColumnIdentifiers(columnFaceCollectionInfo);
+        faceCollectionManagementContentTable.setModel(faceCollectionModel);
+        faceCollectionEntityList = Egci.session.selectList("mapping.faceCollectionMapper.getAllFaceCollection");
+        for (FaceCollectionEntity faceCollectionEntity : faceCollectionEntityList) {
+            Vector v = new Vector();
+            v.add(0, faceCollectionEntity.getFaceCollectionName());
+            v.add(1, faceCollectionEntity.getFaceCollectionIp());
+            v.add(2, faceCollectionEntity.getHostIp());
+            faceCollectionModel.addRow(v);
+        }
+        //修改采集设备信息
+        faceCollectionModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int col = e.getColumn();
+                FaceCollectionEntity faceCollectionEntity = faceCollectionEntityList.get(row);
+                if (col == 0) {
+                    faceCollectionEntity.setFaceCollectionName((String) faceCollectionModel.getValueAt(row, col));
+                } else if (col == 1) {
+                    faceCollectionEntity.setFaceCollectionIp((String) faceCollectionModel.getValueAt(row, col));
+                } else if (col == 2) {
+                    faceCollectionEntity.setHostIp((String) faceCollectionModel.getValueAt(row, col));
+                }
+                Egci.session.update("mapping.faceCollectionMapper.updateFaceCollection", faceCollectionEntity);
                 Egci.session.commit();
             }
         });

@@ -3,8 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.accountMapper">
-    <!--根据条件查询所有设备-->
+    <!--根据条件查询所有人员-->
     <select id="verifyAccount" resultType="com.dyw.client.entity.AccountEntity">
         select * from Account where accountName=#{accountName} and accountPass=#{accountPass};
+    </select>
+    <!--查询所有用户信息-->
+    <select id="getAllAccount" resultType="com.dyw.client.entity.AccountEntity">
+        select * from Account;
     </select>
 </mapper>

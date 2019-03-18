@@ -24,6 +24,7 @@
         <mapper resource="mapping/eventMapper.xml"/>
         <mapper resource="mapping/passInfoMapper.xml"/>
         <mapper resource="mapping/accountMapper.xml"/>
+        <mapper resource="mapping/faceCollectionMapper.xml"/>
     </mappers>
 
 </configuration>
