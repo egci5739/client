@@ -15,4 +15,13 @@
     <update id="updateEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
         update Equipment set Name=#{Name},IP=#{IP},StatusSwitchSocketIP=#{StatusSwitchSocketIP} where Id=#{Id};
     </update>
+    <!--新增设备-->
+    <insert id="addEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
+        insert into Equipment (Name,IP,StatusSwitchSocketIP,GroupId,SortId)
+        values(#{Name},#{IP},#{StatusSwitchSocketIP},#{GroupId},6);
+    </insert>
+    <!--删除设备-->
+    <delete id="deleteEquipment" parameterType="Integer">
+        delete from Equipment where Id =#{Id};
+    </delete>
 </mapper>

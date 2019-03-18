@@ -62,6 +62,12 @@ public class SystemForm {
     private JPanel faceCollectionManagementContentPanel;
     private JScrollPane faceCollectionManagementContentScroll;
     private JTable faceCollectionManagementContentTable;
+    private JButton equipmentManagementAddButton;
+    private JButton equipmentManagementDeleteButton;
+    private JButton faceCollectionManagementAddButton;
+    private JButton faceCollectionManagementDeleteButton;
+//    private JButton accountManagementAddButton;
+//    private JButton accountManagementDeleteButton;
 
     /*
      * 构造函数
@@ -84,28 +90,45 @@ public class SystemForm {
             v.add(0, equipmentEntity.getName());
             v.add(1, equipmentEntity.getIP());
             v.add(2, equipmentEntity.getStatusSwitchSocketIP());
-//            v.add(3, equipmentEntity.getGroupId());
-//            v.add(4, null);
             equipmentManagerModel.addRow(v);
         }
-//        更改设备信息
+        //更改设备信息
         equipmentManagerModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 int row = e.getFirstRow();
                 int col = e.getColumn();
-                EquipmentEntity equipmentEntity = equipmentEntityList.get(row);
-                if (col == 0) {
-                    equipmentEntity.setName((String) equipmentManagerModel.getValueAt(row, col));
-                } else if (col == 1) {
-                    equipmentEntity.setIP((String) equipmentManagerModel.getValueAt(row, col));
-                } else if (col == 2) {
-                    equipmentEntity.setStatusSwitchSocketIP((String) equipmentManagerModel.getValueAt(row, col));
+                try {
+                    EquipmentEntity equipmentEntity = equipmentEntityList.get(row);
+                    if (col == 0) {
+                        equipmentEntity.setName((String) equipmentManagerModel.getValueAt(row, col));
+                    } else if (col == 1) {
+                        equipmentEntity.setIP((String) equipmentManagerModel.getValueAt(row, col));
+                    } else if (col == 2) {
+                        equipmentEntity.setStatusSwitchSocketIP((String) equipmentManagerModel.getValueAt(row, col));
+                    }
+                    Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
+                    Egci.session.commit();
+                } catch (IndexOutOfBoundsException e1) {
+                    return;
                 }
-                Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
-                Egci.session.commit();
             }
         });
+        //新增设备
+        equipmentManagementAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addEquipment();
+            }
+        });
+        //删除设备
+        equipmentManagementDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteEquipment();
+            }
+        });
+        //===============================================================================
         /*
          * 用户管理
          * */
@@ -117,15 +140,18 @@ public class SystemForm {
         DefaultTableCellRenderer accountTableCellRenderer = new DefaultTableCellRenderer();
         accountTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
         accountManagementContentTable.setDefaultRenderer(Object.class, accountTableCellRenderer);
+        accountManagementModel.setRowCount(0);
         accountEntityList = Egci.session.selectList("mapping.accountMapper.getAllAccount");
         for (AccountEntity accountEntity : accountEntityList) {
             Vector v = new Vector();
             v.add(0, accountEntity.getAccountName());
             v.add(1, accountEntity.getAccountPass());
-            v.add(2, Tool.accountRoleIdToName(accountEntity.getAccountRole()));
-            v.add(3, Tool.accountPermissionIdToName(accountEntity.getAccountPermission()));
+            v.add(2, accountEntity.getAccountRole());
+            v.add(3, accountEntity.getAccountPermission());
             accountManagementModel.addRow(v);
         }
+        //新增用户
+        //删除用户
         /*
          * 采集设备管理
          * */
@@ -133,32 +159,44 @@ public class SystemForm {
         faceCollectionModel = new DefaultTableModel();
         faceCollectionModel.setColumnIdentifiers(columnFaceCollectionInfo);
         faceCollectionManagementContentTable.setModel(faceCollectionModel);
-        faceCollectionEntityList = Egci.session.selectList("mapping.faceCollectionMapper.getAllFaceCollection");
-        for (FaceCollectionEntity faceCollectionEntity : faceCollectionEntityList) {
-            Vector v = new Vector();
-            v.add(0, faceCollectionEntity.getFaceCollectionName());
-            v.add(1, faceCollectionEntity.getFaceCollectionIp());
-            v.add(2, faceCollectionEntity.getHostIp());
-            faceCollectionModel.addRow(v);
-        }
+        refreshFaceEquipmentList();
         //修改采集设备信息
         faceCollectionModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 int row = e.getFirstRow();
                 int col = e.getColumn();
-                FaceCollectionEntity faceCollectionEntity = faceCollectionEntityList.get(row);
-                if (col == 0) {
-                    faceCollectionEntity.setFaceCollectionName((String) faceCollectionModel.getValueAt(row, col));
-                } else if (col == 1) {
-                    faceCollectionEntity.setFaceCollectionIp((String) faceCollectionModel.getValueAt(row, col));
-                } else if (col == 2) {
-                    faceCollectionEntity.setHostIp((String) faceCollectionModel.getValueAt(row, col));
+                try {
+                    FaceCollectionEntity faceCollectionEntity = faceCollectionEntityList.get(row);
+                    if (col == 0) {
+                        faceCollectionEntity.setFaceCollectionName((String) faceCollectionModel.getValueAt(row, col));
+                    } else if (col == 1) {
+                        faceCollectionEntity.setFaceCollectionIp((String) faceCollectionModel.getValueAt(row, col));
+                    } else if (col == 2) {
+                        faceCollectionEntity.setHostIp((String) faceCollectionModel.getValueAt(row, col));
+                    }
+                    Egci.session.update("mapping.faceCollectionMapper.updateFaceCollection", faceCollectionEntity);
+                    Egci.session.commit();
+                } catch (IndexOutOfBoundsException e1) {
+                    return;
                 }
-                Egci.session.update("mapping.faceCollectionMapper.updateFaceCollection", faceCollectionEntity);
-                Egci.session.commit();
             }
         });
+        //新增采集设备
+        faceCollectionManagementAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addFaceEquipment();
+            }
+        });
+        //删除采集设备
+        faceCollectionManagementDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteFaceEquipment();
+            }
+        });
+        //===============================================================================
         /*
          * 数据分析
          * */
@@ -196,6 +234,62 @@ public class SystemForm {
         });
     }
 
+    //====================================================================================
+    /*
+     * 删除设备
+     * */
+    private void deleteEquipment() {
+        if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
+            Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()).getId());
+            Egci.session.commit();
+            refreshEquipmentList();
+        }
+    }
+
+    /*
+     * 新增设备
+     * */
+    private void addEquipment() {
+        String[] str = {"一核", "二核", "三核"};
+        int groupId = 0;
+        String result = (String) JOptionPane.showInputDialog(null, "请选择设备属于哪一核", null, 1, null, str, str[0]);
+        if (result != null) {
+            if ("一核".equals(result)) {
+                groupId = 2;
+            } else if ("二核".equals(result)) {
+                groupId = 3;
+            } else {
+                groupId = 4;
+            }
+            EquipmentEntity equipmentEntity = new EquipmentEntity();
+            equipmentEntity.setName("");
+            equipmentEntity.setIP("");
+            equipmentEntity.setStatusSwitchSocketIP("");
+            equipmentEntity.setGroupId(groupId);
+            Vector v = new Vector();
+            equipmentManagerModel.addRow(v);
+            Egci.session.insert("mapping.equipmentMapper.addEquipment", equipmentEntity);
+            Egci.session.commit();
+            refreshEquipmentList();
+        }
+    }
+
+    /*
+     * 重新加载设备列表
+     * */
+    public void refreshEquipmentList() {
+        equipmentManagerModel.setRowCount(0);
+        equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
+        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+            Vector v = new Vector();
+            v.add(0, equipmentEntity.getName());
+            v.add(1, equipmentEntity.getIP());
+            v.add(2, equipmentEntity.getStatusSwitchSocketIP());
+            equipmentManagerModel.addRow(v);
+        }
+    }
+
+    //====================================================================================
     /*
      * 查询数据分析结果
      * */
@@ -233,6 +327,48 @@ public class SystemForm {
             dataAnalysisModel.addRow(v);
         }
         dataAnalysisContentTable.setRowSorter(sorter);
+    }
+
+    //======================================================================================================
+    /*
+     * 新增采集设备
+     * */
+    private void addFaceEquipment() {
+        FaceCollectionEntity faceCollectionEntity = new FaceCollectionEntity();
+        faceCollectionEntity.setFaceCollectionName("");
+        faceCollectionEntity.setFaceCollectionIp("");
+        faceCollectionEntity.setHostIp("");
+        Vector v = new Vector();
+        faceCollectionModel.addRow(v);
+        Egci.session.insert("mapping.faceCollectionMapper.addFaceCollection", faceCollectionEntity);
+        Egci.session.commit();
+        refreshFaceEquipmentList();
+    }
+
+    /*
+     * 刷新采集设备列表
+     * */
+    private void refreshFaceEquipmentList() {
+        faceCollectionModel.setRowCount(0);
+        faceCollectionEntityList = Egci.session.selectList("mapping.faceCollectionMapper.getAllFaceCollection");
+        for (FaceCollectionEntity faceCollectionEntity : faceCollectionEntityList) {
+            Vector v1 = new Vector();
+            v1.add(0, faceCollectionEntity.getFaceCollectionName());
+            v1.add(1, faceCollectionEntity.getFaceCollectionIp());
+            v1.add(2, faceCollectionEntity.getHostIp());
+            faceCollectionModel.addRow(v1);
+        }
+    }
+
+    /*
+     * 删除采集设备
+     * */
+    private void deleteFaceEquipment() {
+        if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
+            Egci.session.delete("mapping.faceCollectionMapper.deleteFaceCollection", faceCollectionEntityList.get(faceCollectionManagementContentTable.getSelectedRow()).getId());
+            Egci.session.commit();
+            refreshFaceEquipmentList();
+        }
     }
 
     /*
