@@ -22,7 +22,6 @@ public class MonitorForm {
     private DefaultTableModel resultModel;
     private JPanel monitor;
     private ConfigEntity configEntity;
-    private Statement statement;
     private String passCardSelectionDefaultHint = "请输入卡号";
     private String nameSelectionDefaultHint = "请输入姓名";
     private Map<Integer, String> conditionEquipmentMap;

@@ -2,10 +2,7 @@ package com.dyw.client.controller;
 
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
-import com.dyw.client.form.LoginForm;
-import com.dyw.client.form.MonitorForm;
-import com.dyw.client.form.RegisterForm;
-import com.dyw.client.form.SystemForm;
+import com.dyw.client.form.*;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.timer.PingTimer;
@@ -31,6 +28,8 @@ public class Egci {
      * 初始化客户端程序
      * */
     public static void initClient() {
+        ProtectionForm protectionForm = new ProtectionForm();
+        protectionForm.init();
         accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
