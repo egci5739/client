@@ -234,7 +234,7 @@ public class MainForm extends JDialog {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        JMenu mnNewMenu = new JMenu("FDLib");
+        JMenu mnNewMenu = new JMenu("FDLibEntity");
         menuBar.add(mnNewMenu);
 
         JMenuItem mntmNewMenuItem = new JMenuItem("1V1");
@@ -384,7 +384,6 @@ public class MainForm extends JDialog {
                 String out = "";
                 JsonFormatTool JsonFormatTool = new JsonFormatTool();
                 //JOptionPane.showMessageDialog(null, sinbound, "Information", JOptionPane.INFORMATION_MESSAGE);
-
                 if (smethord == "GET") {
                     try {
                         if (HttpsClientUtil.bHttpsEnabled) {

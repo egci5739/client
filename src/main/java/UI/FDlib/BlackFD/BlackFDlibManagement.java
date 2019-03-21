@@ -97,11 +97,11 @@ public class BlackFDlibManagement extends JDialog {
 		String strUrl= "";
 		if(HttpsClientUtil.bHttpsEnabled)
 		{
-			 strUrl= "https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib?format=json";
+			 strUrl= "https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity?format=json";
 		}
 		else
 		{
-			 strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib?format=json";
+			 strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity?format=json";
 		}
 		try {
 			FDlibListData.clear();
@@ -116,7 +116,7 @@ public class BlackFDlibManagement extends JDialog {
 			}
 
 			JSONObject retData = new JSONObject(strResult);
-			JSONArray jsonArrayTargets = retData.getJSONArray("FDLib");
+			JSONArray jsonArrayTargets = retData.getJSONArray("FDLibEntity");
 			
             for(int i = 0;i < jsonArrayTargets.length();i++){
                 JSONObject singleTargets = jsonArrayTargets.getJSONObject(i);                       
@@ -140,11 +140,11 @@ public class BlackFDlibManagement extends JDialog {
 		String strUrl= "";
 		 if(HttpsClientUtil.bHttpsEnabled)
 		 {
-			 strUrl= "https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib/FDSearch?format=json";
+			 strUrl= "https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity/FDSearch?format=json";
 		 }
 		 else
 		 {
-			  strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib/FDSearch?format=json";
+			  strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity/FDSearch?format=json";
 		 }
 		
 		try {
@@ -334,11 +334,11 @@ public class BlackFDlibManagement extends JDialog {
 				String url= "";
 				if(HttpsClientUtil.bHttpsEnabled)
 				{
-					 url="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
+					 url="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
 				}
 				else
 				{
-					 url="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
+					 url="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
 				}
 				
 				try {
@@ -431,11 +431,11 @@ public class BlackFDlibManagement extends JDialog {
 				String strUrl= "";
 				if(HttpsClientUtil.bHttpsEnabled)
 				{
-					 strUrl="https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
+					 strUrl="https://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity/FDSearch/Delete?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
 				}
 				else
 				{
-					 strUrl="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
+					 strUrl="http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity/FDSearch/Delete?format=json&FDID=" + m_strFDID + "&faceLibType=blackFD";
 				}
 				
 				try {

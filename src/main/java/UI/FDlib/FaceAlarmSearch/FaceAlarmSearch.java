@@ -68,7 +68,7 @@ public class FaceAlarmSearch extends JDialog {
 	public void InitDialog() {
 		
 		 String strPrefix = "http://" + strDeviceIP + ":" + strDevicePort;
-	        final String strUrl = strPrefix + "/ISAPI/Intelligent/FDLib/FCSearch?format=json";
+	        final String strUrl = strPrefix + "/ISAPI/Intelligent/FDLibEntity/FCSearch?format=json";
 	        
 		setBounds(100, 100, 679, 467);
 		getContentPane().setLayout(new BorderLayout());

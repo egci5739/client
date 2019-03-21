@@ -249,11 +249,11 @@ public class FaceAddForm extends JDialog {
 				String strUrl = "";
 				if(HttpsClientUtil.bHttpsEnabled)
 				{
-					 strUrl= "https://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLib/FaceDataRecord?format=json";
+					 strUrl= "https://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLibEntity/FaceDataRecord?format=json";
 				}
 				else
 				{
-					 strUrl= "http://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLib/FaceDataRecord?format=json";
+					 strUrl= "http://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLibEntity/FaceDataRecord?format=json";
 				}
 				
 							

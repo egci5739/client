@@ -103,6 +103,7 @@ public class LoginForm {
                         Element employee = (Element) i.next();
                         if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
                             JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
+                            //创建布控监控端
                             Egci.protectionForm = new ProtectionForm();
                             Egci.protectionForm.init();
                             frame.setVisible(false);
@@ -117,7 +118,6 @@ public class LoginForm {
                 } catch (UnsupportedEncodingException e) {
                     logger.error("登陆脸谱服务器失败", e);
                 }
-                //创建布控监控端
                 break;
             default:
                 break;

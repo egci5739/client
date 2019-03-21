@@ -1,10 +1,10 @@
 package com.dyw.client.tool;
 
-import ISAPI.HTTPClientUtil;
 import ISAPI.HttpsClientUtil;
 import ISAPI.JsonFormatTool;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import org.slf4j.Logger;
@@ -20,7 +20,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 public class Tool {
     private static Logger logger = LoggerFactory.getLogger(Tool.class);
@@ -352,7 +355,6 @@ public class Tool {
             case "GET":
                 try {
                     out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
-                    System.out.println(JsonFormatTool.formatJson(out));
                 } catch (Exception e) {
                     logger.error("执行GET指令出错", e);
                 }
@@ -360,7 +362,6 @@ public class Tool {
             case "PUT":
                 try {
                     out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
-                    System.out.println(JsonFormatTool.formatJson(out));
                 } catch (Exception e) {
                     logger.error("执行PUT指令出错", e);
                 }
@@ -368,7 +369,6 @@ public class Tool {
             case "POST":
                 try {
                     out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
-                    System.out.println(JsonFormatTool.formatJson(out));
                 } catch (Exception e) {
                     logger.error("执行POST指令出错", e);
                 }
@@ -376,12 +376,20 @@ public class Tool {
             case "DELETE":
                 try {
                     out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
-                    System.out.println(JsonFormatTool.formatJson(out));
                 } catch (Exception e) {
                     logger.error("执行DELETE指令出错", e);
                 }
                 break;
         }
+        logger.info(JsonFormatTool.formatJson(out));
         return out;
+    }
+
+    /*
+     * json字符串转对象数组
+     * */
+    public static JSONArray JSONStringToJSONArray(String info, String key) {
+        Map maps = (Map) JSON.parse(info);
+        return JSON.parseArray(String.valueOf(maps.get(key)));
     }
 }

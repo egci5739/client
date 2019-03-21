@@ -303,11 +303,11 @@ public class FacePicEditForm extends JDialog {
 					String strUrl = "";
 					if(HttpsClientUtil.bHttpsEnabled)
 					{
-						 strUrl= "https://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLib/FDSearch?format=json&FDID=" + singletemp.FDID + "&FPID=" + singletemp.FPID + "&faceLibType=blackFD";
+						 strUrl= "https://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLibEntity/FDSearch?format=json&FDID=" + singletemp.FDID + "&FPID=" + singletemp.FPID + "&faceLibType=blackFD";
 					}
 					else
 					{
-						 strUrl= "http://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLib/FDSearch?format=json&FDID=" + singletemp.FDID + "&FPID=" + singletemp.FPID + "&faceLibType=blackFD";
+						 strUrl= "http://" + strIP +  ":" + strPort +  "/ISAPI/Intelligent/FDLibEntity/FDSearch?format=json&FDID=" + singletemp.FDID + "&FPID=" + singletemp.FPID + "&faceLibType=blackFD";
 					}
 					
 

@@ -75,7 +75,7 @@ public class FDlibAddForm extends JDialog {
 				String name=textFieldName.getText().toString();
 				String customInfo=textFieldCustom.getText().toString();
 				
-				String strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLib?format=json";
+				String strUrl= "http://" + strIP +  ":" + strPort + "/ISAPI/Intelligent/FDLibEntity?format=json";
 				String strResult;
 				try {
 					
