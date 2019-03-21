@@ -47,4 +47,7 @@
     <serverPort>12345</serverPort>
     //采集设备的ip
     <faceCollectionIp>192.168.1.112</faceCollectionIp>
+    //脸谱服务器ip和端口
+    <faceServerIp>192.168.3.102</faceServerIp>
+    <faceServerPort>443</faceServerPort>
 </config>

@@ -1,12 +1,22 @@
 package com.dyw.client.form;
 
+import ISAPI.HttpsClientUtil;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 
 public class LoginForm {
     private JFrame frame;
@@ -20,8 +30,10 @@ public class LoginForm {
     private JLabel accountPassLabel;
     private JButton loginButton;
     private JButton resetButton;
+    private Logger logger;
 
     public LoginForm() {
+        logger = LoggerFactory.getLogger(LoginForm.class);
         //登陆
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -73,6 +85,39 @@ public class LoginForm {
                 Egci.monitorForm = new MonitorForm();
                 Egci.monitorForm.init();
                 frame.setVisible(false);
+                break;
+            case 3:
+                //登陆脸谱服务器
+                HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
+                //登录校验代码
+                String strUrl = "/ISAPI/Security/userCheck";
+                String strOut = "";
+                strOut = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + strUrl);
+                logger.info(strOut);
+                //解析返回的xml文件
+                SAXReader saxReader = new SAXReader();
+                try {
+                    Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
+                    Element employees = document.getRootElement();
+                    for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
+                        Element employee = (Element) i.next();
+                        if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
+                            JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
+                            Egci.protectionForm = new ProtectionForm();
+                            Egci.protectionForm.init();
+                            frame.setVisible(false);
+                            return;
+                        }
+                    }
+                    //登陆失败
+                    JOptionPane.showMessageDialog(null, "登陆失败", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (DocumentException e) {
+                    JOptionPane.showMessageDialog(null, "登陆失败", "Error", JOptionPane.ERROR_MESSAGE);
+                    logger.error("登陆脸谱服务器失败", e);
+                } catch (UnsupportedEncodingException e) {
+                    logger.error("登陆脸谱服务器失败", e);
+                }
+                //创建布控监控端
                 break;
             default:
                 break;

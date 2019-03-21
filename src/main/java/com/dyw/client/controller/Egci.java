@@ -23,13 +23,12 @@ public class Egci {
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
     public static SystemForm systemForm;
+    public static ProtectionForm protectionForm;
 
     /*
      * 初始化客户端程序
      * */
     public static void initClient() {
-        ProtectionForm protectionForm = new ProtectionForm();
-        protectionForm.init();
         accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
@@ -49,6 +48,7 @@ public class Egci {
      * 主函数
      * */
     public static void main(String[] args) {
+        System.out.println("看看");
         Egci.initClient();
     }
 }

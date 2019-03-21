@@ -48,6 +48,9 @@ public class ConfigEntity {
     private short serverPort;
     //采集设备的IP
     private String faceCollectionIp;
+    //脸谱服务器ip和端口
+    private String faceServerIp;
+    private int faceServerPort;
 
     public String getServerIp() {
         return serverIp;
@@ -311,5 +314,21 @@ public class ConfigEntity {
 
     public void setFaceCollectionIp(String faceCollectionIp) {
         this.faceCollectionIp = faceCollectionIp;
+    }
+
+    public String getFaceServerIp() {
+        return faceServerIp;
+    }
+
+    public void setFaceServerIp(String faceServerIp) {
+        this.faceServerIp = faceServerIp;
+    }
+
+    public int getFaceServerPort() {
+        return faceServerPort;
+    }
+
+    public void setFaceServerPort(int faceServerPort) {
+        this.faceServerPort = faceServerPort;
     }
 }

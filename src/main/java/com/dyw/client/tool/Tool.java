@@ -1,8 +1,14 @@
 package com.dyw.client.tool;
 
+import ISAPI.HTTPClientUtil;
+import ISAPI.HttpsClientUtil;
+import ISAPI.JsonFormatTool;
+import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -17,7 +23,9 @@ import java.io.IOException;
 import java.util.Calendar;
 
 public class Tool {
+    private static Logger logger = LoggerFactory.getLogger(Tool.class);
     private static String eventName;
+    private static ISAPI.JsonFormatTool JsonFormatTool = new JsonFormatTool();
 
     /*
      * 读取本地配置文件
@@ -142,6 +150,12 @@ public class Tool {
                         }
                         if (attrName.equals("faceCollectionIp")) {
                             configEntity.setFaceCollectionIp(childNodes.item(j).getFirstChild().getNodeValue());
+                        }
+                        if (attrName.equals("faceServerIp")) {
+                            configEntity.setFaceServerIp(childNodes.item(j).getFirstChild().getNodeValue());
+                        }
+                        if (attrName.equals("faceServerPort")) {
+                            configEntity.setFaceServerPort(Integer.parseInt(childNodes.item(j).getFirstChild().getNodeValue()));
                         }
                     }
                 }
@@ -327,5 +341,47 @@ public class Tool {
                 break;
         }
         return name;
+    }
+
+    /*
+     *发送http指令和接收数据
+     * */
+    public static String sendInstructionAndReceiveInfo(String operation, String instruction, String parameter) {
+        String out = "";
+        switch (operation) {
+            case "GET":
+                try {
+                    out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
+                    System.out.println(JsonFormatTool.formatJson(out));
+                } catch (Exception e) {
+                    logger.error("执行GET指令出错", e);
+                }
+                break;
+            case "PUT":
+                try {
+                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
+                    System.out.println(JsonFormatTool.formatJson(out));
+                } catch (Exception e) {
+                    logger.error("执行PUT指令出错", e);
+                }
+                break;
+            case "POST":
+                try {
+                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
+                    System.out.println(JsonFormatTool.formatJson(out));
+                } catch (Exception e) {
+                    logger.error("执行POST指令出错", e);
+                }
+                break;
+            case "DELETE":
+                try {
+                    out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
+                    System.out.println(JsonFormatTool.formatJson(out));
+                } catch (Exception e) {
+                    logger.error("执行DELETE指令出错", e);
+                }
+                break;
+        }
+        return out;
     }
 }
