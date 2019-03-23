@@ -347,33 +347,33 @@ public class Tool {
     }
 
     /*
-     *发送http指令和接收数据
+     *发送http指令和接收状态
      * */
-    public static String sendInstructionAndReceiveInfo(String operation, String instruction, String parameter) {
+    public static int sendInstructionAndReceiveStatus(int operation, String instruction, String parameter) {
         String out = "";
         switch (operation) {
-            case "GET":
+            case 1:
                 try {
                     out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
                 } catch (Exception e) {
                     logger.error("执行GET指令出错", e);
                 }
                 break;
-            case "PUT":
+            case 2:
                 try {
-                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
+                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
                 } catch (Exception e) {
                     logger.error("执行PUT指令出错", e);
                 }
                 break;
-            case "POST":
+            case 3:
                 try {
-                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, parameter);
+                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
                 } catch (Exception e) {
                     logger.error("执行POST指令出错", e);
                 }
                 break;
-            case "DELETE":
+            case 4:
                 try {
                     out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
                 } catch (Exception e) {
@@ -381,8 +381,50 @@ public class Tool {
                 }
                 break;
         }
-        logger.info(JsonFormatTool.formatJson(out));
-        return out;
+        System.out.println(out);
+        Map maps = (Map) JSON.parse(out);
+        return (int) maps.get("statusCode");
+    }
+
+    /*
+     *发送http指令、接收状态和数据
+     * 1:GET;2:PUT;3:POST;4:DELETE
+     * */
+    public static String sendInstructionAndReceiveStatusAndData(int operation, String instruction, String parameter, String key) {
+        String out = "";
+        switch (operation) {
+            case 1:
+                try {
+                    out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
+                } catch (Exception e) {
+                    logger.error("执行GET指令出错", e);
+                }
+                break;
+            case 2:
+                try {
+                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
+                } catch (Exception e) {
+                    logger.error("执行PUT指令出错", e);
+                }
+                break;
+            case 3:
+                try {
+                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
+                } catch (Exception e) {
+                    logger.error("执行POST指令出错", e);
+                }
+                break;
+            case 4:
+                try {
+                    out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
+                } catch (Exception e) {
+                    logger.error("执行DELETE指令出错", e);
+                }
+                break;
+        }
+        System.out.println(out);
+        Map maps = (Map) JSON.parse(out);
+        return JSON.parseArray(String.valueOf(maps.get(key))).toJSONString();
     }
 
     /*
@@ -391,5 +433,30 @@ public class Tool {
     public static JSONArray JSONStringToJSONArray(String info, String key) {
         Map maps = (Map) JSON.parse(info);
         return JSON.parseArray(String.valueOf(maps.get(key)));
+    }
+
+    /*
+     * 提示框
+     * */
+    public static void showMessage(String message, String title, int messageType) {
+        JOptionPane.showMessageDialog(null, message, title, messageType);
+    }
+
+    /*
+     * 确认提示框
+     * */
+    public static Boolean showConfirm(String message, String title) {
+        return JOptionPane.showConfirmDialog(null, message, title, 0) == 0;
+    }
+
+    /*
+     * 添加双引号转为json字符串
+     * */
+    public static String convertToJSON(String jsonStr) {
+        jsonStr = jsonStr.replace("{", "{\"");
+        jsonStr = jsonStr.replace(":", "\":\"");
+        jsonStr = jsonStr.replace(",", "\",\"");
+        jsonStr = jsonStr.replace("}", "\"}");
+        return jsonStr;
     }
 }
