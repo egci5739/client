@@ -102,7 +102,7 @@ public class LoginForm {
                     for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
                         Element employee = (Element) i.next();
                         if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
-                            JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
+//                            JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
                             //创建布控监控端
                             Egci.protectionForm = new ProtectionForm();
                             Egci.protectionForm.init();
@@ -122,6 +122,13 @@ public class LoginForm {
             default:
                 break;
         }
+    }
+
+    /*
+     * 登陆脸谱服务器
+     * */
+    public void loginFaceServer() {
+
     }
 
     /*

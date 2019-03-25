@@ -7,6 +7,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.StaffEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -20,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -349,82 +353,121 @@ public class Tool {
     /*
      *发送http指令和接收状态
      * */
-    public static int sendInstructionAndReceiveStatus(int operation, String instruction, String parameter) {
+    public static JSONObject sendInstructionAndReceiveStatus(int operation, String instruction, JSONObject inboundData) {
         String out = "";
-        switch (operation) {
-            case 1:
-                try {
-                    out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
-                } catch (Exception e) {
-                    logger.error("执行GET指令出错", e);
-                }
-                break;
-            case 2:
-                try {
-                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
-                } catch (Exception e) {
-                    logger.error("执行PUT指令出错", e);
-                }
-                break;
-            case 3:
-                try {
-                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
-                } catch (Exception e) {
-                    logger.error("执行POST指令出错", e);
-                }
-                break;
-            case 4:
-                try {
-                    out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
-                } catch (Exception e) {
-                    logger.error("执行DELETE指令出错", e);
-                }
-                break;
+        try {
+            switch (operation) {
+                case 1:
+                    try {
+                        out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction);
+                    } catch (Exception e) {
+                        logger.error("执行GET指令出错", e);
+                    }
+                    break;
+                case 2:
+                    try {
+                        out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction, inboundData.toString());
+                    } catch (Exception e) {
+                        logger.error("执行PUT指令出错", e);
+                    }
+                    break;
+                case 3:
+                    try {
+                        out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction, inboundData.toString());
+                    } catch (Exception e) {
+                        logger.error("执行POST指令出错", e);
+                    }
+                    break;
+                case 4:
+                    try {
+                        out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction);
+                    } catch (Exception e) {
+                        logger.error("执行DELETE指令出错", e);
+                    }
+                    break;
+            }
+            logger.info(out);
+            return new JSONObject(out);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
-        System.out.println(out);
-        Map maps = (Map) JSON.parse(out);
-        return (int) maps.get("statusCode");
     }
 
     /*
      *发送http指令、接收状态和数据
      * 1:GET;2:PUT;3:POST;4:DELETE
      * */
-    public static String sendInstructionAndReceiveStatusAndData(int operation, String instruction, String parameter, String key) {
+    public static JSONObject sendInstructionAndReceiveStatusAndData(int operation, String instruction, JSONObject inboundData) {
         String out = "";
+        try {
+            switch (operation) {
+                case 1:
+                    try {
+                        out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction);
+                    } catch (Exception e) {
+                        logger.error("执行GET指令出错", e);
+                    }
+                    break;
+                case 2:
+                    try {
+                        out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction, inboundData.toString());
+                    } catch (Exception e) {
+                        logger.error("执行PUT指令出错", e);
+                    }
+                    break;
+                case 3:
+                    try {
+                        out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction, inboundData.toString());
+                    } catch (Exception e) {
+                        logger.error("执行POST指令出错", e);
+                    }
+                    break;
+                case 4:
+                    try {
+                        out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + instruction);
+                    } catch (Exception e) {
+                        logger.error("执行DELETE指令出错", e);
+                    }
+                    break;
+            }
+            logger.info(out);
+            return new JSONObject(out);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /*
+     *  人员信息操作函数
+     *  1:新增人脸图片
+     *  2：删除人员信息
+     *  3.修改人员信息
+     * */
+    public static JSONObject faceInfoOperation(int operation, String FDID, byte[] bytePic, JSONObject deleteInboundData) {
         switch (operation) {
             case 1:
                 try {
-                    out = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
+                    JSONObject jsonStorageCloud = new JSONObject();
+                    jsonStorageCloud.put("FDID", FDID);
+                    jsonStorageCloud.put("storageType", "dynamic");
+                    String strPic = new String(bytePic, "ISO-8859-1");
+                    return new JSONObject(HttpsClientUtil.doPostStorageCloud("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/uploadStorageCloud?format=json", jsonStorageCloud.toString(), strPic, "---------------------------------7e13971310878"));
                 } catch (Exception e) {
-                    logger.error("执行GET指令出错", e);
+                    e.printStackTrace();
+                    return null;
                 }
-                break;
             case 2:
                 try {
-                    out = HttpsClientUtil.httpsPut("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
+                    return new JSONObject(HttpsClientUtil.doPutWithType("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&FDID=" + FDID + "&faceLibType=blackFD", deleteInboundData.toString(), null, "application/x-www-form-urlencoded; charset=UTF-8"));
                 } catch (Exception e) {
-                    logger.error("执行PUT指令出错", e);
+                    e.printStackTrace();
+                    return null;
                 }
-                break;
-            case 3:
-                try {
-                    out = HttpsClientUtil.httpsPost("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction, JsonFormatTool.formatJson(parameter));
-                } catch (Exception e) {
-                    logger.error("执行POST指令出错", e);
-                }
-                break;
-            case 4:
-                try {
-                    out = HttpsClientUtil.httpsDelete("https://" + Egci.configEntity.getFaceServerIp() + ":" + instruction);
-                } catch (Exception e) {
-                    logger.error("执行DELETE指令出错", e);
-                }
-                break;
+            default:
+                return null;
         }
-        System.out.println(out);
-        Map maps = (Map) JSON.parse(out);
-        return JSON.parseArray(String.valueOf(maps.get(key))).toJSONString();
     }
 
     /*
@@ -458,5 +501,32 @@ public class Tool {
         jsonStr = jsonStr.replace(",", "\",\"");
         jsonStr = jsonStr.replace("}", "\"}");
         return jsonStr;
+    }
+
+    /*
+     * 将数据库中的男女对应成male/female
+     * */
+    public static String changeGenderToMaleAndFemale(String sex) {
+        switch (Integer.parseInt(sex.trim())) {
+            case 1:
+                return "male";
+            case 2:
+                return "female";
+            default:
+                return "unknown";
+        }
+    }
+
+    /*
+     * 分割人员名称字段
+     * @return StaffEntity
+     * */
+    public static StaffEntity splitNameAndGetStaff(String nameInfo) {
+        StaffEntity staffEntity = new StaffEntity();
+        String[] staffInfo = nameInfo.split("_");
+        staffEntity.setName(staffInfo[0]);
+        staffEntity.setCardNumber(staffInfo[1]);
+        staffEntity.setStaffId(Integer.parseInt(staffInfo[2]));
+        return staffEntity;
     }
 }

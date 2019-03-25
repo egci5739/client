@@ -1,12 +1,22 @@
 package com.dyw.client.form;
 
+import ISAPI.HttpsClientUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.entity.StaffEntity;
+import com.dyw.client.entity.protection.FDLibEntity;
+import com.dyw.client.entity.protection.FaceInfoEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +26,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -26,7 +38,7 @@ public class RegisterForm {
     private List<String> cardNumbers;
     private Map<String, StaffEntity> waitStaffMap;
     private DefaultTableModel model;
-    private String oldCard;
+    private StaffEntity oldStaff;
     private byte[] staffPhoto;
     private byte[] takePhoto;
     private StaffOperationService staffOperationService;
@@ -112,7 +124,6 @@ public class RegisterForm {
         //初始化人员操作对象
         staffOperationService = new StaffOperationService();
         //初始化拍照模式切换对象
-        oldCard = "0";
         //初始化按钮状态
         updateButton.setEnabled(false);
         deleteButton.setEnabled(false);
@@ -199,6 +210,7 @@ public class RegisterForm {
                     if (staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "") != null) {
                         staffPhoto = staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "").getPhoto();
                         fillStaffInfo(staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + ""));
+                        oldStaff = staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "");
                     }
                 } catch (Exception e1) {
                     logger.error("将搜索结果加载到人员信息出错", e1);
@@ -290,7 +302,6 @@ public class RegisterForm {
      * 取消操作
      * */
     private void cancel() {
-        oldCard = "0";
         cleanStaffInfo();
         waitStaffList.setEnabled(false);
         inputDisabled();
@@ -323,8 +334,7 @@ public class RegisterForm {
      * 修改人员信息
      * */
     private void update() {
-        oldCard = passCardText.getText();//获取旧卡号
-        System.out.println("旧卡号为：" + oldCard);
+        System.out.println("旧卡号为：" + oldStaff.getCardNumber());
         inputEnable();
         deleteButton.setEnabled(false);
         saveButton.setEnabled(true);
@@ -346,6 +356,33 @@ public class RegisterForm {
         //点击回车键搜索
         frame.getRootPane().setDefaultButton(searchButton);
         frame.setVisible(true);
+        //登陆脸谱服务器
+        HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
+        //登录校验代码
+        String strUrl = "/ISAPI/Security/userCheck";
+        String strOut = "";
+        strOut = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + strUrl);
+        logger.info(strOut);
+        //解析返回的xml文件
+        SAXReader saxReader = new SAXReader();
+        try {
+            Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
+            Element employees = document.getRootElement();
+            for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
+                Element employee = (Element) i.next();
+                if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
+                    JOptionPane.showMessageDialog(null, "连接脸谱服务器成功", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+            //登陆失败
+            JOptionPane.showMessageDialog(null, "连接脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DocumentException e) {
+            JOptionPane.showMessageDialog(null, "连接脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.error("登陆脸谱服务器失败", e);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("登陆脸谱服务器失败", e);
+        }
     }
 
     /*
@@ -459,7 +496,6 @@ public class RegisterForm {
      * 新增人员
      * */
     public void add() {
-        oldCard = "0";
         waitStaffList.setEnabled(true);
         inputEnable();
         searchButton.setEnabled(false);
@@ -480,7 +516,7 @@ public class RegisterForm {
                 JOptionPane.showMessageDialog(null, "中文名、卡号或照片缺失！", "错误 ", 0);
                 return;
             } else {
-                staffOperationService.save(staffEntity, oldCard);
+                staffOperationService.save(staffEntity, oldStaff);
                 cancel();
             }
         }

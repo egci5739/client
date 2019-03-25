@@ -38,7 +38,8 @@
         select * from Staff WHERE Name LIKE #{name};
     </select>
     <!--依据卡号查询人员-->
-    <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+    <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
         select * from Staff WHERE CardNumber LIKE #{CardNumber};
     </select>
     <!--根据卡号查询待拍照人员表人员-->
@@ -52,4 +53,8 @@
         (Name,NameEn,CardId,CardNumber,Birthday,Sex,Company) values
         (#{Name},#{NameEn},#{CardId},#{CardNumber},#{Birthday},#{Sex},#{Company});
     </insert>
+    <!--获取全部人员信息-->
+    <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
+        select * from Staff where StaffId &gt; 376 and StaffId &lt; 410;
+    </select>
 </mapper>

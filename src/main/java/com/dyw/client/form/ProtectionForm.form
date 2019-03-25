@@ -148,22 +148,22 @@
                           <text value="人员添加"/>
                         </properties>
                       </component>
-                      <component id="2addd" class="javax.swing.JButton" binding="personManagementContentToolBarEditButton">
+                      <component id="d9c86" class="javax.swing.JButton" binding="personManagementContentToolBarDeleteButton">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="人员编辑"/>
+                          <text value="人员删除"/>
                         </properties>
                       </component>
-                      <component id="d9c86" class="javax.swing.JButton" binding="personManagementContentToolBarDeleteButton">
+                      <component id="f6545" class="javax.swing.JButton" binding="personManagementContentToolBarImportButton">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="人员删除"/>
+                          <text value="导入全部人员"/>
                         </properties>
                       </component>
                     </children>
@@ -294,29 +294,6 @@
                       <text value="删除"/>
                     </properties>
                   </component>
-                  <component id="2fae4" class="javax.swing.JTextField" binding="textField1" default-binding="true">
-                    <constraints>
-                      <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <preferredSize width="60" height="30"/>
-                      <text value=""/>
-                    </properties>
-                  </component>
-                  <component id="b0b2f" class="javax.swing.JTextField" binding="textField2" default-binding="true">
-                    <constraints>
-                      <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <preferredSize width="60" height="30"/>
-                    </properties>
-                  </component>
                 </children>
               </grid>
               <grid id="2ac2f" binding="resourceManagementContentPanel" layout-manager="GridBagLayout">
@@ -337,7 +314,10 @@
                     <children>
                       <component id="96b31" class="javax.swing.JTable" binding="resourceManagementContentTable">
                         <constraints/>
-                        <properties/>
+                        <properties>
+                          <font size="26"/>
+                          <rowHeight value="45"/>
+                        </properties>
                       </component>
                     </children>
                   </scrollpane>

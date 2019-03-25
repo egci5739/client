@@ -8,6 +8,7 @@ public class FaceInfoEntity {
     private String bornTime;//人员的出生日期
     private String certificateNumber;//证件号
     private String customInfo;//自定义信息
+    private String tag;//标签，当作卡号字段用
 
     public String getFPID() {
         return FPID;
@@ -63,5 +64,13 @@ public class FaceInfoEntity {
 
     public void setCustomInfo(String customInfo) {
         this.customInfo = customInfo;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

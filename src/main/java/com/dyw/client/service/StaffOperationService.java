@@ -1,8 +1,13 @@
 package com.dyw.client.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.StaffEntity;
+import com.dyw.client.entity.protection.FDLibEntity;
+import com.dyw.client.entity.protection.FaceInfoEntity;
 import com.dyw.client.tool.Tool;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,22 +95,29 @@ public class StaffOperationService {
     /*
      * 保存人员信息
      * */
-    public void save(StaffEntity staffEntity, String oldCard) {
-        List<StaffEntity> resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", oldCard);
+    public void save(StaffEntity staffEntity, StaffEntity oldStaff) {
+        List<StaffEntity> resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", oldStaff.getCardNumber());
         if (resultStaffList.size() > 0) {
-            staffEntity.setOldCard(oldCard);
+            staffEntity.setOldCard(oldStaff.getCardNumber());
+            staffEntity.setStaffId(oldStaff.getStaffId());
             //更新
             Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
             Egci.session.commit();
+            updateFaceServerFaceInfo(oldStaff, staffEntity);
         } else {
             //新增
             Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
             Egci.session.commit();
         }
         try {
-            if (!oldCard.equals("0")) {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (resultStaffList.size() > 0) {
                 SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService();
-                deleteSendInfoSocketService.sendInfo("2#" + oldCard + "\n");
+                deleteSendInfoSocketService.sendInfo("2#" + oldStaff.getCardNumber() + "\n");
                 deleteSendInfoSocketService.receiveInfoOnce();
                 Thread.sleep(1000);
                 SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService();
@@ -146,5 +158,44 @@ public class StaffOperationService {
             status = true;
         }
         return status;
+    }
+
+    /*
+     * 更新脸谱服务器中的人员信息
+     * */
+    public void updateFaceServerFaceInfo(StaffEntity oldInfo, StaffEntity newInfo) {
+        try {
+            //获取人脸库列表
+//            List<FDLibEntity> fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
+            List<FDLibEntity> fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
+            for (FDLibEntity fdLibEntity : fdLibEntityList) {
+                String instructionGet = "/ISAPI/Intelligent/FDLib/FDSearch?format=json";
+                org.json.JSONObject inboundDataGet = new org.json.JSONObject();
+                inboundDataGet.put("searchResultPosition", 0);
+                inboundDataGet.put("maxResults", 100);
+                inboundDataGet.put("faceLibType", "blackFD");
+                inboundDataGet.put("FDID", fdLibEntity.getFDID());
+                inboundDataGet.put("name", oldInfo.getName() + "_" + oldInfo.getCardNumber() + "_" + oldInfo.getStaffId());
+                System.out.println("看看看看：" + oldInfo.getName() + "_" + oldInfo.getCardNumber() + "_" + oldInfo.getStaffId());
+                FaceInfoEntity faceInfoEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGet).getString("MatchList"), FaceInfoEntity.class).get(0);
+                //更改信息
+                org.json.JSONObject inboundDataSet = new org.json.JSONObject();
+                String instructionSet = "/ISAPI/Intelligent/FDLib/FDSearch?format=json&FDID=" + fdLibEntity.getFDID() + "&FPID=" + faceInfoEntity.getFPID() + "&faceLibType=blackFD";
+                inboundDataSet.put("faceURL", faceInfoEntity.getFaceURL());
+                inboundDataSet.put("faceLibType", "blackFD");
+                inboundDataSet.put("name", newInfo.getName() + "_" + newInfo.getCardNumber() + "_" + newInfo.getStaffId());//名字_卡号_id
+                inboundDataSet.put("gender", Tool.changeGenderToMaleAndFemale(newInfo.getSex()));
+                inboundDataSet.put("bornTime", newInfo.getBirthday());
+                org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionSet, inboundDataSet);
+                if (resultData.getInt("statusCode") == 1) {
+                    Tool.showMessage("添加成功", "提示", 0);
+                } else {
+                    Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
