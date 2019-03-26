@@ -2,19 +2,25 @@ package com.dyw.client.functionForm;
 
 import com.dyw.client.entity.protection.CtrlCenterEntity;
 import com.dyw.client.entity.protection.DeviceEntity;
+import com.dyw.client.entity.protection.MonitorPointEntity;
+import com.dyw.client.entity.protection.RegionEntity;
 import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.Tool;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EquipmentFunction {
     private JFrame frame;
     private JPanel equipmentFunction;
-    private JTextField equipmenNameText;
+    private JTextField equipmentNameText;
     private JTextField equipmentIpText;
     private JTextField equipmentPortText;
     private JTextField equipmentUserText;
@@ -26,19 +32,25 @@ public class EquipmentFunction {
     private JLabel equipmentPortLabel;
     private JLabel equipmentUserLabel;
     private JLabel equipmentPassLabel;
+    private JComboBox equipmentAreaCombo;
+    private JLabel equipmentAreaLabel;
 
-    public EquipmentFunction(final CtrlCenterEntity ctrlCenterEntity, final ProtectionForm protectionForm) {
+    public EquipmentFunction(final CtrlCenterEntity ctrlCenterEntity, final List<RegionEntity> regionEntityList, final ProtectionForm protectionForm) {
+        equipmentAreaCombo.addItem("一核");
+        equipmentAreaCombo.addItem("二核");
+        equipmentAreaCombo.addItem("三核");
         //确认
         equipmentConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/Device";
+                String instructionAddEquipment = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/Device";
                 JSONObject inboundDataIn = new JSONObject();
                 JSONObject inboundDataOut = new JSONObject();
                 DeviceEntity deviceEntity = getDeviceInfo();
                 if (deviceEntity == null) {
                     return;
                 }
+                //添加设备
                 try {
                     inboundDataIn.put("deviceName", deviceEntity.getDeviceName());
                     inboundDataIn.put("deviceIP", deviceEntity.getDeviceIP());
@@ -47,13 +59,49 @@ public class EquipmentFunction {
                     inboundDataIn.put("devicePassword", deviceEntity.getDevicePassword());
                     inboundDataIn.put("protocolType", "HIK");
                     inboundDataOut.put("device", inboundDataIn);
-                    JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
-                    if (resultData.getInt("statusCode") == 1) {
-                        Tool.showMessage("添加成功", "提示", 0);
-                        protectionForm.getDevice();
-                        frame.dispose();
+                    JSONObject resultDataEquipment = Tool.sendInstructionAndReceiveStatusAndData(3, instructionAddEquipment, inboundDataOut);
+                    if (resultDataEquipment.getInt("statusCode") == 1) {
+                        //获取监控点id
+                        List<MonitorPointEntity> monitorPointEntityList = com.alibaba.fastjson.JSONObject.parseArray(resultDataEquipment.getString("monitorPoint"), MonitorPointEntity.class);
+                        //添加监控点
+                        String regionId = "";
+                        switch ((String) equipmentAreaCombo.getSelectedItem()) {
+                            case "一核":
+                                regionId = regionEntityList.get(0).getRegionID();
+                                break;
+                            case "二核":
+                                regionId = regionEntityList.get(1).getRegionID();
+                                break;
+                            case "三核":
+                                regionId = regionEntityList.get(2).getRegionID();
+                                break;
+                            default:
+                                break;
+                        }
+                        String instructionAddMonitor = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/region/" + regionId + "/monitorPoint";
+                        String monitorId = monitorPointEntityList.get(0).getMonitorPointID();
+                        JSONObject inboundDataAddMonitor = new JSONObject();
+                        Map<String, Object> map = new HashMap<>();
+                        JSONArray jsonArray = new JSONArray();
+                        map.put("monitorPointID", monitorId);
+                        jsonArray.put(0, map);
+                        inboundDataAddMonitor.put("monitorPoint", jsonArray);
+                        JSONObject resultDataMonitor = Tool.sendInstructionAndReceiveStatus(3, instructionAddMonitor, inboundDataAddMonitor);
+                        if (resultDataMonitor.getInt("statusCode") == 1) {
+                            //对设备布防
+                            String instructionGuard = "/ISAPI/SDT/Management/Guard";
+                            JSONObject resultGuard = Tool.sendInstructionAndReceiveStatus(3, instructionGuard, inboundDataAddMonitor);
+                            if (resultGuard.getInt("statusCode") == 1) {
+                                protectionForm.getMonitor();
+                                frame.dispose();
+                            } else {
+                                Tool.showMessage("添加布防失败，错误信息" + resultGuard.getString("errorMsg"), "提示", 0);
+                            }
+                        } else {
+                            Tool.showMessage("添加监控点失败，错误信息" + resultDataMonitor.getString("errorMsg"), "提示", 0);
+                        }
                     } else {
-                        Tool.showMessage("添加失败，错误信息" + resultData.getString("errorMsg"), "提示", 0);
+                        Tool.showMessage("添加设备失败，错误信息" + resultDataEquipment.getString("errorMsg"), "提示", 0);
                     }
                     System.out.println(inboundDataOut);
                 } catch (JSONException e1) {
@@ -75,7 +123,7 @@ public class EquipmentFunction {
      * */
     public DeviceEntity getDeviceInfo() {
         DeviceEntity deviceEntity = new DeviceEntity();
-        String equipmentName = equipmenNameText.getText();
+        String equipmentName = equipmentNameText.getText();
         String equipmentIp = equipmentIpText.getText();
         String equipmentPort = equipmentPortText.getText();
         String equipmentUser = equipmentUserText.getText();

@@ -9,12 +9,14 @@ import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Egci {

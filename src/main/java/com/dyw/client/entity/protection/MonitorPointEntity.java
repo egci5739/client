@@ -14,6 +14,7 @@ public class MonitorPointEntity {
     private Boolean isSupportPlayBack;//支持录像回放
     private Boolean isAnsysisVideo;//正在分析视频
     private String source;//资源类型
+    private String regionName;//区域名称
 
     public String getMonitorPointID() {
         return monitorPointID;
@@ -117,5 +118,13 @@ public class MonitorPointEntity {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 }

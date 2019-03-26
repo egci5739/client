@@ -7,25 +7,35 @@ import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.EquipmentFunction;
 import com.dyw.client.functionForm.FaceBaseFunction;
+import com.dyw.client.functionForm.MonitorFunction;
 import com.dyw.client.tool.Tool;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 public class ProtectionForm {
     private Logger logger = LoggerFactory.getLogger(ProtectionForm.class);
     private DefaultTableModel deviceManagementContentTableModel;
     private DefaultTableModel personManagementContentResultTableModel;
+    private DefaultTableModel monitorManagementContentTableModel;
     //    private List<FDLibEntity> libEntityList;//人脸库列表
     private List<String> FDLibNames;//人脸库名称列表
     private List<FaceInfoEntity> faceInfoEntityList;//人员列表
@@ -34,8 +44,10 @@ public class ProtectionForm {
     private List<RegionEntity> regionEntityList;//区域列表
     private String FDID;//人脸库ID
     private List<DeviceEntity> deviceEntityList;//设备列表
-    private int equipmentStatus;//资源管理状态：主要用来执行删除操作时做判断
     private List<MonitorPointEntity> monitorPointEntityList;//监控点列表
+
+    private List<RelateInfoEntity> relateInfoEntityList;//布控信息表
+    private List<PlanInfoEntity> planInfoEntityList;//布控计划表
 
     private JPanel protection;
     private JTabbedPane tabbedPane1;
@@ -47,13 +59,8 @@ public class ProtectionForm {
     private JPanel resourceManagementContentPanel;
     private JScrollPane resourceManagementContentScroll;
     private JTable resourceManagementContentTable;
-    private JButton allEquipmentButton;
-    private JButton oneMonitoryPointButton;
-    private JButton twoMonitoryPointButton;
-    private JButton threeMonitoryPointButton;
     private JButton addEquipmentButton;
-    private JButton addMonitoryPointButton;
-    private JButton deleteButton;
+    private JButton deleteEquipmentButton;
     private JPanel personManagementContentPanel;
     private JPanel personManagementBasePanel;
     private JPanel personManagementBaseToolBarPanel;
@@ -73,6 +80,28 @@ public class ProtectionForm {
     private JTable personManagementContentResultTable;
     private JScrollPane personManagementContentResultScroll;
     private JButton personManagementContentToolBarImportButton;
+    private JPanel livePreviewPanel;
+    private JPanel blackAlarmPanel;
+    private JPanel whiteAlarmPanel;
+    private JPanel snapAlarmPanel;
+    private JPanel livePreviewTitlePanel;
+    private JPanel livePreviewContentPanel;
+    private JLabel livePreviewTitleLabel;
+    private JPanel livePreviewContentOnePanel;
+    private JPanel livePreviewContentTwoPanel;
+    private JPanel livePreviewContentThreePanel;
+    private JPanel livePreviewContentFourPanel;
+    private JPanel livePreviewContentFivePanel;
+    private JPanel livePreviewContentSixPanel;
+    private JPanel livePreviewContentSevenPanel;
+    private JPanel livePreviewContentEightPanel;
+    private JPanel monitorManagementTolBarPanel;
+    private JPanel monitorManagementContentPanel;
+    private JButton monitorManagementAddButton;
+    private JButton monitorManagemenEditButton;
+    private JButton monitorManagementDeleteButton;
+    private JScrollPane monitorManagementContentScroll;
+    private JTable monitorManagementContentTable;
 
     /*
      * 构造函数
@@ -86,7 +115,6 @@ public class ProtectionForm {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        equipmentStatus = 0;
         fdLibEntityList = new ArrayList<>();
         faceInfoEntityList = new ArrayList<>();
         FDLibNames = new ArrayList<>();
@@ -99,13 +127,6 @@ public class ProtectionForm {
          * */
         //初始化全部设备表格
         deviceManagementContentTableModel = new DefaultTableModel();
-        //获取全部设备
-        allEquipmentButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getDevice();
-            }
-        });
         //添加设备
         addEquipmentButton.addActionListener(new ActionListener() {
             @Override
@@ -114,26 +135,15 @@ public class ProtectionForm {
             }
         });
         //删除设备或监控点
-        deleteButton.addActionListener(new ActionListener() {
+        deleteEquipmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteEquipment();
             }
         });
-        //获取一核监控点
-        oneMonitoryPointButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getMonitor(regionEntityList.get(0));
-            }
-        });
-        //添加监控点
-        addMonitoryPointButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addMonitor();
-            }
-        });
+        //加载监控点信息
+        getMonitor();
+
         /*
          * 名单管理
          * */
@@ -195,6 +205,32 @@ public class ProtectionForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 importAllFace();
+            }
+        });
+
+        /*
+         * 布控管理
+         * */
+        relateInfoEntityList = new ArrayList<>();
+        //初始化名单库人脸显示列表
+        String[] columnMonitorManagementContentInfo = {"布控名称", "布控类型", "布控对象", "布控范围", "布控时段", "布控创建时间"};
+        monitorManagementContentTableModel = new DefaultTableModel();
+        monitorManagementContentTableModel.setColumnIdentifiers(columnMonitorManagementContentInfo);
+        monitorManagementContentTable.setModel(monitorManagementContentTableModel);
+        //获取布控列表
+        getMonitorList();
+        //添加布控
+        monitorManagementAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addMonitor();
+            }
+        });
+        //删除布控
+        monitorManagementDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteMonitor();
             }
         });
     }
@@ -399,6 +435,7 @@ public class ProtectionForm {
      * */
     /*
      * 获取全部设备列表
+     * 暂时不用
      * */
     public void getDevice() {
         deviceEntityList.clear();
@@ -421,7 +458,6 @@ public class ProtectionForm {
                 vector.add(3, deviceEntity.getDevicePort());
                 deviceManagementContentTableModel.addRow(vector);
             }
-            equipmentStatus = 1;
         } catch (JSONException e) {
             Tool.showMessage("获取设备失败或没有添加设备", "提示", 0);
         }
@@ -431,7 +467,7 @@ public class ProtectionForm {
      * 添加设备
      * */
     private void addEquipment() {
-        EquipmentFunction equipmentFunction = new EquipmentFunction(ctrlCenterEntity, this);
+        EquipmentFunction equipmentFunction = new EquipmentFunction(ctrlCenterEntity, regionEntityList, this);
         equipmentFunction.init();
     }
 
@@ -440,74 +476,136 @@ public class ProtectionForm {
      * */
     private void deleteEquipment() {
         if (resourceManagementContentTable.getSelectedRow() == -1) {
-            Tool.showMessage("请先选择一个设备或监控点", "提示", 0);
+            Tool.showMessage("请先选择设备", "提示", 0);
             return;
         }
         if (!Tool.showConfirm("确认删除", "提示")) {
             return;
         }
-        if (equipmentStatus == 1) {
-            String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/Device/delete";
-            org.json.JSONObject inboundData = new org.json.JSONObject();
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("DeviceID", deviceEntityList.get(resourceManagementContentTable.getSelectedRow()).getDeviceID());
-            JSONArray jsonarry = new JSONArray();
-            try {
-                jsonarry.put(0, map);
-                inboundData.put("Device", jsonarry);
-                org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instruction, inboundData);
-                if (resultData.getInt("statusCode") == 1) {
+        try {
+            //第一步：先进行撤防操作
+            MonitorPointEntity monitorPointEntity = monitorPointEntityList.get(resourceManagementContentTable.getSelectedRow());
+            String instructionGuard = "/ISAPI/SDT/Management/Unguard";
+            org.json.JSONObject inboundDataGuard = new org.json.JSONObject();
+            Map<String, Object> mapGuard = new HashMap<>();
+            JSONArray jsonArrayGuard = new JSONArray();
+            mapGuard.put("monitorPointID", monitorPointEntity.getMonitorPointID());
+            jsonArrayGuard.put(0, mapGuard);
+            inboundDataGuard.put("monitorPoint", jsonArrayGuard);
+            org.json.JSONObject resultDataGuard = Tool.sendInstructionAndReceiveStatus(3, instructionGuard, inboundDataGuard);
+            if (resultDataGuard.getInt("statusCode") == 1) {
+                //第二步：删除设备
+                String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/Device/delete";
+                org.json.JSONObject inboundDataEquipment = new org.json.JSONObject();
+                HashMap<String, Object> mapEquipment = new HashMap<String, Object>();
+                mapEquipment.put("DeviceID", monitorPointEntity.getDeviceID());
+                JSONArray jsonArrayEquipment = new JSONArray();
+                jsonArrayEquipment.put(0, mapEquipment);
+                inboundDataEquipment.put("Device", jsonArrayEquipment);
+                org.json.JSONObject resultDataEquipment = Tool.sendInstructionAndReceiveStatus(2, instruction, inboundDataEquipment);
+                if (resultDataEquipment.getInt("statusCode") == 1) {
                     Tool.showMessage("删除成功", "提示", 0);
-                    getDevice();
+                    getMonitor();
                 } else {
-                    Tool.showMessage("删除失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                    Tool.showMessage("删除设备失败，错误码：" + resultDataEquipment.getInt("statusCode"), "提示", 0);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                Tool.showMessage("撤防失败,错误码：" + resultDataGuard.getInt("statusCode"), "提示", 0);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-    //获取监控点信息
-    private void getMonitor(RegionEntity regionEntity) {
-        String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/region/" + regionEntity.getRegionID() + "/monitorPoint/search";
+    //获取全部监控点信息
+    public void getMonitor() {
+        monitorPointEntityList.clear();
+        String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/monitorPoint/search";
         org.json.JSONObject inboundData = new org.json.JSONObject();
         try {
-            String[] columnResourceMonitorInfo = {"监控点名称", "相机类型", "IP地址", "端口", "布防状态"};
+            String[] columnResourceMonitorInfo = {"设备名称", "区域", "IP地址", "端口", "布防状态"};
             deviceManagementContentTableModel.setColumnIdentifiers(columnResourceMonitorInfo);
+            resourceManagementContentTable.setModel(deviceManagementContentTableModel);
+            deviceManagementContentTableModel.setRowCount(0);
             inboundData.put("searchResultPosition", 0);
             inboundData.put("maxResults", 100);
             inboundData.put("isRegion", "yes");
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
-            monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("region")).getString("monitorPoint"), MonitorPointEntity.class);
-            System.out.println("一核监控点信息" + monitorPointEntityList.get(0).getMonitorPointName());
+            monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
+            for (MonitorPointEntity monitorPointEntity : monitorPointEntityList) {
+                Vector vector = new Vector();
+                vector.add(0, monitorPointEntity.getMonitorPointName());
+                vector.add(1, monitorPointEntity.getRegionName());
+                vector.add(2, monitorPointEntity.getDeviceIP());
+                vector.add(3, monitorPointEntity.getDevicePort());
+                vector.add(4, monitorPointEntity.getIsGuard());
+                deviceManagementContentTableModel.addRow(vector);
+            }
         } catch (JSONException e) {
             Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
+            e.printStackTrace();
         }
     }
 
     /*
-     * 添加监控点
+     * 布控管理
      * */
-    private void addMonitor() {
-        //获取监控点列表
-        String instructionGet = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/monitorPoint/search";
-        org.json.JSONObject inboundDataGet = new org.json.JSONObject();
+    /*
+     * 获取全部布控信息
+     * */
+    public void getMonitorList() {
+        relateInfoEntityList.clear();
+        monitorManagementContentTableModel.setRowCount(0);
+        String instruction = "/ISAPI/Intelligent/FDLib/executeControl?format=json";
+        org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(1, instruction, null);
         try {
-            inboundDataGet.put("searchResultPosition", 0);
-            inboundDataGet.put("maxResults", 100);
-//            inboundDataGet.put("isRegion", "no");
-            org.json.JSONObject resultDataGet = Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGet);
-            Thread.sleep(2000);
-            List<MonitorPointEntity> monitorPointEntities = JSONObject.parseArray(new org.json.JSONObject(resultDataGet.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
-//            List<MonitorPointEntity> monitorPointEntities = JSONObject.parseArray(resultDataGet.getString("monitorPoint"), MonitorPointEntity.class);
-            System.out.println("监控点数量：" + monitorPointEntities.size());
+            relateInfoEntityList = JSONObject.parseArray(resultData.getString("relateInfo"), RelateInfoEntity.class);
+            for (RelateInfoEntity relateInfoEntity : relateInfoEntityList) {
+                Vector vector = new Vector();
+                vector.add(0, relateInfoEntity.getName());
+                vector.add(1, relateInfoEntity.getListType());
+                vector.add(2, relateInfoEntity.getFDID());
+                vector.add(3, relateInfoEntity.getCameraName());
+                vector.add(4, relateInfoEntity.getPlanInfo().get(0).getStartTime() + "-" + relateInfoEntity.getPlanInfo().get(0).getEndTime());
+                vector.add(5, relateInfoEntity.getCreateTime());
+                monitorManagementContentTableModel.addRow(vector);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+    }
+
+    /*
+     * 添加布控
+     * */
+    private void addMonitor() {
+        MonitorFunction monitorFunction = new MonitorFunction(fdLibEntityList, monitorPointEntityList, this);
+        monitorFunction.init();
+    }
+
+    /*
+     * 删除布控
+     * */
+    private void deleteMonitor() {
+        if (monitorManagementContentTable.getSelectedRow() == -1) {
+            Tool.showMessage("请先选择布控信息", "提示", 0);
+            return;
+        }
+        if (!Tool.showConfirm("确认删除？", "提示")) {
+            return;
+        }
+        String instruction = "/ISAPI/Intelligent/FDLib/executeControl?format=json&relateID=" + relateInfoEntityList.get(monitorManagementContentTable.getSelectedRow()).getRelateID();
+        org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(4, instruction, null);
+        try {
+            if (resultData.getInt("statusCode") == 1) {
+                Tool.showMessage("删除成功", "提示", 0);
+                getMonitorList();
+            } else {
+                Tool.showMessage("删除设备失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     public void init() {
@@ -516,5 +614,18 @@ public class ProtectionForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        //测试播放视频
+        //加载vlc播放器相关库
+        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+        livePreviewContentOnePanel.setLayout(new GridLayout(1, 1, 2, 2));
+        livePreviewContentOnePanel.add(mediaPlayerComponent);
+        livePreviewContentOnePanel.updateUI();
+        //设置参数并播放
+        EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+        String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
+        mediaPlayer.playMedia("rtsp://admin:hik12345@192.168.3.103:554/Streaming/Channels/101?transportmode=unicast", options); //播放rtsp流
+        mediaPlayer.stop();//停止了哈
     }
 }

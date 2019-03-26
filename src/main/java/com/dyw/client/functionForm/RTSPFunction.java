@@ -53,9 +53,9 @@ public class RTSPFunction {
 
         //将播放窗口放入swing窗体
         EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-        video.setLayout(new GridLayout(1, 1, 2, 2));
-        video.add(mediaPlayerComponent);
-        video.updateUI();
+        rtspFunction.setLayout(new GridLayout(1, 1, 2, 2));
+        rtspFunction.add(mediaPlayerComponent);
+        rtspFunction.updateUI();
 
         //设置参数并播放
         mediaPlayer = mediaPlayerComponent.getMediaPlayer();
