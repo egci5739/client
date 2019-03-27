@@ -145,8 +145,11 @@ public class MultiComboBox extends JComponent {
             builder.append(dv);
             builder.append(valueSperator);
         }
-
         editor.setText(builder.substring(0, builder.length() > 0 ? builder.length() - 1 : 0).toString());
+    }
+
+    public void setText(String oldInfo) {
+        editor.setText(oldInfo);
     }
 
     private class EditorHandler implements MouseListener {

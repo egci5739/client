@@ -62,7 +62,7 @@
                       <grid id="793bf" binding="livePreviewContentOnePanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
                         <properties>
                           <background color="-11711155"/>
@@ -73,10 +73,10 @@
                       <grid id="ce185" binding="livePreviewContentTwoPanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
                         <properties>
-                          <background color="-1316622"/>
+                          <background color="-11711155"/>
                         </properties>
                         <border type="none"/>
                         <children/>
@@ -84,54 +84,66 @@
                       <grid id="fbafa" binding="livePreviewContentThreePanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
                       <grid id="2ffa7" binding="livePreviewContentFourPanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
                       <grid id="469d7" binding="livePreviewContentFivePanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
                       <grid id="3d82d" binding="livePreviewContentSixPanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
                       <grid id="d6de" binding="livePreviewContentSevenPanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
                       <grid id="b6bd2" binding="livePreviewContentEightPanel" layout-manager="GridBagLayout">
                         <constraints>
                           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                          <gridbag weightx="0.5" weighty="0.25"/>
+                          <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <background color="-11711155"/>
+                        </properties>
                         <border type="none"/>
                         <children/>
                       </grid>
@@ -146,7 +158,51 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="acc56" binding="blackAlarmTitlePanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="dd566" class="javax.swing.JLabel" binding="blackAlarmTitleLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <text value="黑名单报警"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="28eff" binding="blackAlarmContentPanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.9"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="94dbf">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="1.0" weighty="1.0"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="9cee8" class="javax.swing.JTable" binding="table1" default-binding="true">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                </children>
               </grid>
               <grid id="e1e6b" binding="whiteAlarmPanel" layout-manager="GridBagLayout">
                 <constraints>
@@ -155,7 +211,51 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="f2147" binding="whiteAlarmTitlePanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="2822e" class="javax.swing.JLabel" binding="whiteAlarmTitleLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <text value="白名单报警"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="95149" binding="whiteAlarmContentPanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.9"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="4bff1">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="1.0" weighty="1.0"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="123e7" class="javax.swing.JTable" binding="table2" default-binding="true">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                </children>
               </grid>
               <grid id="5dc71" binding="snapAlarmPanel" layout-manager="GridBagLayout">
                 <constraints>
@@ -164,7 +264,53 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="afb17" binding="snapAlarmTitlePanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="a3f22" class="javax.swing.JLabel" binding="snapAlarmTitleLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <text value="人脸抓拍"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="93f59" binding="snapAlarmContentPanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.9"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="1cea5" binding="snapAlarmContentScroll">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="1.0" weighty="1.0"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="f530" class="javax.swing.JTable" binding="snapAlarmContentTable">
+                            <constraints/>
+                            <properties>
+                              <rowHeight value="160"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                </children>
               </grid>
             </children>
           </grid>
@@ -375,7 +521,7 @@
                       <text value="添加"/>
                     </properties>
                   </component>
-                  <component id="1ef23" class="javax.swing.JButton" binding="monitorManagemenEditButton">
+                  <component id="1ef23" class="javax.swing.JButton" binding="monitorManagementEditButton">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>

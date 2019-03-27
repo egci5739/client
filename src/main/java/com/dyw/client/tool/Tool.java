@@ -22,8 +22,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -528,5 +532,46 @@ public class Tool {
         staffEntity.setCardNumber(staffInfo[1]);
         staffEntity.setStaffId(Integer.parseInt(staffInfo[2]));
         return staffEntity;
+    }
+
+    /*
+     * 拼接rtsp视频流地址
+     * */
+    public static String getRTSPAddress(String var) {
+        StringBuilder stringBuilder = new StringBuilder(var);
+        stringBuilder.insert(7, "admin:hik12345@");
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 得到文件流
+     *
+     * @param url
+     * @return
+     */
+    public static byte[] getURLStream(String url) {
+        try {
+            URL httpUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) httpUrl.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5 * 1000);
+            InputStream inStream = conn.getInputStream();//通过输入流获取图片数据
+            byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
+            return btImg;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static byte[] readInputStream(InputStream inStream) throws Exception {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while ((len = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, len);
+        }
+        inStream.close();
+        return outStream.toByteArray();
     }
 }

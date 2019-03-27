@@ -2,6 +2,7 @@ package com.dyw.client.functionForm;
 
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
+import com.dyw.client.entity.protection.RelateInfoEntity;
 import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.MultiComboBox;
 import com.dyw.client.tool.NameCode;
@@ -45,8 +46,11 @@ public class MonitorFunction {
     private List<NameCode> monitorPoint;
     private List<NameCode> monitorPointsl;
 
-    public MonitorFunction(final List<FDLibEntity> fdLibEntityList, final List<MonitorPointEntity> monitorPointEntityList, final ProtectionForm protectionForm) {
-
+    public MonitorFunction(
+            final RelateInfoEntity relateInfoEntity,
+            final List<FDLibEntity> fdLibEntityList,
+            final List<MonitorPointEntity> monitorPointEntityList,
+            final ProtectionForm protectionForm) {
         objectIds = new ArrayList<>();
         rangeIds = new ArrayList<>();
         fdLib = new ArrayList<>();
@@ -59,7 +63,7 @@ public class MonitorFunction {
         monitorPoint = new ArrayList<>();
         monitorPointsl = new ArrayList<>();
         for (MonitorPointEntity monitorPointEntity : monitorPointEntityList) {
-            NameCode nameCode = new NameCode(monitorPointEntity.getMonitorPointID(), monitorPointEntity.getRegionName());
+            NameCode nameCode = new NameCode(monitorPointEntity.getMonitorPointID(), monitorPointEntity.getMonitorPointName());
             monitorPoint.add(nameCode);
         }
         monitorRangeCombo.initParameter(monitorPoint, monitorPointsl);
@@ -87,33 +91,59 @@ public class MonitorFunction {
         monitorConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String instruction = "/ISAPI/Intelligent/FDLib/executeControl?format=json";
-                JSONObject inboundDataOut = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-                Map<String, Object> map = new HashMap<>();
-                try {
-                    map.put("startTime", "00:00:00");
-                    map.put("endTime", "23:59:59");
-                    map.put("threshold", Integer.parseInt(monitorThresholdText.getText()));
-                    jsonArray.put(0, map);
-                    inboundDataOut.put("name", monitorNameText.getText());
-                    inboundDataOut.put("FDID", StringUtils.join(objectIds, ","));
-                    inboundDataOut.put("cameraID", StringUtils.join(rangeIds, ","));
-                    inboundDataOut.put("reason", monitorReasonText.getText());
-                    inboundDataOut.put("planInfo", jsonArray);
-                    JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
-                    if (resultData.getInt("statusCode") == 1) {
-                        Tool.showMessage("添加成功", "提示", 0);
-                        protectionForm.getMonitorList();
-                        frame.dispose();
-                    } else {
-                        Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                if (relateInfoEntity == null) {//新增
+                    String instructionAdd = "/ISAPI/Intelligent/FDLib/executeControl?format=json";
+                    JSONObject inboundDataOutAdd = new JSONObject();
+                    JSONArray jsonArrayAdd = new JSONArray();
+                    Map<String, Object> mapAdd = new HashMap<>();
+                    try {
+                        mapAdd.put("startTime", "00:00:00");
+                        mapAdd.put("endTime", "23:59:59");
+                        mapAdd.put("threshold", Integer.parseInt(monitorThresholdText.getText()));
+                        jsonArrayAdd.put(0, mapAdd);
+                        inboundDataOutAdd.put("name", monitorNameText.getText());
+                        inboundDataOutAdd.put("FDID", StringUtils.join(objectIds, ","));
+                        inboundDataOutAdd.put("cameraID", StringUtils.join(rangeIds, ","));
+                        inboundDataOutAdd.put("reason", monitorReasonText.getText());
+                        inboundDataOutAdd.put("planInfo", jsonArrayAdd);
+                        JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionAdd, inboundDataOutAdd);
+                        if (resultData.getInt("statusCode") == 1) {
+                            Tool.showMessage("添加成功", "提示", 0);
+                            protectionForm.getMonitorList();
+                            frame.dispose();
+                        } else {
+                            Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                        }
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
                     }
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
+                } else {//修改
+                    String instructionEdit = "/ISAPI/Intelligent/FDLib/executeControl?format=json&relateID=" + relateInfoEntity.getRelateID();
+                    JSONObject inboundDataOutEdit = new JSONObject();
+                    JSONArray jsonArrayEdit = new JSONArray();
+                    Map<String, Object> mapEdit = new HashMap<>();
+                    try {
+                        mapEdit.put("startTime", "00:00:00");
+                        mapEdit.put("endTime", "23:59:59");
+                        mapEdit.put("threshold", Integer.parseInt(monitorThresholdText.getText()));
+                        jsonArrayEdit.put(0, mapEdit);
+                        inboundDataOutEdit.put("name", monitorNameText.getText());
+                        inboundDataOutEdit.put("FDID", StringUtils.join(objectIds, ","));
+                        inboundDataOutEdit.put("cameraID", StringUtils.join(rangeIds, ","));
+                        inboundDataOutEdit.put("reason", monitorReasonText.getText());
+                        inboundDataOutEdit.put("planInfo", jsonArrayEdit);
+                        JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionEdit, inboundDataOutEdit);
+                        if (resultData.getInt("statusCode") == 1) {
+                            Tool.showMessage("添加成功", "提示", 0);
+                            protectionForm.getMonitorList();
+                            frame.dispose();
+                        } else {
+                            Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                        }
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-                System.out.println(monitorObjectCombo.getSelectedValues());
-                System.out.println(monitorRangeCombo.getSelectedValues());
             }
         });
         //取消
@@ -123,6 +153,14 @@ public class MonitorFunction {
                 frame.dispose();
             }
         });
+        //判断是否是编辑，如果是就加载旧信息
+        if (relateInfoEntity != null) {
+            monitorNameText.setText(relateInfoEntity.getName());
+            monitorThresholdText.setText(relateInfoEntity.getPlanInfo().get(0).getThreshold() + "");
+            monitorReasonText.setText(relateInfoEntity.getReason());
+            monitorObjectCombo.setText(relateInfoEntity.getFDID());
+            monitorRangeCombo.setText(relateInfoEntity.getCameraName());
+        }
     }
 
     private void createUIComponents() {

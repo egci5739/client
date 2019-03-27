@@ -8,9 +8,14 @@ import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.EquipmentFunction;
 import com.dyw.client.functionForm.FaceBaseFunction;
 import com.dyw.client.functionForm.MonitorFunction;
+import com.dyw.client.service.MyHttpHandlerService;
+import com.dyw.client.service.SnapAlarmTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.spi.HttpServerProvider;
+import net.iharder.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -25,9 +30,14 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 
@@ -95,18 +105,59 @@ public class ProtectionForm {
     private JPanel livePreviewContentSixPanel;
     private JPanel livePreviewContentSevenPanel;
     private JPanel livePreviewContentEightPanel;
+    private List<JPanel> livePreviewContentPanelList;
     private JPanel monitorManagementTolBarPanel;
     private JPanel monitorManagementContentPanel;
     private JButton monitorManagementAddButton;
-    private JButton monitorManagemenEditButton;
+    private JButton monitorManagementEditButton;
     private JButton monitorManagementDeleteButton;
     private JScrollPane monitorManagementContentScroll;
     private JTable monitorManagementContentTable;
+    //==================================
+    private JPanel blackAlarmTitlePanel;
+    private JPanel blackAlarmContentPanel;
+    private JPanel whiteAlarmTitlePanel;
+    private JPanel whiteAlarmContentPanel;
+    private JPanel snapAlarmTitlePanel;
+    private JPanel snapAlarmContentPanel;
+    private JLabel blackAlarmTitleLabel;
+    private JLabel whiteAlarmTitleLabel;
+    private JLabel snapAlarmTitleLabel;
+    private JTable snapAlarmContentTable;
+    private JScrollPane snapAlarmContentScroll;
+    private JTable table1;
+    private JTable table2;
+    private DefaultTableModel snapAlarmContentTableModel;
+
+    public HttpServer httpserver = null;
+
 
     /*
      * 构造函数
      * */
     public ProtectionForm() {
+        snapAlarmContentTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        String[] columnSnapAlarmInfo = {"抓拍图"};
+        snapAlarmContentTableModel.setColumnIdentifiers(columnSnapAlarmInfo);
+        snapAlarmContentTable.setModel(snapAlarmContentTableModel);
+        TableCellRenderer snapAlarmCellRenderer = new SnapAlarmTableCellRenderer();
+        snapAlarmContentTable.setDefaultRenderer(Object.class, snapAlarmCellRenderer);
+        Vector vector = new Vector();
+        vector.add(0, Base64.encodeBytes(Tool.getURLStream("http://192.168.3.102:8080/kms/services/rest/dataInfoService/downloadFile?id=00000001/temp001/014_102530517_267036&token=7a57a5a7ffffffffc1a0316369671314")));
+        snapAlarmContentTableModel.addRow(vector);
+        /*
+         * 添加报警主机信息
+         * */
+        addAlarmHost();
+        /*
+         * 监听报警消息
+         * */
+        monitorAlarmInfo();
         try {
             //获取根控制中心
             ctrlCenterEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter?source=device", null).getString("ctrlCenter"), CtrlCenterEntity.class).get(0);
@@ -115,6 +166,15 @@ public class ProtectionForm {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        livePreviewContentPanelList = new ArrayList<>();
+        livePreviewContentPanelList.add(livePreviewContentOnePanel);
+        livePreviewContentPanelList.add(livePreviewContentTwoPanel);
+        livePreviewContentPanelList.add(livePreviewContentThreePanel);
+        livePreviewContentPanelList.add(livePreviewContentFourPanel);
+        livePreviewContentPanelList.add(livePreviewContentFivePanel);
+        livePreviewContentPanelList.add(livePreviewContentSixPanel);
+        livePreviewContentPanelList.add(livePreviewContentSevenPanel);
+        livePreviewContentPanelList.add(livePreviewContentEightPanel);
         fdLibEntityList = new ArrayList<>();
         faceInfoEntityList = new ArrayList<>();
         FDLibNames = new ArrayList<>();
@@ -233,7 +293,68 @@ public class ProtectionForm {
                 deleteMonitor();
             }
         });
+        //编辑布控
+        monitorManagementEditButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editMonitor();
+            }
+        });
     }
+
+    /*
+     * 添加报警主机信息
+     * */
+    private void addAlarmHost() {
+        try {
+            //第一步：获取全部报警主机信息，判断是否已存在
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
+//            System.out.println(url);
+            String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
+            List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
+            for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
+                if (httpHostNotificationEntity.getUrl().equals(url)) {
+                    return;
+                }
+            }
+            //新增报警主机信息
+            String instruction = "/ISAPI/Event/notification/httpHosts?format=json";
+            org.json.JSONObject inboundDataIn = new org.json.JSONObject();
+            org.json.JSONObject inboundDataOut = new org.json.JSONObject();
+            inboundDataIn.put("url", url);
+            inboundDataIn.put("protocolType", "HTTP");//这里要注意
+            inboundDataIn.put("parameterFormatType", "json");
+            inboundDataIn.put("addressingFormatType", "ipaddress");
+            inboundDataIn.put("httpAuthenticationMethod", "none");//这里要注意
+            inboundDataIn.put("eventType", "alarmResult,captureResult,HFPD");
+            inboundDataOut.put("HttpHostNotification", inboundDataIn);
+            org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
+            if (resultData.getInt("statusCode") == 1) {
+                Tool.showMessage("添加报警主机成功", "提示", 0);
+            } else {
+                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+            }
+        } catch (JSONException | UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * 监听报警消息
+     * */
+    public void monitorAlarmInfo() {
+        HttpServerProvider provider = HttpServerProvider.provider();
+        try {
+            httpserver = provider.createHttpServer(new InetSocketAddress(12346), 100);
+            httpserver.createContext("/alarm", new MyHttpHandlerService());
+            httpserver.setExecutor(null);
+            httpserver.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     //=====================================================================================
     /*
@@ -579,7 +700,20 @@ public class ProtectionForm {
      * 添加布控
      * */
     private void addMonitor() {
-        MonitorFunction monitorFunction = new MonitorFunction(fdLibEntityList, monitorPointEntityList, this);
+        MonitorFunction monitorFunction = new MonitorFunction(null, fdLibEntityList, monitorPointEntityList, this);
+        monitorFunction.init();
+    }
+
+    /*
+     * 编辑布控
+     * */
+    private void editMonitor() {
+        if (monitorManagementContentTable.getSelectedRow() == -1) {
+            Tool.showMessage("请先选择布控信息", "提示", 0);
+            return;
+        }
+        RelateInfoEntity relateInfoEntity = relateInfoEntityList.get(monitorManagementContentTable.getSelectedRow());
+        MonitorFunction monitorFunction = new MonitorFunction(relateInfoEntity, fdLibEntityList, monitorPointEntityList, this);
         monitorFunction.init();
     }
 
@@ -608,6 +742,13 @@ public class ProtectionForm {
         }
     }
 
+    /*
+     * 显示报警信息
+     * */
+    public void showAlarmInfo() {
+
+    }
+
     public void init() {
         JFrame frame = new JFrame("ProtectionForm");
         frame.setContentPane(this.protection);
@@ -618,14 +759,16 @@ public class ProtectionForm {
         //加载vlc播放器相关库
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-        EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-        livePreviewContentOnePanel.setLayout(new GridLayout(1, 1, 2, 2));
-        livePreviewContentOnePanel.add(mediaPlayerComponent);
-        livePreviewContentOnePanel.updateUI();
-        //设置参数并播放
-        EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-        String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
-        mediaPlayer.playMedia("rtsp://admin:hik12345@192.168.3.103:554/Streaming/Channels/101?transportmode=unicast", options); //播放rtsp流
-        mediaPlayer.stop();//停止了哈
+        for (int i = 0; i < monitorPointEntityList.size(); i++) {
+            EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+            livePreviewContentPanelList.get(i).setLayout(new GridLayout(1, 1, 2, 2));
+            livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
+            livePreviewContentPanelList.get(i).updateUI();
+            //设置参数并播放
+            EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+            String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
+            mediaPlayer.playMedia(Tool.getRTSPAddress(monitorPointEntityList.get(i).getStreamURL()), options); //播放rtsp流
+            mediaPlayer.start();//停止了哈
+        }
     }
 }
