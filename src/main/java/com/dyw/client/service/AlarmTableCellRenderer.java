@@ -21,7 +21,7 @@ public class AlarmTableCellRenderer extends DefaultTableCellRenderer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return new JLabel(Tool.getImageScale(imageIcon, 160, 160, 160, 3));
+            return new JLabel(Tool.getImageScale(imageIcon, 1, 1, 120, 3));
         } else {
             return renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }

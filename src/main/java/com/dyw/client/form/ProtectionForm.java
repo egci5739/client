@@ -35,6 +35,8 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -130,9 +132,23 @@ public class ProtectionForm {
     private JTable whiteAlarmContentTable;
     private JScrollPane blackAlarmContentScroll;
     private JScrollPane whiteAlarmContentScroll;
+    private JCheckBox blackAlarmRollingCheckBOx;
+    private JButton blackAlarmClearButton;
+    private JCheckBox snapAlarmRollingCheckBOx;
+    private JButton snapAlarmClearButton;
+    private JCheckBox whiteAlarmRollingCheckBOx;
+    private JButton whiteAlarmClearButton;
     private DefaultTableModel snapAlarmContentTableModel;
     private DefaultTableModel blackAlarmContentTableModel;
     private DefaultTableModel whiteAlarmContentTableModel;
+
+    private JScrollBar snapAlarmScrollBar;
+    private JScrollBar blackAlarmScrollBar;
+    private JScrollBar whiteAlarmScrollBar;
+    private int snapAlarmRollingStatus = 1;
+    private int blackAlarmRollingStatus = 1;
+    private int whiteAlarmRollingStatus = 1;
+
 
     public HttpServer httpserver = null;
 
@@ -148,11 +164,30 @@ public class ProtectionForm {
                 return false;
             }
         };
-        String[] columnSnapAlarmInfo = {"抓拍图"};
+        String[] columnSnapAlarmInfo = {"抓拍图", "时间"};
         snapAlarmContentTableModel.setColumnIdentifiers(columnSnapAlarmInfo);
         snapAlarmContentTable.setModel(snapAlarmContentTableModel);
         TableCellRenderer snapAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         snapAlarmContentTable.setDefaultRenderer(Object.class, snapAlarmCellRenderer);
+        snapAlarmScrollBar = snapAlarmContentScroll.getVerticalScrollBar();
+        snapAlarmRollingCheckBOx.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox jcb = (JCheckBox) e.getItem();
+                // 判断是否被选择
+                if (jcb.isSelected()) {
+                    snapAlarmRollingStatus = 1;
+                } else {
+                    snapAlarmRollingStatus = 0;
+                }
+            }
+        });
+        snapAlarmClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snapAlarmContentTableModel.setRowCount(0);
+            }
+        });
         //黑名单
         blackAlarmContentTableModel = new DefaultTableModel() {
             @Override
@@ -165,6 +200,25 @@ public class ProtectionForm {
         blackAlarmContentTable.setModel(blackAlarmContentTableModel);
         TableCellRenderer blackAlarmCellRenderer = new AlarmTableCellRenderer();
         blackAlarmContentTable.setDefaultRenderer(Object.class, blackAlarmCellRenderer);
+        blackAlarmScrollBar = blackAlarmContentScroll.getVerticalScrollBar();
+        blackAlarmRollingCheckBOx.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox jcb = (JCheckBox) e.getItem();
+                // 判断是否被选择
+                if (jcb.isSelected()) {
+                    blackAlarmRollingStatus = 1;
+                } else {
+                    blackAlarmRollingStatus = 0;
+                }
+            }
+        });
+        blackAlarmClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                blackAlarmContentTableModel.setRowCount(0);
+            }
+        });
         //白名单
         whiteAlarmContentTableModel = new DefaultTableModel() {
             @Override
@@ -177,6 +231,25 @@ public class ProtectionForm {
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
         TableCellRenderer whiteAlarmCellRenderer = new AlarmTableCellRenderer();
         whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
+        whiteAlarmScrollBar = whiteAlarmContentScroll.getVerticalScrollBar();
+        whiteAlarmRollingCheckBOx.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox jcb = (JCheckBox) e.getItem();
+                // 判断是否被选择
+                if (jcb.isSelected()) {
+                    whiteAlarmRollingStatus = 1;
+                } else {
+                    whiteAlarmRollingStatus = 0;
+                }
+            }
+        });
+        whiteAlarmClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                whiteAlarmContentTableModel.setRowCount(0);
+            }
+        });
         /*
          * 添加报警主机信息
          * */
@@ -779,7 +852,11 @@ public class ProtectionForm {
                 Vector vectorOne = new Vector();
                 System.out.println("图片url：" + captureLibResultEntity.getImage());
                 vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
+                vectorOne.add(1, time);
                 snapAlarmContentTableModel.addRow(vectorOne);
+                if (snapAlarmRollingStatus == 1) {
+                    moveScrollBarToBottom(snapAlarmScrollBar);
+                }
                 break;
             case 1:
                 Vector vectorTwo = new Vector();
@@ -788,9 +865,21 @@ public class ProtectionForm {
                 vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
                 vectorTwo.add(2, Tool.displayAlarmResult(time, alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0)));
                 blackAlarmContentTableModel.addRow(vectorTwo);
+                if (blackAlarmRollingStatus == 1) {
+                    moveScrollBarToBottom(blackAlarmScrollBar);
+                }
                 break;
             default:
                 break;
+        }
+    }
+
+    /*
+     * 将滚动条移到底部
+     * */
+    private void moveScrollBarToBottom(JScrollBar jScrollBar) {
+        if (jScrollBar != null) {
+            jScrollBar.setValue(jScrollBar.getMaximum());
         }
     }
 
@@ -799,21 +888,24 @@ public class ProtectionForm {
         frame.setContentPane(this.protection);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         //测试播放视频
         //加载vlc播放器相关库
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-        for (int i = 0; i < monitorPointEntityList.size(); i++) {
+        for (int i = 0; i < 5; i++) {
             EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-            livePreviewContentPanelList.get(i).setLayout(new GridLayout(1, 1, 2, 2));
+            GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
+            livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
             livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
             livePreviewContentPanelList.get(i).updateUI();
             //设置参数并播放
             EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
             String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
-            mediaPlayer.playMedia(Tool.getRTSPAddress(monitorPointEntityList.get(i).getStreamURL()), options); //播放rtsp流
+            mediaPlayer.playMedia(Tool.getRTSPAddress(monitorPointEntityList.get(0).getStreamURL()), options); //播放rtsp流
             mediaPlayer.start();//停止了哈
+            livePreviewContentPanelList.get(i).setEnabled(false);
         }
     }
 }

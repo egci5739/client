@@ -196,7 +196,7 @@ public class Tool {
         }
         //高、宽等同
         if (type == 3) {
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) (width / height * panel), (int) panel, Image.SCALE_DEFAULT));
+            imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) (height / width * panel), (int) panel, Image.SCALE_DEFAULT));
         }
         return imageIcon;
     }
@@ -246,9 +246,9 @@ public class Tool {
     public static String displayAlarmResult(String time, CandidateEntity candidateEntity) {
         return "<html><body>报警时间：" +
                 time +
-                "<br>姓名：" +
+                "<br>姓名：<br>    " +
                 candidateEntity.getReserve_field().getName() +
-                "<br>相似度：" +
+                "<br>相似度：<br>    " +
                 candidateEntity.getSimilarity() +
                 "</body></html>";
     }
