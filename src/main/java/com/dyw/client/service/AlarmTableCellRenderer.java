@@ -8,12 +8,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 
-public class SnapAlarmTableCellRenderer extends DefaultTableCellRenderer {
+public class AlarmTableCellRenderer extends DefaultTableCellRenderer {
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 
     public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus, int row, int column) {
-        if (column == 0) {
+        if (column == 0 || column == 1) {
             //调用基类方法
             ImageIcon imageIcon = null;
             try {

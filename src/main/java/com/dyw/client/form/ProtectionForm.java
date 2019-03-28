@@ -8,6 +8,7 @@ import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.EquipmentFunction;
 import com.dyw.client.functionForm.FaceBaseFunction;
 import com.dyw.client.functionForm.MonitorFunction;
+import com.dyw.client.service.AlarmTableCellRenderer;
 import com.dyw.client.service.MyHttpHandlerService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
 import com.dyw.client.tool.Tool;
@@ -125,9 +126,13 @@ public class ProtectionForm {
     private JLabel snapAlarmTitleLabel;
     private JTable snapAlarmContentTable;
     private JScrollPane snapAlarmContentScroll;
-    private JTable table1;
-    private JTable table2;
+    private JTable blackAlarmContentTable;
+    private JTable whiteAlarmContentTable;
+    private JScrollPane blackAlarmContentScroll;
+    private JScrollPane whiteAlarmContentScroll;
     private DefaultTableModel snapAlarmContentTableModel;
+    private DefaultTableModel blackAlarmContentTableModel;
+    private DefaultTableModel whiteAlarmContentTableModel;
 
     public HttpServer httpserver = null;
 
@@ -136,6 +141,7 @@ public class ProtectionForm {
      * 构造函数
      * */
     public ProtectionForm() {
+        //抓拍图
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -147,9 +153,30 @@ public class ProtectionForm {
         snapAlarmContentTable.setModel(snapAlarmContentTableModel);
         TableCellRenderer snapAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         snapAlarmContentTable.setDefaultRenderer(Object.class, snapAlarmCellRenderer);
-        Vector vector = new Vector();
-        vector.add(0, Base64.encodeBytes(Tool.getURLStream("http://192.168.3.102:8080/kms/services/rest/dataInfoService/downloadFile?id=00000001/temp001/014_102530517_267036&token=7a57a5a7ffffffffc1a0316369671314")));
-        snapAlarmContentTableModel.addRow(vector);
+        //黑名单
+        blackAlarmContentTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        String[] columnBlackAlarmInfo = {"抓拍图", "底图", "报警信息"};
+        blackAlarmContentTableModel.setColumnIdentifiers(columnBlackAlarmInfo);
+        blackAlarmContentTable.setModel(blackAlarmContentTableModel);
+        TableCellRenderer blackAlarmCellRenderer = new AlarmTableCellRenderer();
+        blackAlarmContentTable.setDefaultRenderer(Object.class, blackAlarmCellRenderer);
+        //白名单
+        whiteAlarmContentTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        String[] columnWhiteAlarmInfo = {"抓拍图", "底图", "报警信息"};
+        whiteAlarmContentTableModel.setColumnIdentifiers(columnWhiteAlarmInfo);
+        whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
+        TableCellRenderer whiteAlarmCellRenderer = new AlarmTableCellRenderer();
+        whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
         /*
          * 添加报警主机信息
          * */
@@ -346,7 +373,7 @@ public class ProtectionForm {
         HttpServerProvider provider = HttpServerProvider.provider();
         try {
             httpserver = provider.createHttpServer(new InetSocketAddress(12346), 100);
-            httpserver.createContext("/alarm", new MyHttpHandlerService());
+            httpserver.createContext("/alarm", new MyHttpHandlerService(this));
             httpserver.setExecutor(null);
             httpserver.start();
         } catch (IOException e) {
@@ -744,9 +771,27 @@ public class ProtectionForm {
 
     /*
      * 显示报警信息
+     * status  0：抓拍图；1：名单报警；
      * */
-    public void showAlarmInfo() {
-
+    public void showAlarmInfo(int status, CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity, String time) {
+        switch (status) {
+            case 0:
+                Vector vectorOne = new Vector();
+                System.out.println("图片url：" + captureLibResultEntity.getImage());
+                vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
+                snapAlarmContentTableModel.addRow(vectorOne);
+                break;
+            case 1:
+                Vector vectorTwo = new Vector();
+                System.out.println("图片url：" + alarmResultEntity.getImage());
+                vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
+                vectorTwo.add(2, Tool.displayAlarmResult(time, alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0)));
+                blackAlarmContentTableModel.addRow(vectorTwo);
+                break;
+            default:
+                break;
+        }
     }
 
     public void init() {

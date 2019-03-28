@@ -154,7 +154,7 @@
               <grid id="f9c7a" binding="blackAlarmPanel" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.2" weighty="1.0"/>
+                  <gridbag weightx="0.25" weighty="1.0"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -186,7 +186,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="94dbf">
+                      <scrollpane id="94dbf" binding="blackAlarmContentScroll">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="1.0" weighty="1.0"/>
@@ -194,9 +194,11 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="9cee8" class="javax.swing.JTable" binding="table1" default-binding="true">
+                          <component id="9cee8" class="javax.swing.JTable" binding="blackAlarmContentTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <rowHeight value="160"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -207,7 +209,7 @@
               <grid id="e1e6b" binding="whiteAlarmPanel" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.2" weighty="1.0"/>
+                  <gridbag weightx="0.25" weighty="1.0"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -239,7 +241,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <scrollpane id="4bff1">
+                      <scrollpane id="4bff1" binding="whiteAlarmContentScroll">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="1.0" weighty="1.0"/>
@@ -247,7 +249,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="123e7" class="javax.swing.JTable" binding="table2" default-binding="true">
+                          <component id="123e7" class="javax.swing.JTable" binding="whiteAlarmContentTable">
                             <constraints/>
                             <properties/>
                           </component>
@@ -260,7 +262,7 @@
               <grid id="5dc71" binding="snapAlarmPanel" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.1" weighty="1.0"/>
+                  <gridbag weightx="0.05" weighty="1.0"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -303,6 +305,7 @@
                           <component id="f530" class="javax.swing.JTable" binding="snapAlarmContentTable">
                             <constraints/>
                             <properties>
+                              <autoscrolls value="true"/>
                               <rowHeight value="160"/>
                             </properties>
                           </component>

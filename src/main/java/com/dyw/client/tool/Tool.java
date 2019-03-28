@@ -8,6 +8,7 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.entity.StaffEntity;
+import com.dyw.client.entity.protection.CandidateEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -193,6 +194,10 @@ public class Tool {
         if (type == 2) {
             imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) (width / height * panel), (int) panel, Image.SCALE_DEFAULT));
         }
+        //高、宽等同
+        if (type == 3) {
+            imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) (width / height * panel), (int) panel, Image.SCALE_DEFAULT));
+        }
         return imageIcon;
     }
 
@@ -232,6 +237,19 @@ public class Tool {
                 passInfoEntity.getEquipmentName() +
                 "<br>原因：" +
                 Tool.eventIdToEventName(passInfoEntity.getEventTypeId()) +
+                "</body></html>";
+    }
+
+    /*
+     * 显示布控报警对比信息
+     * */
+    public static String displayAlarmResult(String time, CandidateEntity candidateEntity) {
+        return "<html><body>报警时间：" +
+                time +
+                "<br>姓名：" +
+                candidateEntity.getReserve_field().getName() +
+                "<br>相似度：" +
+                candidateEntity.getSimilarity() +
                 "</body></html>";
     }
 
