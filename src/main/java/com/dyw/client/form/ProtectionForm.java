@@ -7,6 +7,7 @@ import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.EquipmentFunction;
 import com.dyw.client.functionForm.FaceBaseFunction;
+import com.dyw.client.functionForm.FaceInfoFunction;
 import com.dyw.client.functionForm.MonitorFunction;
 import com.dyw.client.service.AlarmTableCellRenderer;
 import com.dyw.client.service.MyHttpHandlerService;
@@ -33,10 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -45,6 +43,7 @@ import java.util.*;
 import java.util.List;
 
 public class ProtectionForm {
+    public static Map<String, String> fdLibMaps;//人脸库集合
     private Logger logger = LoggerFactory.getLogger(ProtectionForm.class);
     private DefaultTableModel deviceManagementContentTableModel;
     private DefaultTableModel personManagementContentResultTableModel;
@@ -88,7 +87,7 @@ public class ProtectionForm {
     private JPanel personManagementContentToolBarPanel;
     private JPanel personManagementContentResultPanel;
     private JPanel personManagementContentSelectPagePanel;
-    private JButton personManagementContentToolBarAddButton;
+    private JButton personManagementContentToolBarAddByCardButton;
     private JButton personManagementContentToolBarDeleteButton;
     private JTable personManagementContentResultTable;
     private JScrollPane personManagementContentResultScroll;
@@ -138,6 +137,7 @@ public class ProtectionForm {
     private JButton snapAlarmClearButton;
     private JCheckBox whiteAlarmRollingCheckBOx;
     private JButton whiteAlarmClearButton;
+    private JButton personManagementContentToolBarAddButton;
     private DefaultTableModel snapAlarmContentTableModel;
     private DefaultTableModel blackAlarmContentTableModel;
     private DefaultTableModel whiteAlarmContentTableModel;
@@ -148,6 +148,9 @@ public class ProtectionForm {
     private int snapAlarmRollingStatus = 1;
     private int blackAlarmRollingStatus = 1;
     private int whiteAlarmRollingStatus = 1;
+    private int snapAlarmBottomStatus = 0;
+    private int blackAlarmBottomStatus = 0;
+    private int whiteAlarmBottomStatus = 0;
 
 
     public HttpServer httpserver = null;
@@ -157,6 +160,7 @@ public class ProtectionForm {
      * 构造函数
      * */
     public ProtectionForm() {
+        fdLibMaps = new HashMap<>();
         //抓拍图
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
@@ -169,6 +173,16 @@ public class ProtectionForm {
         snapAlarmContentTable.setModel(snapAlarmContentTableModel);
         TableCellRenderer snapAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         snapAlarmContentTable.setDefaultRenderer(Object.class, snapAlarmCellRenderer);
+        snapAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && snapAlarmBottomStatus <= 3) {
+                    snapAlarmContentScroll.getVerticalScrollBar().setValue(snapAlarmContentScroll.getVerticalScrollBar().getModel().getMaximum() - snapAlarmContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    snapAlarmBottomStatus++;
+                }
+            }
+        });
+        snapAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         snapAlarmScrollBar = snapAlarmContentScroll.getVerticalScrollBar();
         snapAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -200,6 +214,16 @@ public class ProtectionForm {
         blackAlarmContentTable.setModel(blackAlarmContentTableModel);
         TableCellRenderer blackAlarmCellRenderer = new AlarmTableCellRenderer();
         blackAlarmContentTable.setDefaultRenderer(Object.class, blackAlarmCellRenderer);
+        blackAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && blackAlarmBottomStatus <= 3) {
+                    blackAlarmContentScroll.getVerticalScrollBar().setValue(blackAlarmContentScroll.getVerticalScrollBar().getModel().getMaximum() - blackAlarmContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    blackAlarmBottomStatus++;
+                }
+            }
+        });
+        blackAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         blackAlarmScrollBar = blackAlarmContentScroll.getVerticalScrollBar();
         blackAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -231,6 +255,16 @@ public class ProtectionForm {
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
         TableCellRenderer whiteAlarmCellRenderer = new AlarmTableCellRenderer();
         whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
+        whiteAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && whiteAlarmBottomStatus <= 3) {
+                    whiteAlarmContentScroll.getVerticalScrollBar().setValue(whiteAlarmContentScroll.getVerticalScrollBar().getModel().getMaximum() - whiteAlarmContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    whiteAlarmBottomStatus++;
+                }
+            }
+        });
+        whiteAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         whiteAlarmScrollBar = whiteAlarmContentScroll.getVerticalScrollBar();
         whiteAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -339,6 +373,13 @@ public class ProtectionForm {
                 showSelectBase();
             }
         });
+        //按卡号添加人员
+        personManagementContentToolBarAddByCardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addFaceByCard();
+            }
+        });
         //添加人员
         personManagementContentToolBarAddButton.addActionListener(new ActionListener() {
             @Override
@@ -400,6 +441,7 @@ public class ProtectionForm {
                 editMonitor();
             }
         });
+
     }
 
     /*
@@ -463,11 +505,13 @@ public class ProtectionForm {
     //获取人脸库列表
     public void getFDLib() {
         try {
+            fdLibMaps.clear();
             fdLibEntityList.clear();
             FDLibNames.clear();
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
                 FDLibNames.add(fdLibEntity.getName());
+                fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
             }
             System.out.println(faceInfoEntityList);
             personManagementBaseList.setListData(FDLibNames.toArray());
@@ -492,8 +536,8 @@ public class ProtectionForm {
         faceBaseFunction.init();
     }
 
-    //添加人脸
-    private void addFace() {
+    //按卡号添加人脸
+    private void addFaceByCard() {
         if (FDID == null) {
             Tool.showMessage("请选择一个人脸库", "提示", 0);
             return;
@@ -536,6 +580,16 @@ public class ProtectionForm {
         }
     }
 
+    //添加人脸信息
+    private void addFace() {
+        if (FDID == null) {
+            Tool.showMessage("请选择一个人脸库", "提示", 0);
+            return;
+        }
+        FaceInfoFunction faceInfoFunction = new FaceInfoFunction(FDID, this);
+        faceInfoFunction.init();
+    }
+
     //删除人脸库
     private void deleteFDLib() {
         if (FDID == null) {
@@ -562,10 +616,11 @@ public class ProtectionForm {
     /*
      * 显示选定人脸库中的人员信息
      * */
-    private void showSelectBase() {
+    public void showSelectBase() {
         personManagementContentResultTableModel.setRowCount(0);
         FDLibEntity fdLibEntity = fdLibEntityList.get(personManagementBaseList.getSelectedIndex());
         FDID = fdLibEntity.getFDID();
+        System.out.println("FDID是：" + FDID);
         try {
             if (fdLibEntityList.get(personManagementBaseList.getSelectedIndex()) != null) {
                 //获取人脸库中的人脸数据
@@ -579,13 +634,22 @@ public class ProtectionForm {
                 faceInfoEntityList.clear();
                 faceInfoEntityList = JSON.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData).getString("MatchList"), FaceInfoEntity.class);
                 for (FaceInfoEntity faceInfoEntity : faceInfoEntityList) {
-                    StaffEntity staffEntity = Tool.splitNameAndGetStaff(faceInfoEntity.getName());
-                    Vector v = new Vector();
-                    v.add(0, staffEntity.getName());
-                    v.add(1, faceInfoEntity.getGender());
-                    v.add(2, faceInfoEntity.getBornTime());
-                    v.add(3, staffEntity.getCardNumber());
-                    personManagementContentResultTableModel.addRow(v);
+                    if (faceInfoEntity.getName().contains("_")) {//显示卡号
+                        StaffEntity staffEntity = Tool.splitNameAndGetStaff(faceInfoEntity.getName());
+                        Vector v = new Vector();
+                        v.add(0, staffEntity.getName());
+                        v.add(1, faceInfoEntity.getGender());
+                        v.add(2, faceInfoEntity.getBornTime());
+                        v.add(3, staffEntity.getCardNumber());
+                        personManagementContentResultTableModel.addRow(v);
+                    } else {//没有卡号
+                        Vector v = new Vector();
+                        v.add(0, faceInfoEntity.getName());
+                        v.add(1, faceInfoEntity.getGender());
+                        v.add(2, faceInfoEntity.getBornTime());
+                        v.add(3, "");
+                        personManagementContentResultTableModel.addRow(v);
+                    }
                 }
             }
         } catch (ArrayIndexOutOfBoundsException | NullPointerException | JSONException ignored) {
@@ -846,28 +910,28 @@ public class ProtectionForm {
      * 显示报警信息
      * status  0：抓拍图；1：名单报警；
      * */
-    public void showAlarmInfo(int status, CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity, String time) {
+    public void showAlarmInfo(int status, CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity) {
         switch (status) {
             case 0:
                 Vector vectorOne = new Vector();
-                System.out.println("图片url：" + captureLibResultEntity.getImage());
                 vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
-                vectorOne.add(1, time);
+                vectorOne.add(1, captureLibResultEntity.getTargetAttrs().getFaceTime() + "\n" + captureLibResultEntity.getTargetAttrs().getDeviceName());
                 snapAlarmContentTableModel.addRow(vectorOne);
                 if (snapAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(snapAlarmScrollBar);
                 }
+                snapAlarmBottomStatus = 0;
                 break;
             case 1:
                 Vector vectorTwo = new Vector();
-                System.out.println("图片url：" + alarmResultEntity.getImage());
                 vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
                 vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
-                vectorTwo.add(2, Tool.displayAlarmResult(time, alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0)));
+                vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0)));
                 blackAlarmContentTableModel.addRow(vectorTwo);
                 if (blackAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(blackAlarmScrollBar);
                 }
+                blackAlarmBottomStatus = 0;
                 break;
             default:
                 break;
@@ -894,7 +958,12 @@ public class ProtectionForm {
         //加载vlc播放器相关库
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
+            String streamURL = monitorPointEntityList.get(0).getStreamURL();
+            if (streamURL == null) {
+                return;
+            }
+            System.out.println("视频流：" + streamURL);
             EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
             GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
             livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
@@ -903,9 +972,9 @@ public class ProtectionForm {
             //设置参数并播放
             EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
             String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
-            mediaPlayer.playMedia(Tool.getRTSPAddress(monitorPointEntityList.get(0).getStreamURL()), options); //播放rtsp流
+            mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
             mediaPlayer.start();//停止了哈
-            livePreviewContentPanelList.get(i).setEnabled(false);
+//            livePreviewContentPanelList.get(i).setEnabled(false);
         }
     }
 }

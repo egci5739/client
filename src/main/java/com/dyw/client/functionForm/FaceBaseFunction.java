@@ -45,6 +45,7 @@ public class FaceBaseFunction {
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("添加成功", "结果", 0);
                             protectionForm.getFDLib();
+                            protectionForm.showSelectBase();
                             frame.dispose();
                         } else {
                             Tool.showMessage("添加失败", "结果", 0);
@@ -60,6 +61,7 @@ public class FaceBaseFunction {
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("修改成功", "结果", 0);
                             protectionForm.getFDLib();
+                            protectionForm.showSelectBase();
                             frame.dispose();
                         } else {
                             Tool.showMessage("修改失败,错误码：" + resultData.getInt("statusCode"), "结果", 0);

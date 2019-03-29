@@ -9,6 +9,7 @@ import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.CandidateEntity;
+import com.dyw.client.form.ProtectionForm;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -23,10 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -243,13 +241,17 @@ public class Tool {
     /*
      * 显示布控报警对比信息
      * */
-    public static String displayAlarmResult(String time, CandidateEntity candidateEntity) {
+    public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity) {
         return "<html><body>报警时间：" +
                 time +
-                "<br>姓名：<br>    " +
+                "<br>姓名：    " +
                 candidateEntity.getReserve_field().getName() +
-                "<br>相似度：<br>    " +
+                "<br>相似度：    " +
                 candidateEntity.getSimilarity() +
+                "<br>名单库：    " +
+                ProtectionForm.fdLibMaps.get(candidateEntity.getBlacklist_id()) +
+                "<br>抓拍机：    " +
+                deviceName +
                 "</body></html>";
     }
 
@@ -591,5 +593,31 @@ public class Tool {
         }
         inStream.close();
         return outStream.toByteArray();
+    }
+
+    /*
+     * 本地图片转为byte数组
+     * */
+    public static byte[] getPictureStream(String filePath) {
+        try {
+            InputStream in = null;
+            in = new FileInputStream(filePath);
+            byte[] data = toByteArray(in);
+            in.close();
+            return data;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static byte[] toByteArray(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024 * 4];
+        int n = 0;
+        while ((n = in.read(buffer)) != -1) {
+            out.write(buffer, 0, n);
+        }
+        return out.toByteArray();
     }
 }

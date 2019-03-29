@@ -39,12 +39,12 @@ public class MyHttpHandlerService implements HttpHandler {
                 org.json.JSONObject resultData = new org.json.JSONObject(strout);
                 if (resultData.getString("eventType").equalsIgnoreCase("alarmResult")) {
                     alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
-                    System.out.println("这里是看点1：" + alarmResultEntityList.size() + alarmResultEntityList.get(0).getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getReserve_field().getName());
-                    protectionForm.showAlarmInfo(1, null, alarmResultEntityList.get(0), resultData.getString("dateTime"));
+                    System.out.println("报警数据：" + resultData);
+                    protectionForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
                 } else if (resultData.getString("eventType").equalsIgnoreCase("captureResult")) {
-                    System.out.println("这里是看点2");
+                    System.out.println("抓拍数据：" + resultData);
                     captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
-                    protectionForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null, resultData.getString("dateTime"));
+                    protectionForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -9,17 +9,47 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="1d4cc" class="javax.swing.JLabel" binding="faceInfoCardLabel">
+      <component id="15b3f" class="javax.swing.JLabel" binding="faceInfoNameLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag top="0" left="0" bottom="30" right="50" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <font size="24"/>
-          <text value="卡号"/>
+          <text value="  姓  名"/>
         </properties>
       </component>
-      <component id="6528c" class="javax.swing.JTextField" binding="faceInfoCardText">
+      <component id="b1c2c" class="javax.swing.JLabel" binding="faceInfoSexLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="  性  别"/>
+        </properties>
+      </component>
+      <component id="a13ef" class="javax.swing.JLabel" binding="faceInfoBirthdayLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="出生日期"/>
+        </properties>
+      </component>
+      <component id="d076" class="javax.swing.JLabel" binding="faceInfoNoteLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="备注信息"/>
+        </properties>
+      </component>
+      <component id="a7437" class="javax.swing.JTextField" binding="faceInfoNameText">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -27,26 +57,78 @@
           <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <font size="22"/>
-          <preferredSize width="200" height="39"/>
+          <font size="24"/>
+          <preferredSize width="200" height="42"/>
         </properties>
       </component>
-      <component id="68276" class="javax.swing.JButton" binding="faceInfoConfirmButton">
+      <component id="a1015" class="javax.swing.JComboBox" binding="faceInfoSexComboBox">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+        </properties>
+      </component>
+      <component id="848f8" class="javax.swing.JTextField" binding="faceInfoBirthdayText">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+        </properties>
+      </component>
+      <component id="33c33" class="javax.swing.JTextField" binding="faceInfoNoteText">
+        <constraints>
+          <grid row="3" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+        </properties>
+      </component>
+      <component id="7ff68" class="javax.swing.JButton" binding="faceInfoConfirmButton">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <text value="确定"/>
         </properties>
       </component>
-      <component id="cdbdc" class="javax.swing.JButton" binding="faceInfoCancelButton">
+      <component id="c637d" class="javax.swing.JButton" binding="faceInfoCancelButton">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
           <text value="取消"/>
+        </properties>
+      </component>
+      <component id="beebf" class="javax.swing.JLabel" binding="faceInfoPictureLabel">
+        <constraints>
+          <grid row="0" column="2" row-span="4" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag top="0" left="100" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <preferredSize width="210" height="280"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="3282c" class="javax.swing.JButton" binding="faceInfoUploadPictureButton">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="上传图片"/>
         </properties>
       </component>
     </children>
