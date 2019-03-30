@@ -1,6 +1,7 @@
 package com.dyw.client.functionForm;
 
-import com.dyw.client.form.ProtectionForm;
+import com.dyw.client.form.PersonManagementForm;
+//import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
 
@@ -26,7 +27,7 @@ public class FaceInfoFunction {
     private JLabel faceInfoPictureLabel;
     private byte[] pictureBytes;
 
-    public FaceInfoFunction(final String fdid, final ProtectionForm protectionForm) {
+    public FaceInfoFunction(final String fdid, final PersonManagementForm personManagementForm) {
         //设置性别选项
         faceInfoSexComboBox.addItem("unknown");
         faceInfoSexComboBox.addItem("male");
@@ -71,7 +72,7 @@ public class FaceInfoFunction {
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                     if (resultData.getInt("statusCode") == 1) {
                         Tool.showMessage("添加成功", "提示", 0);
-                        protectionForm.showSelectBase();
+                        personManagementForm.showSelectBase();
                         frame.dispose();
                     } else {
                         Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);

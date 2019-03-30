@@ -1,7 +1,8 @@
 package com.dyw.client.functionForm;
 
 import com.dyw.client.entity.protection.FDLibEntity;
-import com.dyw.client.form.ProtectionForm;
+import com.dyw.client.form.PersonManagementForm;
+//import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ public class FaceBaseFunction {
     /*
      *status   0:添加；1：修改
      * */
-    public FaceBaseFunction(final ProtectionForm protectionForm, final FDLibEntity fdLibEntity) {
+    public FaceBaseFunction(final PersonManagementForm personManagementForm, final FDLibEntity fdLibEntity) {
         if (fdLibEntity != null) {
             baseNameText.setText(fdLibEntity.getName());
             baseNoteText.setText(fdLibEntity.getCustomInfo());
@@ -44,8 +45,8 @@ public class FaceBaseFunction {
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, "/ISAPI/Intelligent/FDLib?format=json", inboundData);
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("添加成功", "结果", 0);
-                            protectionForm.getFDLib();
-                            protectionForm.showSelectBase();
+                            personManagementForm.getFDLib();
+                            personManagementForm.showSelectBase();
                             frame.dispose();
                         } else {
                             Tool.showMessage("添加失败", "结果", 0);
@@ -60,8 +61,8 @@ public class FaceBaseFunction {
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instruction, inboundData);
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("修改成功", "结果", 0);
-                            protectionForm.getFDLib();
-                            protectionForm.showSelectBase();
+                            personManagementForm.getFDLib();
+                            personManagementForm.showSelectBase();
                             frame.dispose();
                         } else {
                             Tool.showMessage("修改失败,错误码：" + resultData.getInt("statusCode"), "结果", 0);

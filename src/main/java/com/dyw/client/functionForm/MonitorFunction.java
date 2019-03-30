@@ -3,7 +3,8 @@ package com.dyw.client.functionForm;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RelateInfoEntity;
-import com.dyw.client.form.ProtectionForm;
+import com.dyw.client.form.MonitorManagementForm;
+//import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.MultiComboBox;
 import com.dyw.client.tool.NameCode;
 import com.dyw.client.tool.Tool;
@@ -50,7 +51,7 @@ public class MonitorFunction {
             final RelateInfoEntity relateInfoEntity,
             final List<FDLibEntity> fdLibEntityList,
             final List<MonitorPointEntity> monitorPointEntityList,
-            final ProtectionForm protectionForm) {
+            final MonitorManagementForm monitorManagementForm) {
         objectIds = new ArrayList<>();
         rangeIds = new ArrayList<>();
         fdLib = new ArrayList<>();
@@ -109,7 +110,7 @@ public class MonitorFunction {
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionAdd, inboundDataOutAdd);
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("添加成功", "提示", 0);
-                            protectionForm.getMonitorList();
+                            monitorManagementForm.getMonitorList();
                             frame.dispose();
                         } else {
                             Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
@@ -135,7 +136,7 @@ public class MonitorFunction {
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionEdit, inboundDataOutEdit);
                         if (resultData.getInt("statusCode") == 1) {
                             Tool.showMessage("添加成功", "提示", 0);
-                            protectionForm.getMonitorList();
+                            monitorManagementForm.getMonitorList();
                             frame.dispose();
                         } else {
                             Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);

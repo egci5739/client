@@ -25,11 +25,11 @@ public class Egci {
     public static SqlSession session;
     public static RegisterForm registerForm;
     public static int workStatus;
-    public static MonitorForm monitorForm;
+//    public static MonitorForm monitorForm;
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
-    public static SystemForm systemForm;
-    public static ProtectionForm protectionForm;
+//    public static SystemForm systemForm;
+//    public static ProtectionForm protectionForm;
 
     /*
      * 初始化客户端程序

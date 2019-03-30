@@ -44,7 +44,12 @@ public class RegisterForm {
     private StaffOperationService staffOperationService;
     private int addWaitStaffStatus = 0;
 
-    private JPanel main;
+
+    public JPanel getRegisterForm() {
+        return registerForm;
+    }
+
+    private JPanel registerForm;
     private JPanel waitStaffPanel;
     private JPanel staffInfoPanel;
     private JPanel identityInfoPanel;
@@ -350,12 +355,12 @@ public class RegisterForm {
         PingTimer pingTimer = new PingTimer(this);
         pingTimer.open();
         JFrame frame = new JFrame("RegisterForm");
-        frame.setContentPane(this.main);
+        frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         //点击回车键搜索
         frame.getRootPane().setDefaultButton(searchButton);
-        frame.setVisible(true);
+//        frame.setVisible(true);
         //登陆脸谱服务器
         HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
         //登录校验代码

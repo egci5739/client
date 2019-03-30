@@ -3,7 +3,8 @@ package com.dyw.client.service;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.entity.protection.AlarmResultEntity;
 import com.dyw.client.entity.protection.CaptureLibResultEntity;
-import com.dyw.client.form.ProtectionForm;
+import com.dyw.client.form.IntelligentApplicationForm;
+//import com.dyw.client.form.ProtectionForm;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONException;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyHttpHandlerService implements HttpHandler {
-    private ProtectionForm protectionForm;
+    private IntelligentApplicationForm intelligentApplicationForm;
 
-    public MyHttpHandlerService(ProtectionForm protectionForm) {
-        this.protectionForm = protectionForm;
+    public MyHttpHandlerService(IntelligentApplicationForm intelligentApplicationForm) {
+        this.intelligentApplicationForm = intelligentApplicationForm;
     }
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -40,11 +41,11 @@ public class MyHttpHandlerService implements HttpHandler {
                 if (resultData.getString("eventType").equalsIgnoreCase("alarmResult")) {
                     alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
                     System.out.println("报警数据：" + resultData);
-                    protectionForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
+                    intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
                 } else if (resultData.getString("eventType").equalsIgnoreCase("captureResult")) {
                     System.out.println("抓拍数据：" + resultData);
                     captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
-                    protectionForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
+                    intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

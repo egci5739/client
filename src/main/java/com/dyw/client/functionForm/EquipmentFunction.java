@@ -4,7 +4,8 @@ import com.dyw.client.entity.protection.CtrlCenterEntity;
 import com.dyw.client.entity.protection.DeviceEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RegionEntity;
-import com.dyw.client.form.ProtectionForm;
+//import com.dyw.client.form.ProtectionForm;
+import com.dyw.client.form.ResourceManagementForm;
 import com.dyw.client.tool.Tool;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +36,7 @@ public class EquipmentFunction {
     private JComboBox equipmentAreaCombo;
     private JLabel equipmentAreaLabel;
 
-    public EquipmentFunction(final CtrlCenterEntity ctrlCenterEntity, final List<RegionEntity> regionEntityList, final ProtectionForm protectionForm) {
+    public EquipmentFunction(final CtrlCenterEntity ctrlCenterEntity, final List<RegionEntity> regionEntityList, final ResourceManagementForm resourceManagementForm) {
         equipmentAreaCombo.addItem("一核");
         equipmentAreaCombo.addItem("二核");
         equipmentAreaCombo.addItem("三核");
@@ -92,7 +93,7 @@ public class EquipmentFunction {
                             String instructionGuard = "/ISAPI/SDT/Management/Guard";
                             JSONObject resultGuard = Tool.sendInstructionAndReceiveStatus(3, instructionGuard, inboundDataAddMonitor);
                             if (resultGuard.getInt("statusCode") == 1) {
-                                protectionForm.getMonitor();
+                                resourceManagementForm.getMonitor();
                                 frame.dispose();
                             } else {
                                 Tool.showMessage("添加布防失败，错误信息" + resultGuard.getString("errorMsg"), "提示", 0);

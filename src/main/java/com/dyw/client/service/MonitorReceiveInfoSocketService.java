@@ -3,7 +3,8 @@ package com.dyw.client.service;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.PassInfoEntity;
-import com.dyw.client.form.MonitorForm;
+//import com.dyw.client.form.MonitorForm;
+import com.dyw.client.form.MonitorRealTimeForm;
 import com.dyw.client.form.RegisterForm;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
@@ -20,15 +21,15 @@ public class MonitorReceiveInfoSocketService extends Thread {
     private Logger logger = LoggerFactory.getLogger(MonitorReceiveInfoSocketService.class);
     private OutputStream os;
     private Socket socket;
-    private MonitorForm monitorForm;
+    private MonitorRealTimeForm monitorRealTimeForm;
 
     /*
      * 构造函数
      * */
-    public MonitorReceiveInfoSocketService(MonitorForm monitorForm) {
+    public MonitorReceiveInfoSocketService(MonitorRealTimeForm monitorRealTimeForm) {
         try {
             socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerPort());
-            this.monitorForm = monitorForm;
+            this.monitorRealTimeForm = monitorRealTimeForm;
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
@@ -64,7 +65,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
                     try {
                         PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
                         if (passInfoEntity != null) {
-                            monitorForm.addPassInfo(passInfoEntity);
+                            monitorRealTimeForm.addPassInfo(passInfoEntity);
                         }
                     } catch (TooManyResultsException ignored) {
 

@@ -9,7 +9,7 @@ import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.CandidateEntity;
-import com.dyw.client.form.ProtectionForm;
+//import com.dyw.client.form.ProtectionForm;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -241,7 +241,7 @@ public class Tool {
     /*
      * 显示布控报警对比信息
      * */
-    public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity) {
+    public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity, Map<String, String> fdLibMaps) {
         return "<html><body>报警时间：" +
                 time +
                 "<br>姓名：    " +
@@ -249,7 +249,7 @@ public class Tool {
                 "<br>相似度：    " +
                 candidateEntity.getSimilarity() +
                 "<br>名单库：    " +
-                ProtectionForm.fdLibMaps.get(candidateEntity.getBlacklist_id()) +
+                fdLibMaps.get(candidateEntity.getBlacklist_id()) +
                 "<br>抓拍机：    " +
                 deviceName +
                 "</body></html>";
