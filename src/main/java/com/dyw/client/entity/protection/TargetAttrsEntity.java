@@ -2,6 +2,7 @@ package com.dyw.client.entity.protection;
 
 public class TargetAttrsEntity {
     private String deviceId;//设备 ID
+    private String deviceIP;//设备ip
     private int deviceChannel;//设备通道号
     private String deviceName;//设备名称
     private String faceTime;//抓拍时间
@@ -14,6 +15,14 @@ public class TargetAttrsEntity {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getDeviceIP() {
+        return deviceIP;
+    }
+
+    public void setDeviceIP(String deviceIP) {
+        this.deviceIP = deviceIP;
     }
 
     public int getDeviceChannel() {

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
+import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.form.*;
 import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
@@ -30,6 +31,11 @@ public class Egci {
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
     public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
+    public static List<String> snapDeviceIpsOne = new ArrayList<>();//一核抓拍设备
+    public static List<String> snapDeviceIpsTwo = new ArrayList<>();//二核抓拍设备
+    public static List<String> snapDeviceIpsThree = new ArrayList<>();//三核抓拍设备
+    public static List<String> snapDeviceIps = new ArrayList<>();//根据权限设置抓拍设备ip组
+
 
     /*
      * 初始化客户端程序

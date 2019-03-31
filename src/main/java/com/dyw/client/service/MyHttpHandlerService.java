@@ -1,6 +1,7 @@
 package com.dyw.client.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.AlarmResultEntity;
 import com.dyw.client.entity.protection.CaptureLibResultEntity;
 import com.dyw.client.form.IntelligentApplicationForm;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class MyHttpHandlerService implements HttpHandler {
     private IntelligentApplicationForm intelligentApplicationForm;
+    private List<AlarmResultEntity> alarmResultEntityList = new ArrayList<>();
+    private List<CaptureLibResultEntity> captureLibResultEntityList = new ArrayList<>();
 
     public MyHttpHandlerService(IntelligentApplicationForm intelligentApplicationForm) {
         this.intelligentApplicationForm = intelligentApplicationForm;
@@ -34,19 +37,33 @@ public class MyHttpHandlerService implements HttpHandler {
             }
             httpExchange.sendResponseHeaders(200, 0);
             httpExchange.close();
-            List<AlarmResultEntity> alarmResultEntityList;
-            List<CaptureLibResultEntity> captureLibResultEntityList;
+            alarmResultEntityList.clear();
+            captureLibResultEntityList.clear();
             try {
                 org.json.JSONObject resultData = new org.json.JSONObject(strout);
-                if (resultData.getString("eventType").equalsIgnoreCase("alarmResult")) {
-                    alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
-                    System.out.println("报警数据：" + resultData);
-                    intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
-                } else if (resultData.getString("eventType").equalsIgnoreCase("captureResult")) {
-                    System.out.println("抓拍数据：" + resultData);
-                    captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
-                    intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
+                switch (resultData.getString("eventType")) {
+                    case "captureResult":
+                        captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
+                        if (Egci.snapDeviceIps.contains(captureLibResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
+                            intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
+                        }
+                        break;
+                    case "alarmResult":
+                        alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
+                        if (Egci.snapDeviceIps.contains(alarmResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
+                            intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
+                        }
+                        break;
+                    default:
+                        break;
                 }
+//                if (resultData.getString("eventType").equalsIgnoreCase("alarmResult")) {
+//                    alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
+//                    intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
+//                } else if (resultData.getString("eventType").equalsIgnoreCase("captureResult")) {
+//                    captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
+//                    intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

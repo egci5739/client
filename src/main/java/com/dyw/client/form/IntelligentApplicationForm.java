@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,10 @@ public class IntelligentApplicationForm {
 
     public IntelligentApplicationForm() {
         /*
+         * 获取人脸库列表
+         * */
+        getFDLib();
+        /*
          * 添加报警主机信息
          * */
         addAlarmHost();
@@ -124,6 +129,10 @@ public class IntelligentApplicationForm {
         livePreviewContentPanelList.add(livePreviewContentSixPanel);
         livePreviewContentPanelList.add(livePreviewContentSevenPanel);
         livePreviewContentPanelList.add(livePreviewContentEightPanel);
+        /*
+         * 获取并设置抓拍机ip信息
+         * */
+        getSnapDeviceIpsList();
         //抓拍图
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
@@ -369,7 +378,7 @@ public class IntelligentApplicationForm {
     /*
      * 播放视频流
      * */
-    public void playRTSP() {
+    private void playRTSP() {
         embeddedMediaPlayerList.clear();
         embeddedMediaPlayerComponentList.clear();
         getMonitor();
@@ -377,33 +386,39 @@ public class IntelligentApplicationForm {
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
         for (int i = 0; i < monitorPointEntityList.size(); i++) {
-            String streamURL = monitorPointEntityList.get(i).getStreamURL();
-            if (streamURL == null) {
-                return;
+            if (Egci.snapDeviceIps.contains(monitorPointEntityList.get(i).getDeviceIP())) {
+                String streamURL = monitorPointEntityList.get(i).getStreamURL();
+                if (streamURL == null) {
+                    return;
+                }
+                EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+                GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
+                livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
+                livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
+                livePreviewContentPanelList.get(i).updateUI();
+                //设置参数并播放
+                EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+                String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
+                mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
+                mediaPlayer.start();//停止了哈
+                embeddedMediaPlayerList.add(mediaPlayer);
+                embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
             }
-            EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-            GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
-            livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
-            livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
-            livePreviewContentPanelList.get(i).updateUI();
-            //设置参数并播放
-            EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-            String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
-            mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
-            mediaPlayer.start();//停止了哈
-            embeddedMediaPlayerList.add(mediaPlayer);
-            embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
         }
     }
 
     /*
      * 停止视频流
      * */
-    public void stopRTSP() {
-        for (int i = 0; i < monitorPointEntityList.size(); i++) {
-            embeddedMediaPlayerList.get(i).stop();
-            livePreviewContentPanelList.get(i).remove(embeddedMediaPlayerComponentList.get(i));
+    private void stopRTSP() {
+        try {
+            for (int i = 0; i < monitorPointEntityList.size(); i++) {
+                embeddedMediaPlayerList.get(i).stop();
+                livePreviewContentPanelList.get(i).remove(embeddedMediaPlayerComponentList.get(i));
+            }
+        } catch (IndexOutOfBoundsException ignored) {
         }
+
     }
 
     /*
@@ -423,6 +438,50 @@ public class IntelligentApplicationForm {
             Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
             e.printStackTrace();
         }
+    }
+
+    /*
+     * 获取各核抓拍机ip集合
+     * */
+    private void getSnapDeviceIpsList() {
+        Egci.snapDeviceIps.clear();
+        Egci.snapDeviceIpsOne.clear();
+        Egci.snapDeviceIpsTwo.clear();
+        Egci.snapDeviceIpsThree.clear();
+        getMonitor();
+        for (MonitorPointEntity monitorPointEntity : monitorPointEntityList) {
+            switch (monitorPointEntity.getRegionName()) {
+                case "一核":
+                    Egci.snapDeviceIpsOne.add(monitorPointEntity.getDeviceIP());
+                    break;
+                case "二核":
+                    Egci.snapDeviceIpsTwo.add(monitorPointEntity.getDeviceIP());
+                    break;
+                case "三核":
+                    Egci.snapDeviceIpsThree.add(monitorPointEntity.getDeviceIP());
+                default:
+                    break;
+            }
+        }
+        switch (Egci.accountEntity.getAccountPermission()) {
+            case 0:
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsOne);
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsTwo);
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsThree);
+                break;
+            case 1:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsOne;
+                break;
+            case 2:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsTwo;
+                break;
+            case 3:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsThree;
+                break;
+            default:
+                break;
+        }
+        System.out.println("snap:" + Egci.snapDeviceIps.toString());
     }
 
     /*

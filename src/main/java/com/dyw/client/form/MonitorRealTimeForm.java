@@ -10,10 +10,7 @@ import net.iharder.Base64;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.Vector;
 
 public class MonitorRealTimeForm {
@@ -50,6 +47,8 @@ public class MonitorRealTimeForm {
     private int passSuccessRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
     private JScrollBar passFaultScrollBar;//通行成功滚动条
     private int passFaultRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
+    private int passSuccessBottomStatus = 0;
+    private int passFaultBottomStatus = 0;
 
     public MonitorRealTimeForm() {
         //创建接收通行信息的socket对象
@@ -78,6 +77,24 @@ public class MonitorRealTimeForm {
         TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
         passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
         passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
+        passSuccessContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && passSuccessBottomStatus <= 3) {
+                    passSuccessContentScroll.getVerticalScrollBar().setValue(passSuccessContentScroll.getVerticalScrollBar().getModel().getMaximum() - passSuccessContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    passSuccessBottomStatus++;
+                }
+            }
+        });
+        passFaultContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && passFaultBottomStatus <= 3) {
+                    passFaultContentScroll.getVerticalScrollBar().setValue(passFaultContentScroll.getVerticalScrollBar().getModel().getMaximum() - passFaultContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    passFaultBottomStatus++;
+                }
+            }
+        });
         passSuccessScrollBar = passSuccessContentScroll.getVerticalScrollBar();
         passFaultScrollBar = passFaultContentScroll.getVerticalScrollBar();
         //通行成功是否滚动
@@ -135,12 +152,14 @@ public class MonitorRealTimeForm {
             if (passSuccessRollingStatus == 1) {
                 moveScrollBarToBottom(passSuccessScrollBar);
             }
+            passSuccessBottomStatus = 0;
         } else {
             v.add(2, Tool.displayPassFaultResult(passInfoEntity));
             passFaultModel.addRow(v);
             if (passFaultRollingStatus == 1) {
                 moveScrollBarToBottom(passFaultScrollBar);
             }
+            passFaultBottomStatus = 0;
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.CtrlCenterEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RegionEntity;
@@ -142,9 +143,52 @@ public class ResourceManagementForm {
                 vector.add(4, monitorPointEntity.getIsGuard());
                 deviceManagementContentTableModel.addRow(vector);
             }
+            getSnapDeviceIpsList();
         } catch (JSONException e) {
             Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
             e.printStackTrace();
+        }
+    }
+
+    /*
+     * 获取各核抓拍机ip集合
+     * */
+    private void getSnapDeviceIpsList() {
+        Egci.snapDeviceIps.clear();
+        Egci.snapDeviceIpsOne.clear();
+        Egci.snapDeviceIpsTwo.clear();
+        Egci.snapDeviceIpsThree.clear();
+        for (MonitorPointEntity monitorPointEntity : monitorPointEntityList) {
+            switch (monitorPointEntity.getRegionName()) {
+                case "一核":
+                    Egci.snapDeviceIpsOne.add(monitorPointEntity.getDeviceIP());
+                    break;
+                case "二核":
+                    Egci.snapDeviceIpsTwo.add(monitorPointEntity.getDeviceIP());
+                    break;
+                case "三核":
+                    Egci.snapDeviceIpsThree.add(monitorPointEntity.getDeviceIP());
+                default:
+                    break;
+            }
+        }
+        switch (Egci.accountEntity.getAccountPermission()) {
+            case 0:
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsOne);
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsTwo);
+                Egci.snapDeviceIps.addAll(Egci.snapDeviceIpsThree);
+                break;
+            case 1:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsOne;
+                break;
+            case 2:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsTwo;
+                break;
+            case 3:
+                Egci.snapDeviceIps = Egci.snapDeviceIpsThree;
+                break;
+            default:
+                break;
         }
     }
 }
