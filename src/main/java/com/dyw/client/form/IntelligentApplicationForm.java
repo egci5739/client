@@ -1,19 +1,27 @@
 package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.service.AlarmTableCellRenderer;
 import com.dyw.client.service.MyHttpHandlerService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
 import com.dyw.client.tool.Tool;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 import net.iharder.Base64;
 import org.json.JSONException;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -67,6 +75,7 @@ public class IntelligentApplicationForm {
     private JPanel snapAlarmContentPanel;
     private JScrollPane snapAlarmContentScroll;
     private JTable snapAlarmContentTable;
+    private JButton playButton;
 
     private DefaultTableModel snapAlarmContentTableModel;
     private DefaultTableModel blackAlarmContentTableModel;
@@ -80,14 +89,41 @@ public class IntelligentApplicationForm {
     private int snapAlarmBottomStatus = 0;
     private int blackAlarmBottomStatus = 0;
     private int whiteAlarmBottomStatus = 0;
-    private List<MonitorPointEntity> monitorPointEntityList;//监控点列表
+    private List<MonitorPointEntity> monitorPointEntityList = new ArrayList<>();//监控点列表
     private CtrlCenterEntity ctrlCenterEntity;//根控制中心
     private List<RegionEntity> regionEntityList;//区域列表
-    public HttpServer httpserver = null;
+    private HttpServer httpserver = null;
     private List<JPanel> livePreviewContentPanelList;
-    public Map<String, String> fdLibMaps;//人脸库集合
+    private List<EmbeddedMediaPlayer> embeddedMediaPlayerList = new ArrayList<>();
+    private List<EmbeddedMediaPlayerComponent> embeddedMediaPlayerComponentList = new ArrayList<>();
+    private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
 
     public IntelligentApplicationForm() {
+        /*
+         * 添加报警主机信息
+         * */
+        addAlarmHost();
+        /*
+         * 监听报警消息
+         * */
+        monitorAlarmInfo();
+        try {
+            //获取根控制中心
+            ctrlCenterEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter?source=device", null).getString("ctrlCenter"), CtrlCenterEntity.class).get(0);
+            //获取区域列表
+            regionEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID(), null).getString("region"), RegionEntity.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        livePreviewContentPanelList = new ArrayList<>();
+        livePreviewContentPanelList.add(livePreviewContentOnePanel);
+        livePreviewContentPanelList.add(livePreviewContentTwoPanel);
+        livePreviewContentPanelList.add(livePreviewContentThreePanel);
+        livePreviewContentPanelList.add(livePreviewContentFourPanel);
+        livePreviewContentPanelList.add(livePreviewContentFivePanel);
+        livePreviewContentPanelList.add(livePreviewContentSixPanel);
+        livePreviewContentPanelList.add(livePreviewContentSevenPanel);
+        livePreviewContentPanelList.add(livePreviewContentEightPanel);
         //抓拍图
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
@@ -212,31 +248,20 @@ public class IntelligentApplicationForm {
             }
         });
         /*
-         * 添加报警主机信息
+         * 播放视频流
          * */
-        addAlarmHost();
-        /*
-         * 监听报警消息
-         * */
-        monitorAlarmInfo();
-        try {
-            //获取根控制中心
-            ctrlCenterEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter?source=device", null).getString("ctrlCenter"), CtrlCenterEntity.class).get(0);
-            //获取区域列表
-            regionEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID(), null).getString("region"), RegionEntity.class);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        livePreviewContentPanelList = new ArrayList<>();
-        livePreviewContentPanelList.add(livePreviewContentOnePanel);
-        livePreviewContentPanelList.add(livePreviewContentTwoPanel);
-        livePreviewContentPanelList.add(livePreviewContentThreePanel);
-        livePreviewContentPanelList.add(livePreviewContentFourPanel);
-        livePreviewContentPanelList.add(livePreviewContentFivePanel);
-        livePreviewContentPanelList.add(livePreviewContentSixPanel);
-        livePreviewContentPanelList.add(livePreviewContentSevenPanel);
-        livePreviewContentPanelList.add(livePreviewContentEightPanel);
-        monitorPointEntityList = new ArrayList<>();
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (playButton.getText().equals("播放")) {
+                    playRTSP();
+                    playButton.setText("停止");
+                } else {
+                    stopRTSP();
+                    playButton.setText("播放");
+                }
+            }
+        });
     }
 
     /*
@@ -246,7 +271,6 @@ public class IntelligentApplicationForm {
         try {
             //第一步：获取全部报警主机信息，判断是否已存在
             String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
-//            System.out.println(url);
             String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
             List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
             for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
@@ -296,30 +320,40 @@ public class IntelligentApplicationForm {
      * status  0：抓拍图；1：名单报警；
      * */
     public void showAlarmInfo(int status, CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity) {
-        switch (status) {
-            case 0:
-                Vector vectorOne = new Vector();
-                vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
-                vectorOne.add(1, captureLibResultEntity.getTargetAttrs().getFaceTime() + "\n" + captureLibResultEntity.getTargetAttrs().getDeviceName());
-                snapAlarmContentTableModel.addRow(vectorOne);
-                if (snapAlarmRollingStatus == 1) {
-                    moveScrollBarToBottom(snapAlarmScrollBar);
-                }
-                snapAlarmBottomStatus = 0;
-                break;
-            case 1:
-                Vector vectorTwo = new Vector();
-                vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
-                vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
-                vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), fdLibMaps));
-                blackAlarmContentTableModel.addRow(vectorTwo);
-                if (blackAlarmRollingStatus == 1) {
-                    moveScrollBarToBottom(blackAlarmScrollBar);
-                }
-                blackAlarmBottomStatus = 0;
-                break;
-            default:
-                break;
+        try {
+            switch (status) {
+                case 0:
+                    Vector vectorOne = new Vector();
+                    vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
+                    vectorOne.add(1, "<html><body>报警时间：" +
+                            captureLibResultEntity.getTargetAttrs().getFaceTime() +
+                            "<br>抓拍机：    " +
+                            captureLibResultEntity.getTargetAttrs().getDeviceName() +
+                            "</body></html>");
+//                    vectorOne.add(1, captureLibResultEntity.getTargetAttrs().getFaceTime() + "\n" + captureLibResultEntity.getTargetAttrs().getDeviceName());
+                    snapAlarmContentTableModel.addRow(vectorOne);
+                    if (snapAlarmRollingStatus == 1) {
+                        moveScrollBarToBottom(snapAlarmScrollBar);
+                    }
+                    snapAlarmBottomStatus = 0;
+                    break;
+                case 1:
+                    Vector vectorTwo = new Vector();
+                    vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                    vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
+                    vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                    vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                    blackAlarmContentTableModel.addRow(vectorTwo);
+                    if (blackAlarmRollingStatus == 1) {
+                        moveScrollBarToBottom(blackAlarmScrollBar);
+                    }
+                    blackAlarmBottomStatus = 0;
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -329,6 +363,81 @@ public class IntelligentApplicationForm {
     private void moveScrollBarToBottom(JScrollBar jScrollBar) {
         if (jScrollBar != null) {
             jScrollBar.setValue(jScrollBar.getMaximum());
+        }
+    }
+
+    /*
+     * 播放视频流
+     * */
+    public void playRTSP() {
+        embeddedMediaPlayerList.clear();
+        embeddedMediaPlayerComponentList.clear();
+        getMonitor();
+        //加载vlc播放器相关库
+        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        for (int i = 0; i < monitorPointEntityList.size(); i++) {
+            String streamURL = monitorPointEntityList.get(i).getStreamURL();
+            if (streamURL == null) {
+                return;
+            }
+            EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+            GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
+            livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
+            livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
+            livePreviewContentPanelList.get(i).updateUI();
+            //设置参数并播放
+            EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+            String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
+            mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
+            mediaPlayer.start();//停止了哈
+            embeddedMediaPlayerList.add(mediaPlayer);
+            embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
+        }
+    }
+
+    /*
+     * 停止视频流
+     * */
+    public void stopRTSP() {
+        for (int i = 0; i < monitorPointEntityList.size(); i++) {
+            embeddedMediaPlayerList.get(i).stop();
+            livePreviewContentPanelList.get(i).remove(embeddedMediaPlayerComponentList.get(i));
+        }
+    }
+
+    /*
+     * 获取全部监控点信息
+     * */
+    private void getMonitor() {
+        monitorPointEntityList.clear();
+        String instruction = "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID() + "/monitorPoint/search";
+        org.json.JSONObject inboundData = new org.json.JSONObject();
+        try {
+            inboundData.put("searchResultPosition", 0);
+            inboundData.put("maxResults", 100);
+            inboundData.put("isRegion", "yes");
+            org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
+            monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
+        } catch (JSONException e) {
+            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * 获取人脸库列表
+     * */
+    public void getFDLib() {
+        try {
+            Egci.fdLibMaps.clear();
+            fdLibEntityList.clear();
+            fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
+            for (FDLibEntity fdLibEntity : fdLibEntityList) {
+                Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
         }
     }
 }

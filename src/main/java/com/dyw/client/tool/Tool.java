@@ -620,4 +620,15 @@ public class Tool {
         }
         return out.toByteArray();
     }
+
+    /*
+     * 判断生日格式是否满足要求
+     * */
+    public static String judgeBirthdayFormat(String birthday) {
+        if (birthday.length() == 10) {
+            return birthday;
+        } else {
+            return "1900-01-01";
+        }
+    }
 }

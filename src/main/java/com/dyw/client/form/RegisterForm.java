@@ -361,33 +361,6 @@ public class RegisterForm {
         //点击回车键搜索
         frame.getRootPane().setDefaultButton(searchButton);
 //        frame.setVisible(true);
-        //登陆脸谱服务器
-        HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
-        //登录校验代码
-        String strUrl = "/ISAPI/Security/userCheck";
-        String strOut = "";
-        strOut = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + strUrl);
-        logger.info(strOut);
-        //解析返回的xml文件
-        SAXReader saxReader = new SAXReader();
-        try {
-            Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
-            Element employees = document.getRootElement();
-            for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
-                Element employee = (Element) i.next();
-                if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
-                    JOptionPane.showMessageDialog(null, "连接脸谱服务器成功", "Information", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
-            //登陆失败
-            JOptionPane.showMessageDialog(null, "连接脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (DocumentException e) {
-            JOptionPane.showMessageDialog(null, "连接脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
-            logger.error("登陆脸谱服务器失败", e);
-        } catch (UnsupportedEncodingException e) {
-            logger.error("登陆脸谱服务器失败", e);
-        }
     }
 
     /*

@@ -59,6 +59,7 @@ public class LoginForm {
         accountEntity.setAccountPass(accountPassText.getText());
         if (accountEntity.getAccountName().equals("") || accountEntity.getAccountPass().equals("")) {
             JOptionPane.showMessageDialog(null, "请输入用户名和密码", "登陆提示", 0);
+            frame.dispose();
             return;
         }
         Egci.accountEntity = Egci.session.selectOne("mapping.accountMapper.verifyAccount", accountEntity);
@@ -66,70 +67,44 @@ public class LoginForm {
             JOptionPane.showMessageDialog(null, "用户名或密码错误", "登陆提示", 0);
             return;
         }
+        if (accountEntity.getAccountRole() != 2) {
+            loginFaceServer();
+        }
         ApplicationForm applicationForm = new ApplicationForm();
         applicationForm.init();
-        //判断登陆的客户端：0：系统管理；1：办证客户端；2：监控客户端
-//        switch (Egci.accountEntity.getAccountRole()) {
-//            case 0:
-//                //创建系统客户端
-//                Egci.systemForm = new SystemForm();
-//                Egci.systemForm.init();
-//                frame.setVisible(false);
-//                break;
-//            case 1:
-//                //创建办证客户端
-//                Egci.registerForm = new RegisterForm();
-//                Egci.registerForm.init();
-//                frame.setVisible(false);
-//                break;
-////            case 2:
-////                //创建监控客户端
-////                Egci.monitorForm = new MonitorForm();
-////                Egci.monitorForm.init();
-////                frame.setVisible(false);
-////                break;
-//            case 3:
-//                //登陆脸谱服务器
-//                HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
-//                //登录校验代码
-//                String strUrl = "/ISAPI/Security/userCheck";
-//                String strOut = "";
-//                strOut = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + strUrl);
-//                logger.info(strOut);
-//                //解析返回的xml文件
-//                SAXReader saxReader = new SAXReader();
-//                try {
-//                    Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
-//                    Element employees = document.getRootElement();
-//                    for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
-//                        Element employee = (Element) i.next();
-//                        if (employee.getName() == "statusValue" && 0 == employee.getText().compareTo("200")) {
-////                            JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
-//                            //创建布控监控端
-//                            Egci.protectionForm = new ProtectionForm();
-//                            Egci.protectionForm.init();
-//                            frame.setVisible(false);
-//                            return;
-//                        }
-//                    }
-//                    //登陆失败
-//                    JOptionPane.showMessageDialog(null, "登陆失败", "Error", JOptionPane.ERROR_MESSAGE);
-//                } catch (DocumentException e) {
-//                    JOptionPane.showMessageDialog(null, "登陆失败", "Error", JOptionPane.ERROR_MESSAGE);
-//                    logger.error("登陆脸谱服务器失败", e);
-//                } catch (UnsupportedEncodingException e) {
-//                    logger.error("登陆脸谱服务器失败", e);
-//                }
-//                break;
-//            default:
-//                break;
+        frame.dispose();
     }
 
     /*
      * 登陆脸谱服务器
      * */
     public void loginFaceServer() {
-
+        // 登陆脸谱服务器
+        HttpsClientUtil.httpsClientInit(Egci.configEntity.getFaceServerIp(), Egci.configEntity.getFaceServerPort(), "admin", "hik12345");
+        //登录校验代码
+        String strUrl = "/ISAPI/Security/userCheck";
+        String strOut = "";
+        strOut = HttpsClientUtil.httpsGet("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + strUrl);
+        //解析返回的xml文件
+        SAXReader saxReader = new SAXReader();
+        try {
+            Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
+            Element employees = document.getRootElement();
+            for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
+                Element employee = (Element) i.next();
+                if (employee.getName().equals("statusValue") && 0 == employee.getText().compareTo("200")) {
+//                    JOptionPane.showMessageDialog(null, "登陆成功", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+            //登陆失败
+            JOptionPane.showMessageDialog(null, "登陆脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DocumentException e) {
+            JOptionPane.showMessageDialog(null, "登陆脸谱服务器失败", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.error("登陆脸谱服务器失败", e);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("登陆脸谱服务器失败", e);
+        }
     }
 
     /*
@@ -146,7 +121,7 @@ public class LoginForm {
     public void init() {
         frame = new JFrame("LoginForm");
         frame.setContentPane(this.Login);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         //点击回车键登陆
         frame.getRootPane().setDefaultButton(loginButton);

@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Egci {
     private static Logger logger;
@@ -25,11 +27,9 @@ public class Egci {
     public static SqlSession session;
     public static RegisterForm registerForm;
     public static int workStatus;
-//    public static MonitorForm monitorForm;
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
-//    public static SystemForm systemForm;
-//    public static ProtectionForm protectionForm;
+    public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
 
     /*
      * 初始化客户端程序

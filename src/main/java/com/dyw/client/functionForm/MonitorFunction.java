@@ -46,12 +46,17 @@ public class MonitorFunction {
     private List<NameCode> fdLibsl;
     private List<NameCode> monitorPoint;
     private List<NameCode> monitorPointsl;
+    private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
+
 
     public MonitorFunction(
             final RelateInfoEntity relateInfoEntity,
-            final List<FDLibEntity> fdLibEntityList,
             final List<MonitorPointEntity> monitorPointEntityList,
             final MonitorManagementForm monitorManagementForm) {
+        /*
+         * 获取人脸库
+         * */
+        getFDLib();
         objectIds = new ArrayList<>();
         rangeIds = new ArrayList<>();
         fdLib = new ArrayList<>();
@@ -168,6 +173,18 @@ public class MonitorFunction {
         // TODO: place custom component creation code here
         monitorObjectCombo = new MultiComboBox();
         monitorRangeCombo = new MultiComboBox();
+    }
+
+    /*
+     * 获取人脸库列表
+     * */
+    public void getFDLib() {
+        try {
+            fdLibEntityList.clear();
+            fdLibEntityList = com.alibaba.fastjson.JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public void init() {

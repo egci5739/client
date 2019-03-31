@@ -27,6 +27,7 @@
         <properties>
           <font size="24"/>
           <text value="布控类型"/>
+          <visible value="false"/>
         </properties>
       </component>
       <component id="7fd8f" class="javax.swing.JLabel" binding="monitorObjectLabel">
@@ -89,6 +90,7 @@
         </constraints>
         <properties>
           <preferredSize width="200" height="32"/>
+          <visible value="false"/>
         </properties>
       </component>
       <component id="a516e" class="javax.swing.JTextField" binding="monitorThresholdText">

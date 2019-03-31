@@ -55,6 +55,6 @@
     </insert>
     <!--获取全部人员信息-->
     <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        select * from Staff where StaffId &gt; 376 and StaffId &lt; 410;
+        select * from Staff where StaffId &gt; 501 and StaffId &lt; 520;
     </select>
 </mapper>

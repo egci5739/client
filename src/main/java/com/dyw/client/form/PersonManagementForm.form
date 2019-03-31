@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.PersonManagementForm">
   <grid id="27dc6" binding="personManagementForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="641" height="400"/>
+      <xy x="20" y="20" width="1078" height="818"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -158,6 +158,15 @@
                       <text value="添加人员"/>
                     </properties>
                   </component>
+                  <component id="f7501" class="javax.swing.JProgressBar" binding="importPersonProgressBar">
+                    <constraints>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <grid id="1c449" binding="personManagementContentResultPanel" layout-manager="GridBagLayout">
@@ -194,7 +203,38 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <component id="120d6" class="javax.swing.JButton" binding="firstPageButton">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="首  页"/>
+                    </properties>
+                  </component>
+                  <component id="c1777" class="javax.swing.JButton" binding="previousPageButton">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="上一页"/>
+                    </properties>
+                  </component>
+                  <component id="f9589" class="javax.swing.JButton" binding="nextPageButton">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
+                      <text value="下一页"/>
+                    </properties>
+                  </component>
+                </children>
               </grid>
             </children>
           </grid>
