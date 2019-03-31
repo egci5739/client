@@ -158,7 +158,7 @@ public class PersonManagementForm {
                     Tool.showMessage("已经是第一页", "提示", 0);
                     return;
                 }
-                pageNum--;
+                pageNum = pageNum - 50;
                 showSelectBase();
             }
         });
@@ -171,7 +171,7 @@ public class PersonManagementForm {
                     return;
                 }
 //                displaySelectResult(personPageSelectionService.nextPage(faceInfoEntityList));
-                pageNum++;
+                pageNum = pageNum + 50;
                 showSelectBase();
             }
         });

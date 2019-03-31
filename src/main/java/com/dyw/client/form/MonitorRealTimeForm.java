@@ -86,6 +86,7 @@ public class MonitorRealTimeForm {
                 }
             }
         });
+        passSuccessContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passFaultContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -95,6 +96,7 @@ public class MonitorRealTimeForm {
                 }
             }
         });
+        passFaultContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passSuccessScrollBar = passSuccessContentScroll.getVerticalScrollBar();
         passFaultScrollBar = passFaultContentScroll.getVerticalScrollBar();
         //通行成功是否滚动

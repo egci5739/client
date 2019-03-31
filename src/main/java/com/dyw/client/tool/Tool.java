@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -242,7 +243,7 @@ public class Tool {
      * 显示布控报警对比信息
      * */
     public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity, Map<String, String> fdLibMaps) {
-        return "<html><body>报警时间：<br>" +
+        return "<html><body>报警时间：<br" +
                 time +
                 "<br>姓名：    " +
                 candidateEntity.getReserve_field().getName() +
@@ -579,9 +580,9 @@ public class Tool {
             byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
             return btImg;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static byte[] readInputStream(InputStream inStream) throws Exception {

@@ -40,6 +40,7 @@ public class ApplicationForm {
                 initMonitorRealTimeForm();
                 initPersonManagementForm();
                 initResourceManagementForm();
+                initAlarmHistoryForm();
         }
     }
 
@@ -141,6 +142,15 @@ public class ApplicationForm {
     private void initResourceManagementForm() {
         ResourceManagementForm resourceManagementForm = new ResourceManagementForm();
         applicationTabbedPane.add("布控设备管理", resourceManagementForm.getResourceManagementForm());
+    }
+
+    /*
+     * 布控报警历史查询
+     * init
+     * */
+    private void initAlarmHistoryForm() {
+        AlarmHistoryForm alarmHistoryForm = new AlarmHistoryForm();
+        applicationTabbedPane.add("报警历史", alarmHistoryForm.getAlarmHistoryForm());
     }
 
     public void init() {
