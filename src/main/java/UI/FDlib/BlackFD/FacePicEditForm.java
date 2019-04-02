@@ -278,7 +278,6 @@ public class FacePicEditForm extends JDialog {
 		                    }
 		                    else
 		                    {
-		                    	System.out.println(jsonRet.getString("URL"));
 		                    	textFieldURL.setText(jsonRet.getString("URL"));
 		                    }
 						 

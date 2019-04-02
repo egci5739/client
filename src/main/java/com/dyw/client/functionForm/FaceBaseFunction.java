@@ -44,7 +44,7 @@ public class FaceBaseFunction {
                         inboundData.put("customInfo", faceBaseNote);
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, "/ISAPI/Intelligent/FDLib?format=json", inboundData);
                         if (resultData.getInt("statusCode") == 1) {
-                            Tool.showMessage("添加成功", "结果", 0);
+//                            Tool.showMessage("添加成功", "结果", 0);
                             personManagementForm.getFDLib();
                             personManagementForm.showSelectBase();
                             frame.dispose();
@@ -65,7 +65,7 @@ public class FaceBaseFunction {
 //                            personManagementForm.showSelectBase();
                             frame.dispose();
                         } else {
-                            Tool.showMessage("修改失败,错误码：" + resultData.getInt("statusCode"), "结果", 0);
+                            Tool.showMessage("修改失败,错误码：" + resultData.getString("errorMsg"), "结果", 0);
                         }
                     }
                 } catch (JSONException e1) {
@@ -87,6 +87,7 @@ public class FaceBaseFunction {
         frame.setContentPane(this.FaceBaseFunction);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

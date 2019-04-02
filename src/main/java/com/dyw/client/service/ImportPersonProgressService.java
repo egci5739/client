@@ -52,8 +52,6 @@ public class ImportPersonProgressService extends Thread {
             }
             num++;
             jProgressBar.setValue((int) ((float) num / (float) staffEntityList.size() * 100));
-            System.out.println("num" + num);
-            System.out.println("百分比：" + (int) ((float) num / (float) staffEntityList.size() * 100));
         }
         jButton.setEnabled(true);
         jProgressBar.setVisible(false);

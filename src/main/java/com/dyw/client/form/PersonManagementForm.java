@@ -257,10 +257,10 @@ public class PersonManagementForm {
                     inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                     if (resultData.getInt("statusCode") == 1) {
-                        Tool.showMessage("添加成功", "提示", 0);
+//                        Tool.showMessage("添加成功", "提示", 0);
                         showSelectBase();
                     } else {
-                        Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                        Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
                     }
                 }
             }
@@ -289,7 +289,6 @@ public class PersonManagementForm {
             Tool.showMessage("请选择一个人脸库", "提示", 0);
             return;
         }
-        System.out.println("选择的库是:" + personManagementBaseList.getSelectedValue());
         if (personManagementBaseList.getSelectedValue().toString().equals("电厂人员库")) {
             Tool.showMessage("禁止删除此库", "提示", 0);
             return;
@@ -301,7 +300,7 @@ public class PersonManagementForm {
             String instruction = "/ISAPI/Intelligent/FDLib?format=json&FDID=" + fdLibEntityList.get(personManagementBaseList.getSelectedIndex()).getFDID() + "&faceLibType=blackFD";
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(4, instruction, null);
             if (resultData.getInt("statusCode") == 1) {
-                Tool.showMessage("删除成功", "提示", 0);
+//                Tool.showMessage("删除成功", "提示", 0);
                 getFDLib();
             } else {
                 Tool.showMessage("删除失败", "提示", 0);
@@ -318,7 +317,6 @@ public class PersonManagementForm {
         try {
             FDLibEntity fdLibEntity = fdLibEntityList.get(personManagementBaseList.getSelectedIndex());
             FDID = fdLibEntity.getFDID();
-            System.out.println("FDID是：" + FDID);
             if (fdLibEntityList.get(personManagementBaseList.getSelectedIndex()) != null) {
                 //获取人脸库中的人脸数据
 //                String inboundData = "{\"searchResultPosition\":0,\"maxResults\":100,\"faceLibType\":\"blackFD\",\"FDID\":\"" + FDID + "\"}";
@@ -370,6 +368,10 @@ public class PersonManagementForm {
             Tool.showMessage("请选择一个人脸库", "提示", 0);
             return;
         }
+        if (personManagementContentResultTable.getSelectedRow() < 0) {
+            Tool.showMessage("请选择人员信息", "提示", 0);
+            return;
+        }
         if (Tool.showConfirm("是否删除人员", "提示")) {
             org.json.JSONObject deleteInboundData = new org.json.JSONObject();
             HashMap<String, Object> map = new HashMap<String, Object>();
@@ -380,7 +382,7 @@ public class PersonManagementForm {
                 deleteInboundData.put("FPID", jsonarry);
                 org.json.JSONObject resultData = Tool.faceInfoOperation(2, FDID, null, deleteInboundData);
                 if (resultData.getInt("statusCode") == 1) {
-                    Tool.showMessage("删除成功", "提示", 0);
+//                    Tool.showMessage("删除成功", "提示", 0);
                     showSelectBase();
                 } else {
                     Tool.showMessage("删除失败", "提示", 0);

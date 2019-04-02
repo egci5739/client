@@ -147,6 +147,7 @@ public class EquipmentFunction {
         frame.setContentPane(this.equipmentFunction);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

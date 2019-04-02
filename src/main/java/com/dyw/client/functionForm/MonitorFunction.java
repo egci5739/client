@@ -28,12 +28,10 @@ public class MonitorFunction {
     private JButton monitorConfirmButton;
     private JButton monitorCancelButton;
     private JLabel monitorNameLabel;
-    private JLabel monitorTypeLabel;
     private JLabel monitorObjectLabel;
     private JLabel monitorRangeLabel;
     private JLabel monitorThresholdLabel;
     private JLabel monitorReasonLabel;
-    private JComboBox monitorTypeCombo;
     private MultiComboBox monitorObjectCombo;
     private MultiComboBox monitorRangeCombo;
     private JTextField monitorThresholdText;
@@ -114,11 +112,11 @@ public class MonitorFunction {
                         inboundDataOutAdd.put("planInfo", jsonArrayAdd);
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionAdd, inboundDataOutAdd);
                         if (resultData.getInt("statusCode") == 1) {
-                            Tool.showMessage("添加成功", "提示", 0);
+//                            Tool.showMessage("添加成功", "提示", 0);
                             monitorManagementForm.getMonitorList();
                             frame.dispose();
                         } else {
-                            Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                            Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
                         }
                     } catch (JSONException e1) {
                         e1.printStackTrace();
@@ -140,11 +138,11 @@ public class MonitorFunction {
                         inboundDataOutEdit.put("planInfo", jsonArrayEdit);
                         JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionEdit, inboundDataOutEdit);
                         if (resultData.getInt("statusCode") == 1) {
-                            Tool.showMessage("添加成功", "提示", 0);
+//                            Tool.showMessage("添加成功", "提示", 0);
                             monitorManagementForm.getMonitorList();
                             frame.dispose();
                         } else {
-                            Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                            Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
                         }
                     } catch (JSONException e1) {
                         e1.printStackTrace();
@@ -192,6 +190,7 @@ public class MonitorFunction {
         frame.setContentPane(this.monitorFunction);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

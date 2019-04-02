@@ -106,7 +106,7 @@ public class ResourceManagementForm {
                 inboundDataEquipment.put("Device", jsonArrayEquipment);
                 org.json.JSONObject resultDataEquipment = Tool.sendInstructionAndReceiveStatus(2, instruction, inboundDataEquipment);
                 if (resultDataEquipment.getInt("statusCode") == 1) {
-                    Tool.showMessage("删除成功", "提示", 0);
+//                    Tool.showMessage("删除成功", "提示", 0);
                     getMonitor();
                 } else {
                     Tool.showMessage("删除设备失败，错误码：" + resultDataEquipment.getInt("statusCode"), "提示", 0);
@@ -145,8 +145,8 @@ public class ResourceManagementForm {
             }
             getSnapDeviceIpsList();
         } catch (JSONException e) {
-            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
-            e.printStackTrace();
+//            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
+//            e.printStackTrace();
         }
     }
 

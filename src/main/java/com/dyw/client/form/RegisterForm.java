@@ -339,7 +339,6 @@ public class RegisterForm {
      * 修改人员信息
      * */
     private void update() {
-        System.out.println("旧卡号为：" + oldStaff.getCardNumber());
         inputEnable();
         deleteButton.setEnabled(false);
         saveButton.setEnabled(true);
@@ -452,7 +451,7 @@ public class RegisterForm {
     /*
      * 获取表格人员信息
      * */
-    public StaffEntity getStaffEntity() {
+    private StaffEntity getStaffEntity() {
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setName(chineseNameText.getText());
         staffEntity.setNameEn(englishNameText.getText());

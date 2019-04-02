@@ -243,7 +243,7 @@ public class Tool {
      * 显示布控报警对比信息
      * */
     public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity, Map<String, String> fdLibMaps) {
-        return "<html><body>报警时间：<br" +
+        return "<html><body>报警时间：" +
                 time +
                 "<br>姓名：    " +
                 candidateEntity.getReserve_field().getName() +
@@ -268,6 +268,8 @@ public class Tool {
             result = 3;
         else if (value == 3)
             result = 4;
+        else if (value == 0)
+            result = 1;
         return result;
     }
 

@@ -300,9 +300,9 @@ public class IntelligentApplicationForm {
             inboundDataOut.put("HttpHostNotification", inboundDataIn);
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
             if (resultData.getInt("statusCode") == 1) {
-                Tool.showMessage("添加报警主机成功", "提示", 0);
+//                Tool.showMessage("添加报警主机成功", "提示", 0);
             } else {
-                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
             }
         } catch (JSONException | UnknownHostException e) {
             e.printStackTrace();
@@ -334,7 +334,7 @@ public class IntelligentApplicationForm {
                 case 0:
                     Vector vectorOne = new Vector();
                     vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
-                    vectorOne.add(1, "<html><body>报警时间：" +
+                    vectorOne.add(1, "<html><body>抓拍时间：" +
                             captureLibResultEntity.getTargetAttrs().getFaceTime() +
                             "<br>抓拍机：    " +
                             captureLibResultEntity.getTargetAttrs().getDeviceName() +
@@ -350,7 +350,6 @@ public class IntelligentApplicationForm {
                     Vector vectorTwo = new Vector();
                     vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
                     vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
-                    vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
                     vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
                     blackAlarmContentTableModel.addRow(vectorTwo);
                     if (blackAlarmRollingStatus == 1) {
@@ -435,8 +434,8 @@ public class IntelligentApplicationForm {
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
             monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
         } catch (JSONException e) {
-            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
-            e.printStackTrace();
+//            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
+//            e.printStackTrace();
         }
     }
 
@@ -481,7 +480,6 @@ public class IntelligentApplicationForm {
             default:
                 break;
         }
-        System.out.println("snap:" + Egci.snapDeviceIps.toString());
     }
 
     /*

@@ -36,19 +36,17 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 public class HttpsClientUtil {
-    public HttpsClientUtil() throws Exception
-    {
+    public HttpsClientUtil() {
 
     }
 
-    public static boolean bHttpsEnabled=false;
+    public static boolean bHttpsEnabled = false;
 
-    public static void httpsClientInit(String IP, int Port, String user, String Password)
-    {
+    public static void httpsClientInit(String IP, int Port, String user, String Password) {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials(user,  Password);
+        Credentials credentials = new UsernamePasswordCredentials(user, Password);
         credentialsProvider.setCredentials(new AuthScope(IP, Port), credentials);
-        HttpsClientUtil.httpsClient=HttpClients.custom().setSSLSocketFactory(HttpsClientUtil.createSSLConnSocketFactory()).setDefaultCredentialsProvider(credentialsProvider).build();
+        HttpsClientUtil.httpsClient = HttpClients.custom().setSSLSocketFactory(HttpsClientUtil.createSSLConnSocketFactory()).setDefaultCredentialsProvider(credentialsProvider).build();
     }
 
     public static SSLConnectionSocketFactory createSSLConnSocketFactory() {
@@ -56,29 +54,29 @@ public class HttpsClientUtil {
         SSLConnectionSocketFactory sslsf = null;
         try {
 
-            TrustStrategy trustStrategy=new TrustStrategy(){
+            TrustStrategy trustStrategy = new TrustStrategy() {
 
-                public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                public boolean isTrusted(X509Certificate[] chain, String authType) {
                     return true;
                 }
             };
 
             SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, trustStrategy).build();
 
-            X509HostnameVerifier x509HostnameVerifier=new X509HostnameVerifier(){
+            X509HostnameVerifier x509HostnameVerifier = new X509HostnameVerifier() {
 
                 public boolean verify(String arg0, SSLSession arg1) {
                     return true;
                 }
 
-                public void verify(String host, SSLSocket ssl) throws IOException {
+                public void verify(String host, SSLSocket ssl) {
                 }
 
 
-                public void verify(String host, X509Certificate cert) throws SSLException {
+                public void verify(String host, X509Certificate cert) {
                 }
 
-                public void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {
+                public void verify(String host, String[] cns, String[] subjectAlts) {
                 }
             };
 
@@ -90,11 +88,10 @@ public class HttpsClientUtil {
     }
 
 
-    public static CloseableHttpClient httpsClient=null;
+    public static CloseableHttpClient httpsClient = null;
 
-    public static String httpsGet(String url)
-    {
-        String Ret="";
+    public static String httpsGet(String url) {
+        String Ret = "";
         try {
             CloseableHttpResponse response = null;
             HttpGet httpGet = new HttpGet(url);
@@ -102,14 +99,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(httpGet);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -117,17 +112,16 @@ public class HttpsClientUtil {
 
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            Ret = "error";
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            Ret = "error";
         }
         return Ret;
     }
 
-    public static String httpsPut(String url, String inboundInfo)
-    {
-        String Ret="";
+    public static String httpsPut(String url, String inboundInfo) {
+        String Ret = "";
         try {
             CloseableHttpResponse response = null;
             HttpPut httpPut = new HttpPut(url);
@@ -138,14 +132,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(httpPut);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -161,9 +153,8 @@ public class HttpsClientUtil {
         return Ret;
     }
 
-    public static String httpsPost(String url, String inboundInfo)
-    {
-        String Ret="";
+    public static String httpsPost(String url, String inboundInfo) {
+        String Ret = "";
         try {
             CloseableHttpResponse response = null;
             HttpPost httpPost = new HttpPost(url);
@@ -174,14 +165,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(httpPost);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -197,9 +186,8 @@ public class HttpsClientUtil {
         return Ret;
     }
 
-    public static String httpsDelete(String url)
-    {
-        String Ret="";
+    public static String httpsDelete(String url) {
+        String Ret = "";
         try {
             CloseableHttpResponse response = null;
             HttpDelete httpDelete = new HttpDelete(url);
@@ -207,14 +195,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(httpDelete);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -230,26 +216,26 @@ public class HttpsClientUtil {
         return Ret;
     }
 
-    public static String doPostStorageCloud(String url, String json,String faceimage,String boundary) throws Exception {
+    public static String doPostStorageCloud(String url, String json, String faceimage, String boundary) {
 
-        String Ret="";
-        try{
+        String Ret = "";
+        try {
             CloseableHttpResponse response = null;
             HttpPost method = new HttpPost(url);
             method.addHeader("Accept", "text/html, application/xhtml+xml");
             method.addHeader("Accept-Language", "zh-CN");
-            method.addHeader("Content-Type","multipart/form-data; boundary=" + boundary);
-            method.addHeader("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
-            method.addHeader("Accept-Encoding","gzip, deflate");
-            method.addHeader("Connection","Keep-Alive");
-            method.addHeader("Cache-Control","no-cache");
+            method.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+            method.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
+            method.addHeader("Accept-Encoding", "gzip, deflate");
+            method.addHeader("Connection", "Keep-Alive");
+            method.addHeader("Cache-Control", "no-cache");
             // byte szTemp
             String bodyParam =
                     "--" + boundary + "\r\n"
                             + "Content-Disposition: form-data; name=\"uploadStorageCloud\";\r\n"
                             + "Content-Type: text/json\r\n"
                             + "Content-Length: " + Integer.toString(json.length()) + "\r\n\r\n"
-                            +  json + "\r\n"
+                            + json + "\r\n"
                             + "--" + boundary + "\r\n"
                             + "Content-Disposition: form-data; name=\"imageData\";\r\n"
                             + "Content-Type: image/jpeg\r\n"
@@ -269,14 +255,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(method);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -284,7 +268,7 @@ public class HttpsClientUtil {
             // 释放连接
             method.releaseConnection();
 
-        }catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
@@ -294,26 +278,27 @@ public class HttpsClientUtil {
         return Ret;
 
     }
-    public static String doModFacePicRecord(String url, String json,String faceimage,String boundary) throws Exception  {
 
-        String Ret="";
-        try{
+    public static String doModFacePicRecord(String url, String json, String faceimage, String boundary) {
+
+        String Ret = "";
+        try {
             CloseableHttpResponse response = null;
             HttpPost method = new HttpPost(url);
             method.addHeader("Accept", "text/html, application/xhtml+xml");
             method.addHeader("Accept-Language", "zh-CN");
-            method.addHeader("Content-Type","multipart/form-data; boundary=" + boundary);
-            method.addHeader("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
-            method.addHeader("Accept-Encoding","gzip, deflate");
-            method.addHeader("Connection","Keep-Alive");
-            method.addHeader("Cache-Control","no-cache");
+            method.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+            method.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
+            method.addHeader("Accept-Encoding", "gzip, deflate");
+            method.addHeader("Connection", "Keep-Alive");
+            method.addHeader("Cache-Control", "no-cache");
 
             String bodyParam =
                     "--" + boundary + "\r\n"
                             + "Content-Disposition: form-data; name=\"FaceDataRecord\";\r\n"
                             + "Content-Type: text/json\r\n"
                             + "Content-Length: " + Integer.toString(json.length()) + "\r\n\r\n"
-                            +  json + "\r\n"
+                            + json + "\r\n"
                             + "--" + boundary + "\r\n"
                             + "Content-Disposition: form-data; name=\"FaceImage\";\r\n"
                             + "Content-Type: image/jpeg\r\n"
@@ -329,14 +314,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(method);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 
@@ -344,7 +327,7 @@ public class HttpsClientUtil {
             // 释放连接
             method.releaseConnection();
 
-        }catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
@@ -354,11 +337,11 @@ public class HttpsClientUtil {
         return Ret;
 
     }
-    public static String doPutWithType(String url, String inbound,String charset,String Type) throws Exception {
+
+    public static String doPutWithType(String url, String inbound, String charset, String Type) {
 
 
-
-        String Ret="";
+        String Ret = "";
         try {
             CloseableHttpResponse response = null;
             HttpPut httpPut = new HttpPut(url);
@@ -370,14 +353,12 @@ public class HttpsClientUtil {
             response = httpsClient.execute(httpPut);
 
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                Ret = "error "+statusCode;
+            if (statusCode != HttpStatus.SC_OK) {
+                Ret = "error " + statusCode;
             }
 
             HttpEntity entity = response.getEntity();
-            if (entity == null)
-            {
+            if (entity == null) {
                 Ret = "error response is null";
             }
 

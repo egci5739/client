@@ -4,8 +4,12 @@
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.equipmentMapper">
     <!--根据条件查询所有设备-->
-    <select id="getAllEquipmentWithCondition" resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from Equipment where GroupId = #{GroupId};
+    <select id="getAllEquipmentWithCondition" parameterType="Integer"
+            resultType="com.dyw.client.entity.EquipmentEntity">
+        select * from Equipment
+        <if test="_parameter != 1">
+            where GroupId = #{_parameter};
+        </if>
     </select>
     <!--查询所有设备信息-->
     <select id="getAllEquipment" resultType="com.dyw.client.entity.EquipmentEntity">

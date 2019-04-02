@@ -98,7 +98,7 @@ public class MonitorManagementForm {
                 monitorManagementContentTableModel.addRow(vector);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -139,10 +139,10 @@ public class MonitorManagementForm {
         org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(4, instruction, null);
         try {
             if (resultData.getInt("statusCode") == 1) {
-                Tool.showMessage("删除成功", "提示", 0);
+//                Tool.showMessage("删除成功", "提示", 0);
                 getMonitorList();
             } else {
-                Tool.showMessage("删除设备失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                Tool.showMessage("删除设备失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -163,8 +163,8 @@ public class MonitorManagementForm {
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
             monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
         } catch (JSONException e) {
-            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
-            e.printStackTrace();
+//            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
+//            e.printStackTrace();
         }
     }
 }

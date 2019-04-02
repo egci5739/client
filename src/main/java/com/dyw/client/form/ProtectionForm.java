@@ -474,7 +474,7 @@
 //            if (resultData.getInt("statusCode") == 1) {
 //                Tool.showMessage("添加报警主机成功", "提示", 0);
 //            } else {
-//                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+//                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
 //            }
 //        } catch (JSONException | UnknownHostException e) {
 //            e.printStackTrace();
@@ -571,7 +571,7 @@
 //                        Tool.showMessage("添加成功", "提示", 0);
 //                        showSelectBase();
 //                    } else {
-//                        Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+//                        Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
 //                    }
 //                }
 //            }
@@ -899,7 +899,7 @@
 //                Tool.showMessage("删除成功", "提示", 0);
 //                getMonitorList();
 //            } else {
-//                Tool.showMessage("删除设备失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+//                Tool.showMessage("删除设备失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
 //            }
 //        } catch (JSONException e) {
 //            e.printStackTrace();

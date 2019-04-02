@@ -3,30 +3,22 @@ package com.dyw.client.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
-import com.dyw.client.entity.protection.FDLibEntity;
-import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.form.*;
-import com.dyw.client.service.DatabaseService;
 import com.dyw.client.service.SessionService;
-import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
-import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Egci {
-    private static Logger logger;
+    private static Logger logger = LoggerFactory.getLogger(Egci.class);
     public static ConfigEntity configEntity;
     public static SqlSession session;
-    public static RegisterForm registerForm;
     public static int workStatus;
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
@@ -35,7 +27,7 @@ public class Egci {
     public static List<String> snapDeviceIpsTwo = new ArrayList<>();//二核抓拍设备
     public static List<String> snapDeviceIpsThree = new ArrayList<>();//三核抓拍设备
     public static List<String> snapDeviceIps = new ArrayList<>();//根据权限设置抓拍设备ip组
-
+    public static int faceServerStatus = 0;//脸谱服务器状态：0禁用  1启用
 
     /*
      * 初始化客户端程序
@@ -44,8 +36,6 @@ public class Egci {
         accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
-        //初始化日志对象
-        logger = LoggerFactory.getLogger(Egci.class);
         //获取配置文件
         configEntity = Tool.getConfig(System.getProperty("user.dir") + "/config/config.xml");
         //创建session对象

@@ -36,7 +36,6 @@ public class AlarmHistoryForm {
     private int pageNum = 0;
     private List<AlarmHistoryEntity> alarmHistoryEntityList = new ArrayList<>();
 
-
     public AlarmHistoryForm() {
         String[] columnAlarmHistoryInfo = {"抓拍图", "底图", "报警时间", "报警地点", "姓名", "性别", "名单库", "相似度"};
         alarmHistoryModel = new DefaultTableModel() {

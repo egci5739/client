@@ -71,11 +71,11 @@ public class FaceInfoFunction {
                     inboundData.put("bornTime", faceInfoBirthdayText.getText());
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                     if (resultData.getInt("statusCode") == 1) {
-                        Tool.showMessage("添加成功", "提示", 0);
+//                        Tool.showMessage("添加成功", "提示", 0);
                         personManagementForm.showSelectBase();
                         frame.dispose();
                     } else {
-                        Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                        Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
                     }
                 } catch (JSONException e1) {
                     e1.printStackTrace();
@@ -96,6 +96,7 @@ public class FaceInfoFunction {
         frame.setContentPane(this.FaceInfoFunction);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

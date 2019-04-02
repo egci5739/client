@@ -103,7 +103,9 @@ public class StaffOperationService {
             //更新
             Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
             Egci.session.commit();
-            updateFaceServerFaceInfo(oldStaff, staffEntity);
+            if (Egci.faceServerStatus == 1) {
+                updateFaceServerFaceInfo(oldStaff, staffEntity);//更新脸谱服务器中的人员信息
+            }
         } else {
             //新增
             Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
@@ -163,7 +165,7 @@ public class StaffOperationService {
     /*
      * 更新脸谱服务器中的人员信息
      * */
-    public void updateFaceServerFaceInfo(StaffEntity oldInfo, StaffEntity newInfo) {
+    private void updateFaceServerFaceInfo(StaffEntity oldInfo, StaffEntity newInfo) {
         try {
             //获取人脸库列表
 //            List<FDLibEntity> fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
@@ -176,7 +178,6 @@ public class StaffOperationService {
                 inboundDataGet.put("faceLibType", "blackFD");
                 inboundDataGet.put("FDID", fdLibEntity.getFDID());
                 inboundDataGet.put("name", oldInfo.getName() + "_" + oldInfo.getCardNumber() + "_" + oldInfo.getStaffId());
-                System.out.println("看看看看：" + oldInfo.getName() + "_" + oldInfo.getCardNumber() + "_" + oldInfo.getStaffId());
                 FaceInfoEntity faceInfoEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGet).getString("MatchList"), FaceInfoEntity.class).get(0);
                 //更改信息
                 org.json.JSONObject inboundDataSet = new org.json.JSONObject();
@@ -188,12 +189,11 @@ public class StaffOperationService {
                 inboundDataSet.put("bornTime", newInfo.getBirthday());
                 org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionSet, inboundDataSet);
                 if (resultData.getInt("statusCode") == 1) {
-                    Tool.showMessage("添加成功", "提示", 0);
+//                    Tool.showMessage("添加成功", "提示", 0);
                 } else {
-                    Tool.showMessage("添加失败，错误码：" + resultData.getInt("statusCode"), "提示", 0);
+                    Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

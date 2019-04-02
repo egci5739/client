@@ -1,22 +1,18 @@
 package com.dyw.client.form;
 
-import ISAPI.HttpsClientUtil;
 import com.dyw.client.controller.Egci;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import javax.swing.*;
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 
 public class ApplicationForm {
     private JFrame frame;
     private JPanel applicationForm;
     private JTabbedPane applicationTabbedPane;
 
+    /*
+     * 构造函数
+     * init
+     * */
     public ApplicationForm() {
         switch (Egci.accountEntity.getAccountRole()) {
             case 1:
@@ -41,6 +37,9 @@ public class ApplicationForm {
                 initPersonManagementForm();
                 initResourceManagementForm();
                 initAlarmHistoryForm();
+                break;
+            default:
+                break;
         }
     }
 
@@ -85,12 +84,15 @@ public class ApplicationForm {
      * init
      * */
     private void initIntelligentApplicationForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         IntelligentApplicationForm intelligentApplicationForm = new IntelligentApplicationForm();
         applicationTabbedPane.add("智能应用", intelligentApplicationForm.getIntelligentApplicationForm());
     }
 
     /*
-     * 历史记录查询
+     * 通行历史记录查询
      * init
      * */
     private void initMonitorHistoryForm() {
@@ -103,6 +105,9 @@ public class ApplicationForm {
      * init
      * */
     private void initMonitorManagementForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         MonitorManagementForm monitorManagementForm = new MonitorManagementForm();
         applicationTabbedPane.add("布控管理", monitorManagementForm.getMonitorManagementForm());
     }
@@ -121,6 +126,9 @@ public class ApplicationForm {
      * init
      * */
     private void initPersonManagementForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         PersonManagementForm personManagementForm = new PersonManagementForm();
         applicationTabbedPane.add("布控名单管理", personManagementForm.getPersonManagementForm());
     }
@@ -140,6 +148,9 @@ public class ApplicationForm {
      * init
      * */
     private void initResourceManagementForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         ResourceManagementForm resourceManagementForm = new ResourceManagementForm();
         applicationTabbedPane.add("布控设备管理", resourceManagementForm.getResourceManagementForm());
     }
@@ -149,6 +160,9 @@ public class ApplicationForm {
      * init
      * */
     private void initAlarmHistoryForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         AlarmHistoryForm alarmHistoryForm = new AlarmHistoryForm();
         applicationTabbedPane.add("报警历史", alarmHistoryForm.getAlarmHistoryForm());
     }
