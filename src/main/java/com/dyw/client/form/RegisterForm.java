@@ -38,7 +38,7 @@ public class RegisterForm {
     private List<String> cardNumbers;
     private Map<String, StaffEntity> waitStaffMap;
     private DefaultTableModel model;
-    private StaffEntity oldStaff;
+    private StaffEntity oldStaff = new StaffEntity();
     private byte[] staffPhoto;
     private byte[] takePhoto;
     private StaffOperationService staffOperationService;
@@ -212,6 +212,7 @@ public class RegisterForm {
                     chineseNameText.setEnabled(false);
                     passCardText.setEnabled(false);
                     IdPhoto.setEnabled(true);
+                    addButton.setEnabled(false);
                     if (staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "") != null) {
                         staffPhoto = staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "").getPhoto();
                         fillStaffInfo(staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + ""));
@@ -296,10 +297,15 @@ public class RegisterForm {
      * */
     private void reconnectToServer() {
         if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
-            RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
-            registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
-            registerReceiveInfoSocketService.start();
-            useIdCardCheckBox.setSelected(true);
+            try {
+                RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
+                registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+                registerReceiveInfoSocketService.start();
+                useIdCardCheckBox.setSelected(true);
+            } catch (Exception e) {
+                Tool.showMessage("重连失败，请确保服务程序运行正常", "提示", 0);
+            }
+
         }
     }
 
@@ -307,6 +313,7 @@ public class RegisterForm {
      * 取消操作
      * */
     private void cancel() {
+        oldStaff.setStaffId(0);
         cleanStaffInfo();
         waitStaffList.setEnabled(false);
         inputDisabled();
@@ -328,9 +335,7 @@ public class RegisterForm {
      * */
     private void delete() {
         if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
-            StaffEntity staffEntity = new StaffEntity();
-            staffEntity.setCardNumber(passCardText.getText());
-            staffOperationService.delete(staffEntity);
+            staffOperationService.delete(oldStaff);
             cancel();
         }
     }
@@ -473,6 +478,7 @@ public class RegisterForm {
      * 新增人员
      * */
     public void add() {
+        oldStaff.setStaffId(0);
         waitStaffList.setEnabled(true);
         inputEnable();
         searchButton.setEnabled(false);
@@ -480,6 +486,7 @@ public class RegisterForm {
         addButton.setEnabled(false);
         changePhotoButton.setEnabled(true);
         addWaitStaffButton.setEnabled(false);
+        model.setRowCount(0);
     }
 
     /*
@@ -508,7 +515,7 @@ public class RegisterForm {
             return;
         }
         searchButton.setEnabled(false);
-        addButton.setEnabled(false);
+        addButton.setEnabled(true);
         saveButton.setEnabled(false);
         model.setRowCount(0);
         staffOperationService.search(chineseNameText.getText(), passCardText.getText());

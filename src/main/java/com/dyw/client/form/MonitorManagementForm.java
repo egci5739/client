@@ -139,7 +139,6 @@ public class MonitorManagementForm {
         org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(4, instruction, null);
         try {
             if (resultData.getInt("statusCode") == 1) {
-//                Tool.showMessage("删除成功", "提示", 0);
                 getMonitorList();
             } else {
                 Tool.showMessage("删除设备失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);

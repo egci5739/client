@@ -96,42 +96,35 @@ public class StaffOperationService {
      * 保存人员信息
      * */
     public void save(StaffEntity staffEntity, StaffEntity oldStaff) {
-        List<StaffEntity> resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", oldStaff.getCardNumber());
-        if (resultStaffList.size() > 0) {
-            staffEntity.setOldCard(oldStaff.getCardNumber());
-            staffEntity.setStaffId(oldStaff.getStaffId());
-            //更新
-            Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
-            Egci.session.commit();
-            if (Egci.faceServerStatus == 1) {
-                updateFaceServerFaceInfo(oldStaff, staffEntity);//更新脸谱服务器中的人员信息
+        try {
+            if (staffEntity.getSex().equals("")) {
+                staffEntity.setSex("1");
             }
-        } else {
-            //新增
-            Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
-            Egci.session.commit();
-        }
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (resultStaffList.size() > 0) {
-                SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService();
-                deleteSendInfoSocketService.sendInfo("2#" + oldStaff.getCardNumber() + "\n");
-                deleteSendInfoSocketService.receiveInfoOnce();
-                Thread.sleep(1000);
-                SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService();
-                insertSendInfoSocketService.sendInfo("1#" + staffEntity.getCardNumber() + "\n");
-                insertSendInfoSocketService.receiveInfoOnce();
+            if (staffEntity.getBirthday().equals("")) {
+                staffEntity.setBirthday("1970-01-01");
+            }
+            if (oldStaff.getStaffId() > 0) {
+                staffEntity.setOldCard(oldStaff.getCardNumber());
+                staffEntity.setStaffId(oldStaff.getStaffId());
+                //更新
+                Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
+                Egci.session.commit();
+                //更新脸谱，暂时不用
+//            if (Egci.faceServerStatus == 1) {
+//                updateFaceServerFaceInfo(oldStaff, staffEntity);//更新脸谱服务器中的人员信息
+//            }
             } else {
-                SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService();
-                insertSendInfoSocketService.sendInfo("1#" + staffEntity.getCardNumber() + "\n");
-                insertSendInfoSocketService.receiveInfoOnce();
+                //新增
+                Egci.session.insert("mapping.staffMapper.insertStaff", staffEntity);
+                Egci.session.commit();
             }
-        } catch (InterruptedException e) {
-            logger.error("延迟出错", e);
+            Thread.sleep(1000);
+//                Thread.sleep(1000);
+            SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService();
+            insertSendInfoSocketService.sendInfo("1#" + staffEntity.getCardNumber() + "\n");
+            insertSendInfoSocketService.receiveInfoOnce();
+        } catch (Exception e) {
+            logger.error("保存人员信息出错", e);
         }
     }
 
@@ -139,6 +132,7 @@ public class StaffOperationService {
      * 删除人员
      * */
     public void delete(StaffEntity staffEntity) {
+        staffEntity.setCardNumber("0");
         Egci.session.delete("mapping.staffMapper.deleteStaff", staffEntity);
         Egci.session.commit();
         SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService();

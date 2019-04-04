@@ -5,11 +5,14 @@ import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.form.PersonManagementForm;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.List;
 
 public class ImportPersonProgressService extends Thread {
+    private Logger logger = LoggerFactory.getLogger(ImportPersonProgressService.class);
     private JProgressBar jProgressBar;
     private PersonManagementForm personManagementForm;
     private String FDID;
@@ -41,6 +44,9 @@ public class ImportPersonProgressService extends Thread {
                 inboundData.put("faceLibType", "blackFD");
                 inboundData.put("FDID", FDID);
                 inboundData.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
+                if (staffEntity.getSex() == null) {
+                    staffEntity.setSex("1");
+                }
                 inboundData.put("gender", Tool.changeGenderToMaleAndFemale(staffEntity.getSex()));
                 if (staffEntity.getBirthday() == null) {
                     staffEntity.setBirthday("1900-01-01");
@@ -48,7 +54,7 @@ public class ImportPersonProgressService extends Thread {
                 inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
                 org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
             } catch (JSONException e) {
-                e.printStackTrace();
+                logger.error("添加人员失败，卡号：" + staffEntity.getCardNumber());
             }
             num++;
             jProgressBar.setValue((int) ((float) num / (float) staffEntityList.size() * 100));

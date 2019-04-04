@@ -47,9 +47,8 @@ public class ChangeModeService {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String info = null;
             info = br.readLine();
-            if (info == null) {
-            } else {
-                System.out.println("接收到的消息为" + info);
+            if (info != null) {
+                logger.info("接收到的消息为" + info);
             }
         } catch (IOException e) {
             logger.error("服务程序断开", e);

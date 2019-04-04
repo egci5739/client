@@ -1,5 +1,6 @@
 package com.dyw.client.functionForm;
 
+import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RelateInfoEntity;
@@ -36,6 +37,8 @@ public class MonitorFunction {
     private MultiComboBox monitorRangeCombo;
     private JTextField monitorThresholdText;
     private JTextField monitorReasonText;
+    private JLabel monitorTypeLabel;
+    private JComboBox monitorTypeComboBox;
     private List<String> objectIds;
     private List<String> rangeIds;
     private JFrame frame;
@@ -46,11 +49,15 @@ public class MonitorFunction {
     private List<NameCode> monitorPointsl;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
 
-
     public MonitorFunction(
             final RelateInfoEntity relateInfoEntity,
             final List<MonitorPointEntity> monitorPointEntityList,
             final MonitorManagementForm monitorManagementForm) {
+        /*
+         * 布控类型
+         * 白名单==黑名单   陌生人==白名单
+         * */
+        monitorTypeComboBox.addItem("");
         /*
          * 获取人脸库
          * */
@@ -66,11 +73,13 @@ public class MonitorFunction {
         monitorObjectCombo.initParameter(fdLib, fdLibsl);
         monitorPoint = new ArrayList<>();
         monitorPointsl = new ArrayList<>();
+
         for (MonitorPointEntity monitorPointEntity : monitorPointEntityList) {
             NameCode nameCode = new NameCode(monitorPointEntity.getMonitorPointID(), monitorPointEntity.getMonitorPointName());
             monitorPoint.add(nameCode);
         }
         monitorRangeCombo.initParameter(monitorPoint, monitorPointsl);
+
         monitorObjectCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 objectIds.clear();
@@ -96,6 +105,7 @@ public class MonitorFunction {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (relateInfoEntity == null) {//新增
+                    System.out.println("执行新增");
                     String instructionAdd = "/ISAPI/Intelligent/FDLib/executeControl?format=json";
                     JSONObject inboundDataOutAdd = new JSONObject();
                     JSONArray jsonArrayAdd = new JSONArray();
@@ -122,6 +132,7 @@ public class MonitorFunction {
                         e1.printStackTrace();
                     }
                 } else {//修改
+                    System.out.println("执行修改");
                     String instructionEdit = "/ISAPI/Intelligent/FDLib/executeControl?format=json&relateID=" + relateInfoEntity.getRelateID();
                     JSONObject inboundDataOutEdit = new JSONObject();
                     JSONArray jsonArrayEdit = new JSONArray();
@@ -133,10 +144,12 @@ public class MonitorFunction {
                         jsonArrayEdit.put(0, mapEdit);
                         inboundDataOutEdit.put("name", monitorNameText.getText());
                         inboundDataOutEdit.put("FDID", StringUtils.join(objectIds, ","));
+                        System.out.println("FDID:" + StringUtils.join(objectIds, ","));
                         inboundDataOutEdit.put("cameraID", StringUtils.join(rangeIds, ","));
+                        System.out.println("cameraID:" + StringUtils.join(rangeIds, ","));
                         inboundDataOutEdit.put("reason", monitorReasonText.getText());
                         inboundDataOutEdit.put("planInfo", jsonArrayEdit);
-                        JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instructionEdit, inboundDataOutEdit);
+                        JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionEdit, inboundDataOutEdit);
                         if (resultData.getInt("statusCode") == 1) {
 //                            Tool.showMessage("添加成功", "提示", 0);
                             monitorManagementForm.getMonitorList();
@@ -162,7 +175,12 @@ public class MonitorFunction {
             monitorNameText.setText(relateInfoEntity.getName());
             monitorThresholdText.setText(relateInfoEntity.getPlanInfo().get(0).getThreshold() + "");
             monitorReasonText.setText(relateInfoEntity.getReason());
-            monitorObjectCombo.setText(relateInfoEntity.getFDID());
+            String[] FDID = relateInfoEntity.getFDID().split(",");
+            List<String> result = new ArrayList<>();
+            for (String string : FDID) {
+                result.add(Egci.fdLibMaps.get(string));
+            }
+            monitorObjectCombo.setText(StringUtils.join(result, ","));
             monitorRangeCombo.setText(relateInfoEntity.getCameraName());
         }
     }

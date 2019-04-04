@@ -23,10 +23,10 @@ public class PingTask extends TimerTask {
         try {
             if (!netStateService.ping(Egci.configEntity.getServerIp()) || !netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
                 registerForm.changeCommunicationStatus(2);
-                logger.info("网络异常");
+//                logger.info("网络异常");
             } else if (Egci.workStatus == 0) {
                 registerForm.changeCommunicationStatus(0);
-                logger.info("网络正常");
+//                logger.info("网络正常");
             }
         } catch (Exception e) {
             logger.error("error", e);

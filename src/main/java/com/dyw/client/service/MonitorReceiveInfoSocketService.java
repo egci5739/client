@@ -34,6 +34,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
             JOptionPane.showMessageDialog(null, "连接服务程序失败", "错误提示", 0);
+            return;
         }
     }
 

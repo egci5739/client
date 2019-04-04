@@ -19,11 +19,12 @@
     <!--修改人员信息-->
     <update id="updateStaff" parameterType="com.dyw.client.entity.StaffEntity">
         UPDATE Staff SET Name=#{Name},NameEn=#{NameEn},CardId=#{CardId},CardNumber=#{CardNumber},Birthday=#{Birthday},
-        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE CardNumber=#{OldCard};
+        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE StaffId=#{StaffId};
     </update>
-    <!--删除人员信息-->
+    <!--删除人员信息:将人员卡号在数据库中设为0-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        DELETE FROM Staff WHERE CardNumber=#{CardNumber};
+        <!--DELETE FROM Staff WHERE CardNumber=#{CardNumber};-->
+        UPDATE Staff SET CardNumber=#{CardNumber} WHERE StaffId=#{StaffId};
     </delete>
     <!--查询待拍照人员列表-->
     <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
@@ -55,6 +56,10 @@
     </insert>
     <!--获取全部人员信息-->
     <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        select * from Staff where StaffId &gt; 501 and StaffId &lt; 520;
+        select * from Staff;
+    </select>
+    <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
+        select * from Staff WHERE CardNumber = #{CardNumber};
     </select>
 </mapper>

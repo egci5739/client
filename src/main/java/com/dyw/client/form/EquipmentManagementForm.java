@@ -2,6 +2,8 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.service.SendInfoSocketService;
+import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -26,6 +28,7 @@ public class EquipmentManagementForm {
     private JPanel equipmentManagementContentPanel;
     private JScrollPane equipmentManagementContentScroll;
     private JTable equipmentManagementContentTable;
+    private JButton importStaffButton;
 
     private DefaultTableModel equipmentManagerModel;
     private List<EquipmentEntity> equipmentEntityList;
@@ -84,6 +87,23 @@ public class EquipmentManagementForm {
                 deleteEquipment();
             }
         });
+        //导入人员到一体机
+        importStaffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                importStaff();
+            }
+        });
+    }
+
+    /*
+     * 导入人员到一体机
+     * */
+    private void importStaff() {
+        EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService();
+        sendInfoSocketService.sendInfo("9#" + equipmentEntity.getIP());
+        sendInfoSocketService.receiveInfoOnce();
     }
 
     /*
