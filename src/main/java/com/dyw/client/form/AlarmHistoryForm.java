@@ -7,6 +7,8 @@ import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +34,7 @@ public class AlarmHistoryForm {
     private JButton previousPageButton;
     private JButton nextPageButton;
 
+    private Logger logger = LoggerFactory.getLogger(AlarmHistoryForm.class);
     private DefaultTableModel alarmHistoryModel;
     private int pageNum = 0;
     private List<AlarmHistoryEntity> alarmHistoryEntityList = new ArrayList<>();
@@ -120,7 +123,7 @@ public class AlarmHistoryForm {
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("获取查询记录出错", e);
         }
     }
 }

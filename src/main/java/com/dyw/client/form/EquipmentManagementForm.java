@@ -33,7 +33,6 @@ public class EquipmentManagementForm {
     private DefaultTableModel equipmentManagerModel;
     private List<EquipmentEntity> equipmentEntityList;
 
-
     public EquipmentManagementForm() {
         //初始化设备管理表格
         String[] columnEquipmentInfo = {"设备名称", "设备IP", "切换器IP"};
@@ -100,10 +99,17 @@ public class EquipmentManagementForm {
      * 导入人员到一体机
      * */
     private void importStaff() {
-        EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService();
-        sendInfoSocketService.sendInfo("9#" + equipmentEntity.getIP());
-        sendInfoSocketService.receiveInfoOnce();
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
+        if (Tool.showConfirm("确定导入人员信息到一体机设备？", "提示")) {
+            EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService();
+            sendInfoSocketService.sendInfo("9#" + equipmentEntity.getIP());
+            sendInfoSocketService.receiveInfoOnce();
+            Tool.showMessage("设备正在导入人员信息，请勿重复导入", "提示", 0);
+        }
     }
 
     /*
@@ -148,7 +154,7 @@ public class EquipmentManagementForm {
     /*
      * 重新加载设备列表
      * */
-    public void refreshEquipmentList() {
+    private void refreshEquipmentList() {
         equipmentManagerModel.setRowCount(0);
         equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {

@@ -13,6 +13,8 @@ import com.dyw.client.service.PersonPageSelectionService;
 import com.dyw.client.tool.Tool;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -54,6 +56,7 @@ public class PersonManagementForm {
     private JButton previousPageButton;
     private JButton nextPageButton;
 
+    private Logger logger = LoggerFactory.getLogger(PersonManagementForm.class);
     private DefaultTableModel personManagementContentResultTableModel;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private List<String> FDLibNames = new ArrayList<>();//人脸库名称列表
@@ -189,17 +192,23 @@ public class PersonManagementForm {
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
                 FDLibNames.add(fdLibEntity.getName());
                 Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
+                //获取给陌生人用的电厂人员库ID
+                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
+                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                } else if (fdLibEntity.getName().equals("电厂人员库")) {
+                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                }
             }
             personManagementBaseList.setListData(FDLibNames.toArray());
         } catch (JSONException e1) {
-            e1.printStackTrace();
+            logger.error("获取人脸库出错", e1);
         }
     }
 
     /*
      * 创建人脸库
      * */
-    public void addFDLib() {
+    private void addFDLib() {
         FaceBaseFunction faceBaseFunction = new FaceBaseFunction(this, null);
         faceBaseFunction.init();
     }
@@ -257,7 +266,6 @@ public class PersonManagementForm {
                     inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                     if (resultData.getInt("statusCode") == 1) {
-//                        Tool.showMessage("添加成功", "提示", 0);
                         showSelectBase();
                     } else {
                         Tool.showMessage("添加失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
@@ -265,7 +273,7 @@ public class PersonManagementForm {
                 }
             }
         } catch (JSONException e1) {
-            e1.printStackTrace();
+            logger.error("按卡号添加人员出错", e1);
         }
     }
 
@@ -300,13 +308,12 @@ public class PersonManagementForm {
             String instruction = "/ISAPI/Intelligent/FDLib?format=json&FDID=" + fdLibEntityList.get(personManagementBaseList.getSelectedIndex()).getFDID() + "&faceLibType=blackFD";
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(4, instruction, null);
             if (resultData.getInt("statusCode") == 1) {
-//                Tool.showMessage("删除成功", "提示", 0);
                 getFDLib();
             } else {
                 Tool.showMessage("删除失败", "提示", 0);
             }
         } catch (JSONException e1) {
-            e1.printStackTrace();
+            logger.error("删除人脸库出错", e1);
         }
     }
 
@@ -319,7 +326,6 @@ public class PersonManagementForm {
             FDID = fdLibEntity.getFDID();
             if (fdLibEntityList.get(personManagementBaseList.getSelectedIndex()) != null) {
                 //获取人脸库中的人脸数据
-//                String inboundData = "{\"searchResultPosition\":0,\"maxResults\":100,\"faceLibType\":\"blackFD\",\"FDID\":\"" + FDID + "\"}";
                 String instruction = "/ISAPI/Intelligent/FDLib/FDSearch?format=json";
                 org.json.JSONObject inboundData = new org.json.JSONObject();
                 inboundData.put("searchResultPosition", pageNum);
@@ -330,15 +336,15 @@ public class PersonManagementForm {
                 faceInfoEntityList = JSON.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData).getString("MatchList"), FaceInfoEntity.class);
                 displaySelectResult(faceInfoEntityList);
             }
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException | JSONException ignored) {
-
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException | JSONException e) {
+            logger.error("获取人员信息出错", e);
         }
     }
 
     /*
      * 分页显示结果
      * */
-    public void displaySelectResult(List<FaceInfoEntity> faceInfoEntityList) {
+    private void displaySelectResult(List<FaceInfoEntity> faceInfoEntityList) {
         personManagementContentResultTableModel.setRowCount(0);
         for (FaceInfoEntity faceInfoEntity : faceInfoEntityList) {
             if (faceInfoEntity.getName().contains("_")) {//显示卡号
@@ -382,13 +388,12 @@ public class PersonManagementForm {
                 deleteInboundData.put("FPID", jsonarry);
                 org.json.JSONObject resultData = Tool.faceInfoOperation(2, FDID, null, deleteInboundData);
                 if (resultData.getInt("statusCode") == 1) {
-//                    Tool.showMessage("删除成功", "提示", 0);
                     showSelectBase();
                 } else {
                     Tool.showMessage("删除失败", "提示", 0);
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                logger.error("删除人员出错", e);
             }
         }
     }
@@ -405,5 +410,4 @@ public class PersonManagementForm {
         thread.start();
         personManagementContentToolBarImportButton.setEnabled(false);
     }
-
 }

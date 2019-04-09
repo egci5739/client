@@ -175,7 +175,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="黑名单报警"/>
+                      <text value="白名单报警"/>
                     </properties>
                   </component>
                   <component id="fe02a" class="javax.swing.JCheckBox" binding="blackAlarmRollingCheckBOx">
@@ -248,7 +248,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="白名单报警"/>
+                      <text value="陌生人报警"/>
                     </properties>
                   </component>
                   <component id="6e1ca" class="javax.swing.JCheckBox" binding="whiteAlarmRollingCheckBOx">

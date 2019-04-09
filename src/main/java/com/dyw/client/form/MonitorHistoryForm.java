@@ -204,7 +204,7 @@ public class MonitorHistoryForm {
     /*
      * 将查询结果显示在结果框中
      * */
-    public void displaySearchResult(List<PassInfoEntity> passInfoEntityList) {
+    private void displaySearchResult(List<PassInfoEntity> passInfoEntityList) {
         resultModel.setRowCount(0);
         for (PassInfoEntity passInfoEntity : passInfoEntityList) {
             Vector v = new Vector();

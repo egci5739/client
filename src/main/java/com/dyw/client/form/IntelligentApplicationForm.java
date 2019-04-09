@@ -13,6 +13,8 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 import net.iharder.Base64;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -78,6 +80,7 @@ public class IntelligentApplicationForm {
     private JTable snapAlarmContentTable;
     private JButton playButton;
 
+    private Logger logger = LoggerFactory.getLogger(IntelligentApplicationForm.class);
     private DefaultTableModel snapAlarmContentTableModel;
     private DefaultTableModel blackAlarmContentTableModel;
     private DefaultTableModel whiteAlarmContentTableModel;
@@ -118,7 +121,7 @@ public class IntelligentApplicationForm {
             //获取区域列表
             regionEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID(), null).getString("region"), RegionEntity.class);
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("获取控制中心和区域出错", e);
         }
         livePreviewContentPanelList = new ArrayList<>();
         livePreviewContentPanelList.add(livePreviewContentOnePanel);
@@ -174,7 +177,7 @@ public class IntelligentApplicationForm {
                 snapAlarmContentTableModel.setRowCount(0);
             }
         });
-        //黑名单
+        //白名单
         blackAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -215,17 +218,17 @@ public class IntelligentApplicationForm {
                 blackAlarmContentTableModel.setRowCount(0);
             }
         });
-        //白名单
+        //陌生人
         whiteAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        String[] columnWhiteAlarmInfo = {"抓拍图", "底图", "报警信息"};
+        String[] columnWhiteAlarmInfo = {"抓拍图", "时间"};
         whiteAlarmContentTableModel.setColumnIdentifiers(columnWhiteAlarmInfo);
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
-        TableCellRenderer whiteAlarmCellRenderer = new AlarmTableCellRenderer();
+        TableCellRenderer whiteAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
         whiteAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
@@ -305,14 +308,14 @@ public class IntelligentApplicationForm {
                 Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
             }
         } catch (JSONException | UnknownHostException e) {
-            e.printStackTrace();
+            logger.error("添加报警主机出错", e);
         }
     }
 
     /*
      * 监听报警消息
      * */
-    public void monitorAlarmInfo() {
+    private void monitorAlarmInfo() {
         HttpServerProvider provider = HttpServerProvider.provider();
         try {
             httpserver = provider.createHttpServer(new InetSocketAddress(12346), 100);
@@ -320,7 +323,7 @@ public class IntelligentApplicationForm {
             httpserver.setExecutor(null);
             httpserver.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("监听报警消息出错", e);
         }
     }
 
@@ -336,7 +339,7 @@ public class IntelligentApplicationForm {
                     vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
                     vectorOne.add(1, "<html><body>抓拍时间：" +
                             captureLibResultEntity.getTargetAttrs().getFaceTime() +
-                            "<br>抓拍机：    " +
+                            "<br>抓拍机：" +
                             captureLibResultEntity.getTargetAttrs().getDeviceName() +
                             "</body></html>");
 //                    vectorOne.add(1, captureLibResultEntity.getTargetAttrs().getFaceTime() + "\n" + captureLibResultEntity.getTargetAttrs().getDeviceName());
@@ -347,21 +350,39 @@ public class IntelligentApplicationForm {
                     snapAlarmBottomStatus = 0;
                     break;
                 case 1:
-                    Vector vectorTwo = new Vector();
-                    vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
-                    vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
-                    vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
-                    blackAlarmContentTableModel.addRow(vectorTwo);
-                    if (blackAlarmRollingStatus == 1) {
-                        moveScrollBarToBottom(blackAlarmScrollBar);
+                    if (Egci.fdLibIDForStranger.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
+                        //陌生人
+                        Vector vectorThree = new Vector();
+                        vectorThree.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                        vectorThree.add(1, "<html><body>抓拍时间：" +
+                                alarmResultEntity.getTargetAttrs().getFaceTime() +
+                                "<br>抓拍机：" +
+                                alarmResultEntity.getTargetAttrs().getDeviceName() +
+                                "</body></html>");
+                        whiteAlarmContentTableModel.addRow(vectorThree);
+                        if (whiteAlarmRollingStatus == 1) {
+                            moveScrollBarToBottom(whiteAlarmScrollBar);
+                        }
+                        whiteAlarmBottomStatus = 0;
+                        break;
+                    } else {
+                        //黑名单
+                        Vector vectorTwo = new Vector();
+                        vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                        vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
+                        vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                        blackAlarmContentTableModel.addRow(vectorTwo);
+                        if (blackAlarmRollingStatus == 1) {
+                            moveScrollBarToBottom(blackAlarmScrollBar);
+                        }
+                        blackAlarmBottomStatus = 0;
+                        break;
                     }
-                    blackAlarmBottomStatus = 0;
-                    break;
                 default:
                     break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("显示报警结果出错", e);
         }
     }
 
@@ -415,9 +436,9 @@ public class IntelligentApplicationForm {
                 embeddedMediaPlayerList.get(i).stop();
                 livePreviewContentPanelList.get(i).remove(embeddedMediaPlayerComponentList.get(i));
             }
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("停止视频流出错", e);
         }
-
     }
 
     /*
@@ -436,6 +457,7 @@ public class IntelligentApplicationForm {
         } catch (JSONException e) {
 //            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
 //            e.printStackTrace();
+            logger.error("获取监控点出错", e);
         }
     }
 
@@ -485,16 +507,23 @@ public class IntelligentApplicationForm {
     /*
      * 获取人脸库列表
      * */
-    public void getFDLib() {
+    private void getFDLib() {
         try {
             Egci.fdLibMaps.clear();
+
             fdLibEntityList.clear();
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
                 Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
+                //获取给陌生人用的电厂人员库ID
+                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
+                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                } else if (fdLibEntity.getName().equals("电厂人员库")) {
+                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                }
             }
         } catch (JSONException e1) {
-            e1.printStackTrace();
+            logger.error("获取人脸库列表出错", e1);
         }
     }
 }

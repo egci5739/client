@@ -5,7 +5,6 @@ import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RelateInfoEntity;
 import com.dyw.client.form.MonitorManagementForm;
-//import com.dyw.client.form.ProtectionForm;
 import com.dyw.client.tool.MultiComboBox;
 import com.dyw.client.tool.NameCode;
 import com.dyw.client.tool.Tool;
@@ -13,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,12 +38,11 @@ public class MonitorFunction {
     private MultiComboBox monitorRangeCombo;
     private JTextField monitorThresholdText;
     private JTextField monitorReasonText;
-    private JLabel monitorTypeLabel;
-    private JComboBox monitorTypeComboBox;
     private List<String> objectIds;
     private List<String> rangeIds;
     private JFrame frame;
 
+    private Logger logger = LoggerFactory.getLogger(MonitorFunction.class);
     private List<NameCode> fdLib;
     private List<NameCode> fdLibsl;
     private List<NameCode> monitorPoint;
@@ -53,11 +53,6 @@ public class MonitorFunction {
             final RelateInfoEntity relateInfoEntity,
             final List<MonitorPointEntity> monitorPointEntityList,
             final MonitorManagementForm monitorManagementForm) {
-        /*
-         * 布控类型
-         * 白名单==黑名单   陌生人==白名单
-         * */
-        monitorTypeComboBox.addItem("");
         /*
          * 获取人脸库
          * */
@@ -185,21 +180,16 @@ public class MonitorFunction {
         }
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        monitorObjectCombo = new MultiComboBox();
-        monitorRangeCombo = new MultiComboBox();
-    }
 
     /*
      * 获取人脸库列表
      * */
-    public void getFDLib() {
+    private void getFDLib() {
         try {
             fdLibEntityList.clear();
             fdLibEntityList = com.alibaba.fastjson.JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
         } catch (JSONException e1) {
-            e1.printStackTrace();
+            logger.error("获取人脸库列表出错", e1);
         }
     }
 
@@ -210,5 +200,11 @@ public class MonitorFunction {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        monitorObjectCombo = new MultiComboBox();
+        monitorRangeCombo = new MultiComboBox();
     }
 }

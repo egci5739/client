@@ -24,7 +24,6 @@ public class AccountManagementForm {
     private DefaultTableModel accountManagementModel;
     private List<AccountEntity> accountEntityList;
 
-
     public AccountManagementForm() {
         //初始化用户管理表格
         String[] columnAccountInfo = {"用户名", "密码", "角色", "权限"};

@@ -43,6 +43,7 @@ public class RegisterForm {
     private byte[] takePhoto;
     private StaffOperationService staffOperationService;
     private int addWaitStaffStatus = 0;
+    private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
 
 
     public JPanel getRegisterForm() {
@@ -110,6 +111,10 @@ public class RegisterForm {
     private StaffEntity staffEntity;
 
     public RegisterForm() {
+        //获取人脸库
+        if (Egci.faceServerStatus == 1) {
+            getFDLib();
+        }
         //获取采集设备的ip
         try {
             FaceCollectionEntity faceCollectionEntity = Egci.session.selectOne("mapping.faceCollectionMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
@@ -144,7 +149,6 @@ public class RegisterForm {
         //获取待拍照人员列表
         staffOperationService.getWaitStaffList();
         waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
-        //getWaitStaffList();
         //点击待拍照人员后自动填充人员信息
         waitStaffList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
@@ -370,7 +374,7 @@ public class RegisterForm {
     /*
      * 将人员信息填入人员表单中
      * */
-    public void fillStaffInfo(StaffEntity staffEntity) {
+    private void fillStaffInfo(StaffEntity staffEntity) {
         try {
             chineseNameText.setText(staffEntity.getName());
             englishNameText.setText(staffEntity.getNameEn());
@@ -426,7 +430,7 @@ public class RegisterForm {
     /*
      * 清空人员信息表单
      * */
-    public void cleanStaffInfo() {
+    private void cleanStaffInfo() {
         try {
             chineseNameText.setText("");
             englishNameText.setText("");
@@ -492,14 +496,17 @@ public class RegisterForm {
     /*
      * 保存人员信息
      * */
-    public void save() {
+    private void save() {
         if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
             StaffEntity staffEntity = getStaffEntity();
             staffEntity.setPhoto(staffPhoto);
             if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null) {
                 JOptionPane.showMessageDialog(null, "中文名、卡号或照片缺失！", "错误 ", 0);
-                return;
             } else {
+                if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 1) {
+                    Tool.showMessage("卡号已存在", "提示", 0);
+                    return;
+                }
                 staffOperationService.save(staffEntity, oldStaff);
                 cancel();
             }
@@ -547,7 +554,7 @@ public class RegisterForm {
     /*
      * 禁用表格输入
      * */
-    public void inputDisabled() {
+    private void inputDisabled() {
         englishNameText.setEnabled(false);
         IdNumberText.setEnabled(false);
         birthdayText.setEnabled(false);
@@ -559,7 +566,7 @@ public class RegisterForm {
     /*
      * 启用表格输入
      * */
-    public void inputEnable() {
+    private void inputEnable() {
         englishNameText.setEnabled(true);
         IdNumberText.setEnabled(true);
         birthdayText.setEnabled(true);
@@ -600,6 +607,28 @@ public class RegisterForm {
                 break;
             default:
                 break;
+        }
+    }
+
+    /*
+     * 获取人脸库列表
+     * */
+    private void getFDLib() {
+        try {
+            Egci.fdLibMaps.clear();
+            fdLibEntityList.clear();
+            fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
+            for (FDLibEntity fdLibEntity : fdLibEntityList) {
+                Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
+                //获取给陌生人用的电厂人员库ID
+                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
+                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                } else if (fdLibEntity.getName().equals("电厂人员库")) {
+                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                }
+            }
+        } catch (JSONException e1) {
+            logger.error("获取人脸库出错", e1);
         }
     }
 }

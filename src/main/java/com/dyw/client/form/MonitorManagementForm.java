@@ -1,11 +1,12 @@
 package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.MonitorFunction;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,13 +31,13 @@ public class MonitorManagementForm {
     private JScrollPane monitorManagementContentScroll;
     private JTable monitorManagementContentTable;
 
+    private Logger logger = LoggerFactory.getLogger(MonitorManagementForm.class);
     private List<MonitorPointEntity> monitorPointEntityList = new ArrayList<>();//监控点列表
     private DefaultTableModel monitorManagementContentTableModel;
     private List<RelateInfoEntity> relateInfoEntityList = new ArrayList<>();//布控信息表
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private CtrlCenterEntity ctrlCenterEntity;//根控制中心
     private List<RegionEntity> regionEntityList = new ArrayList<>();//区域列表
-
 
     public MonitorManagementForm() {
         try {
@@ -45,7 +46,7 @@ public class MonitorManagementForm {
             //获取区域列表
             regionEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID(), null).getString("region"), RegionEntity.class);
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("获取控制中心和区域失败", e);
         }
         /*
          * 获取抓拍机信息
@@ -98,7 +99,7 @@ public class MonitorManagementForm {
                 monitorManagementContentTableModel.addRow(vector);
             }
         } catch (JSONException e) {
-//            e.printStackTrace();
+            logger.error("获取监控点失败", e);
         }
     }
 
@@ -141,10 +142,10 @@ public class MonitorManagementForm {
             if (resultData.getInt("statusCode") == 1) {
                 getMonitorList();
             } else {
-                Tool.showMessage("删除设备失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
+                Tool.showMessage("删除布控失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("删除布控出错", e);
         }
     }
 
@@ -162,8 +163,7 @@ public class MonitorManagementForm {
             org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
             monitorPointEntityList = JSONObject.parseArray(new org.json.JSONObject(resultData.getString("ctrlCenter")).getString("monitorPoint"), MonitorPointEntity.class);
         } catch (JSONException e) {
-//            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
-//            e.printStackTrace();
+            logger.error("获取监控点出错", e);
         }
     }
 }

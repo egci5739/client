@@ -171,12 +171,8 @@ public class Tool {
                     }
                 }
             }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("读取本地配置文件出错", e);
         }
         return configEntity;
     }
@@ -416,7 +412,7 @@ public class Tool {
             logger.info(out);
             return new JSONObject(out);
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("发送http指令和接收状态出错", e);
             return null;
         }
     }
@@ -461,7 +457,7 @@ public class Tool {
             logger.info(out);
             return new JSONObject(out);
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("发送http指令、接收状态和数据", e);
             return null;
         }
     }
@@ -473,28 +469,24 @@ public class Tool {
      *  3.修改人员信息
      * */
     public static JSONObject faceInfoOperation(int operation, String FDID, byte[] bytePic, JSONObject deleteInboundData) {
-        switch (operation) {
-            case 1:
-                try {
+        try {
+            switch (operation) {
+                case 1:
                     JSONObject jsonStorageCloud = new JSONObject();
                     jsonStorageCloud.put("FDID", FDID);
                     jsonStorageCloud.put("storageType", "dynamic");
                     String strPic = new String(bytePic, "ISO-8859-1");
                     return new JSONObject(HttpsClientUtil.doPostStorageCloud("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/uploadStorageCloud?format=json", jsonStorageCloud.toString(), strPic, "---------------------------------7e13971310878"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            case 2:
-                try {
+                case 2:
                     return new JSONObject(HttpsClientUtil.doPutWithType("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&FDID=" + FDID + "&faceLibType=blackFD", deleteInboundData.toString(), null, "application/x-www-form-urlencoded; charset=UTF-8"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                default:
                     return null;
-                }
-            default:
-                return null;
+            }
+        } catch (Exception e) {
+            logger.error("人员信息操作出错", e);
+            return null;
         }
+
     }
 
     /*
@@ -534,13 +526,17 @@ public class Tool {
      * 将数据库中的男女对应成male/female
      * */
     public static String changeGenderToMaleAndFemale(String sex) {
-        switch (Integer.parseInt(sex.trim())) {
-            case 1:
-                return "male";
-            case 2:
-                return "female";
-            default:
-                return "unknown";
+        try {
+            switch (Integer.parseInt(sex.trim())) {
+                case 1:
+                    return "male";
+                case 2:
+                    return "female";
+                default:
+                    return "unknown";
+            }
+        } catch (Exception e) {
+            return "unknown";
         }
     }
 
@@ -582,7 +578,7 @@ public class Tool {
             byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
             return btImg;
         } catch (Exception e) {
-//            e.printStackTrace();
+            logger.error("获取文件流出错", e);
             return null;
         }
     }
@@ -609,9 +605,9 @@ public class Tool {
             in.close();
             return data;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("本地图片转为byte数组出错", e);
+            return null;
         }
-        return null;
     }
 
     public static byte[] toByteArray(InputStream in) throws IOException {

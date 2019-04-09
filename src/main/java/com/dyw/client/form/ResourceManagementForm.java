@@ -9,6 +9,8 @@ import com.dyw.client.functionForm.EquipmentFunction;
 import com.dyw.client.tool.Tool;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +32,7 @@ public class ResourceManagementForm {
     private JScrollPane resourceManagementContentScroll;
     private JTable resourceManagementContentTable;
 
+    private Logger logger = LoggerFactory.getLogger(ResourceManagementForm.class);
     private DefaultTableModel deviceManagementContentTableModel;
     private List<MonitorPointEntity> monitorPointEntityList = new ArrayList<>();//监控点列表
     private CtrlCenterEntity ctrlCenterEntity;//根控制中心
@@ -115,7 +118,7 @@ public class ResourceManagementForm {
                 Tool.showMessage("撤防失败,错误码：" + resultDataGuard.getInt("statusCode"), "提示", 0);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("删除设备或监控点出错", e);
         }
     }
 
@@ -147,6 +150,7 @@ public class ResourceManagementForm {
         } catch (JSONException e) {
 //            Tool.showMessage("获取监控点失败或没有添加监控点", "提示", 0);
 //            e.printStackTrace();
+            logger.error("获取监控点出错", e);
         }
     }
 

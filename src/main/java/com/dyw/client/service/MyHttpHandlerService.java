@@ -9,6 +9,8 @@ import com.dyw.client.form.IntelligentApplicationForm;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyHttpHandlerService implements HttpHandler {
+    private Logger logger = LoggerFactory.getLogger(MyHttpHandlerService.class);
     private IntelligentApplicationForm intelligentApplicationForm;
     private List<AlarmResultEntity> alarmResultEntityList = new ArrayList<>();
     private List<CaptureLibResultEntity> captureLibResultEntityList = new ArrayList<>();
@@ -57,15 +60,8 @@ public class MyHttpHandlerService implements HttpHandler {
                     default:
                         break;
                 }
-//                if (resultData.getString("eventType").equalsIgnoreCase("alarmResult")) {
-//                    alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
-//                    intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
-//                } else if (resultData.getString("eventType").equalsIgnoreCase("captureResult")) {
-//                    captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
-//                    intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
-//                }
             } catch (JSONException e) {
-                e.printStackTrace();
+                logger.error("接收报警消息出错", e);
             }
         }
     }

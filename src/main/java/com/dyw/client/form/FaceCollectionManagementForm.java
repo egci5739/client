@@ -2,6 +2,8 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.FaceCollectionEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -26,9 +28,9 @@ public class FaceCollectionManagementForm {
     private JScrollPane faceCollectionManagementContentScroll;
     private JTable faceCollectionManagementContentTable;
 
+    private Logger logger = LoggerFactory.getLogger(FaceCollectionManagementForm.class);
     private DefaultTableModel faceCollectionModel;
     private List<FaceCollectionEntity> faceCollectionEntityList;
-
 
     public FaceCollectionManagementForm() {
         String[] columnFaceCollectionInfo = {"设备名称", "设备IP", "关联主机IP"};
@@ -54,6 +56,7 @@ public class FaceCollectionManagementForm {
                     Egci.session.update("mapping.faceCollectionMapper.updateFaceCollection", faceCollectionEntity);
                     Egci.session.commit();
                 } catch (IndexOutOfBoundsException e1) {
+                    logger.error("修改采集设备信息出错", e1);
                     return;
                 }
             }

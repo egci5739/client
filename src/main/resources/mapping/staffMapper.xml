@@ -35,7 +35,8 @@
         select * from Staff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
     </select>
     <!--依据姓名查询人员-->
-    <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+    <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
         select * from Staff WHERE Name LIKE #{name};
     </select>
     <!--依据卡号查询人员-->
@@ -56,8 +57,9 @@
     </insert>
     <!--获取全部人员信息-->
     <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        select * from Staff;
+        select * from Staff where CardNumber!='0';
     </select>
+    <!--依据卡号精确查询人员-->
     <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
         select * from Staff WHERE CardNumber = #{CardNumber};
