@@ -246,7 +246,7 @@
               </component>
               <component id="8a131" class="javax.swing.JLabel" binding="companyLabel">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
@@ -267,7 +267,7 @@
               </component>
               <component id="b82f7" class="javax.swing.JTextField" binding="companyText">
                 <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="4" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -288,7 +288,7 @@
               </component>
               <grid id="b685b" binding="photoPanel" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="2" column="3" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="3" row-span="4" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
@@ -306,6 +306,16 @@
                   </component>
                 </children>
               </grid>
+              <component id="3e8e8" class="javax.swing.JButton" binding="choseLocalPictureButton">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="16"/>
+                  <text value="选取本地照片"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="a989e" binding="staffInfoButtonPanel" layout-manager="GridBagLayout">

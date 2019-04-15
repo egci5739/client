@@ -321,7 +321,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="人脸抓拍"/>
+                      <text value="黑名单报警"/>
                     </properties>
                   </component>
                   <component id="8c209" class="javax.swing.JCheckBox" binding="snapAlarmRollingCheckBOx">

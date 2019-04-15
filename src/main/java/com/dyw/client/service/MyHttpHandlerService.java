@@ -46,15 +46,15 @@ public class MyHttpHandlerService implements HttpHandler {
                 org.json.JSONObject resultData = new org.json.JSONObject(strout);
                 switch (resultData.getString("eventType")) {
                     case "captureResult":
-                        captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
-                        if (Egci.snapDeviceIps.contains(captureLibResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
-                            intelligentApplicationForm.showAlarmInfo(0, captureLibResultEntityList.get(0), null);
-                        }
+//                        captureLibResultEntityList = JSONObject.parseArray(resultData.getString("captureLibResult"), CaptureLibResultEntity.class);
+//                        if (Egci.snapDeviceIps.contains(captureLibResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
+//                            intelligentApplicationForm.showAlarmInfo(captureLibResultEntityList.get(0), null);
+//                        }
                         break;
                     case "alarmResult":
                         alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
                         if (Egci.snapDeviceIps.contains(alarmResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
-                            intelligentApplicationForm.showAlarmInfo(1, null, alarmResultEntityList.get(0));
+                            intelligentApplicationForm.showAlarmInfo(null, alarmResultEntityList.get(0));
                         }
                         break;
                     default:

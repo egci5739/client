@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -108,6 +109,7 @@ public class RegisterForm {
     private JButton communicationStatusButton;
     private JScrollPane waitStaffScroll;
     private JButton addWaitStaffButton;
+    private JButton choseLocalPictureButton;
     private StaffEntity staffEntity;
 
     public RegisterForm() {
@@ -263,6 +265,13 @@ public class RegisterForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addWaitStaff();
+            }
+        });
+        //选取本地照片
+        choseLocalPictureButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                choseLocalPicture();
             }
         });
     }
@@ -503,9 +512,11 @@ public class RegisterForm {
             if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null) {
                 JOptionPane.showMessageDialog(null, "中文名、卡号或照片缺失！", "错误 ", 0);
             } else {
-                if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 1) {
-                    Tool.showMessage("卡号已存在", "提示", 0);
-                    return;
+                if (!staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
+                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+                        Tool.showMessage("卡号已存在", "提示", 0);
+                        return;
+                    }
                 }
                 staffOperationService.save(staffEntity, oldStaff);
                 cancel();
@@ -620,15 +631,44 @@ public class RegisterForm {
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
                 Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
-                //获取给陌生人用的电厂人员库ID
-                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
-                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
-                } else if (fdLibEntity.getName().equals("电厂人员库")) {
-                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                switch (fdLibEntity.getName()) {
+                    case "电厂人员库MSR":
+                        Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                        break;
+                    case "电厂人员库":
+                        Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                        break;
+                    case "黑名单":
+                        Egci.fdLibIDForBlack = fdLibEntity.getFDID();
+                        break;
+                    default:
+                        break;
                 }
             }
         } catch (JSONException e1) {
             logger.error("获取人脸库出错", e1);
+        }
+    }
+
+    /*
+     * 获取本地图片
+     * */
+    private void choseLocalPicture() {
+        try {
+            JFileChooser jf = new JFileChooser();
+            jf.showOpenDialog(null);//显示打开的文件对话框
+            File f = jf.getSelectedFile();//使用文件类获取选择器选择的文件
+            String s = f.getAbsolutePath();//返回路径名
+            //JOptionPane弹出对话框类，显示绝对路径名
+            byte[] pictureBytes = Tool.getPictureStream(s);
+            IdPhoto.setIcon(null);
+            ImageIcon imageIcon = new ImageIcon(pictureBytes);
+            IdPhoto.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getHeight(), 2));
+            staffPhoto = pictureBytes;
+        } catch (Exception e1) {
+            Tool.showMessage("选取本地照片出错", "提示", 0);
+            IdPhoto.setIcon(null);
+            logger.error("选取本地照片出错", e1);
         }
     }
 }

@@ -136,17 +136,17 @@ public class IntelligentApplicationForm {
          * 获取并设置抓拍机ip信息
          * */
         getSnapDeviceIpsList();
-        //抓拍图
+        //黑名单报警
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        String[] columnSnapAlarmInfo = {"抓拍图", "时间"};
+        String[] columnSnapAlarmInfo = {"抓拍图", "底图", "报警信息"};
         snapAlarmContentTableModel.setColumnIdentifiers(columnSnapAlarmInfo);
         snapAlarmContentTable.setModel(snapAlarmContentTableModel);
-        TableCellRenderer snapAlarmCellRenderer = new SnapAlarmTableCellRenderer();
+        TableCellRenderer snapAlarmCellRenderer = new AlarmTableCellRenderer();
         snapAlarmContentTable.setDefaultRenderer(Object.class, snapAlarmCellRenderer);
         snapAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
@@ -177,7 +177,7 @@ public class IntelligentApplicationForm {
                 snapAlarmContentTableModel.setRowCount(0);
             }
         });
-        //白名单
+        //白名单报警
         blackAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -331,55 +331,44 @@ public class IntelligentApplicationForm {
      * 显示报警信息
      * status  0：抓拍图；1：名单报警；
      * */
-    public void showAlarmInfo(int status, CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity) {
+    public void showAlarmInfo(CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity) {
         try {
-            switch (status) {
-                case 0:
-                    Vector vectorOne = new Vector();
-                    vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(captureLibResultEntity.getImage())));
-                    vectorOne.add(1, "<html><body>抓拍时间：" +
-                            captureLibResultEntity.getTargetAttrs().getFaceTime() +
-                            "<br>抓拍机：" +
-                            captureLibResultEntity.getTargetAttrs().getDeviceName() +
-                            "</body></html>");
-//                    vectorOne.add(1, captureLibResultEntity.getTargetAttrs().getFaceTime() + "\n" + captureLibResultEntity.getTargetAttrs().getDeviceName());
-                    snapAlarmContentTableModel.addRow(vectorOne);
-                    if (snapAlarmRollingStatus == 1) {
-                        moveScrollBarToBottom(snapAlarmScrollBar);
-                    }
-                    snapAlarmBottomStatus = 0;
-                    break;
-                case 1:
-                    if (Egci.fdLibIDForStranger.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
-                        //陌生人
-                        Vector vectorThree = new Vector();
-                        vectorThree.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
-                        vectorThree.add(1, "<html><body>抓拍时间：" +
-                                alarmResultEntity.getTargetAttrs().getFaceTime() +
-                                "<br>抓拍机：" +
-                                alarmResultEntity.getTargetAttrs().getDeviceName() +
-                                "</body></html>");
-                        whiteAlarmContentTableModel.addRow(vectorThree);
-                        if (whiteAlarmRollingStatus == 1) {
-                            moveScrollBarToBottom(whiteAlarmScrollBar);
-                        }
-                        whiteAlarmBottomStatus = 0;
-                        break;
-                    } else {
-                        //黑名单
-                        Vector vectorTwo = new Vector();
-                        vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
-                        vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
-                        vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
-                        blackAlarmContentTableModel.addRow(vectorTwo);
-                        if (blackAlarmRollingStatus == 1) {
-                            moveScrollBarToBottom(blackAlarmScrollBar);
-                        }
-                        blackAlarmBottomStatus = 0;
-                        break;
-                    }
-                default:
-                    break;
+            if (Egci.fdLibIDForStranger.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
+                //陌生人报警
+                Vector vectorThree = new Vector();
+                vectorThree.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                vectorThree.add(1, "<html><body>抓拍时间：" +
+                        alarmResultEntity.getTargetAttrs().getFaceTime() +
+                        "<br>抓拍机：" +
+                        alarmResultEntity.getTargetAttrs().getDeviceName() +
+                        "</body></html>");
+                whiteAlarmContentTableModel.addRow(vectorThree);
+                if (whiteAlarmRollingStatus == 1) {
+                    moveScrollBarToBottom(whiteAlarmScrollBar);
+                }
+                whiteAlarmBottomStatus = 0;
+            } else if (Egci.fdLibIDForStaff.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
+                //白名单报警
+                Vector vectorTwo = new Vector();
+                vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
+                vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                blackAlarmContentTableModel.addRow(vectorTwo);
+                if (blackAlarmRollingStatus == 1) {
+                    moveScrollBarToBottom(blackAlarmScrollBar);
+                }
+                blackAlarmBottomStatus = 0;
+            } else if (Egci.fdLibIDForBlack.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
+                //黑名单报警
+                Vector vectorOne = new Vector();
+                vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
+                vectorOne.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
+                vectorOne.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                snapAlarmContentTableModel.addRow(vectorOne);
+                if (snapAlarmRollingStatus == 1) {
+                    moveScrollBarToBottom(snapAlarmScrollBar);
+                }
+                snapAlarmBottomStatus = 0;
             }
         } catch (Exception e) {
             logger.error("显示报警结果出错", e);
@@ -515,11 +504,18 @@ public class IntelligentApplicationForm {
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
                 Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
-                //获取给陌生人用的电厂人员库ID
-                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
-                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
-                } else if (fdLibEntity.getName().equals("电厂人员库")) {
-                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                switch (fdLibEntity.getName()) {
+                    case "电厂人员库MSR":
+                        Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                        break;
+                    case "电厂人员库":
+                        Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                        break;
+                    case "黑名单":
+                        Egci.fdLibIDForBlack = fdLibEntity.getFDID();
+                        break;
+                    default:
+                        break;
                 }
             }
         } catch (JSONException e1) {

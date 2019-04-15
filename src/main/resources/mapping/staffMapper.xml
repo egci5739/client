@@ -62,6 +62,6 @@
     <!--依据卡号精确查询人员-->
     <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from Staff WHERE CardNumber = #{CardNumber};
+        select * from Staff WHERE CardNumber = #{CardNumber} and CardNumber !='0';
     </select>
 </mapper>

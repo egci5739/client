@@ -239,14 +239,14 @@ public class Tool {
      * 显示布控报警对比信息
      * */
     public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity, Map<String, String> fdLibMaps) {
-        return "<html><body>报警时间：" +
+        return "<html><body>时间：" +
                 time +
-                "<br>姓名：    " +
+                "<br>姓名:" +
                 candidateEntity.getReserve_field().getName() +
-                "<br>相似度：    " +
+                "<br>分值:" +
                 candidateEntity.getSimilarity() +
-                "<br>名单库：    " +
-                fdLibMaps.get(candidateEntity.getBlacklist_id()) +
+//                "<br>名单库：    " +
+//                fdLibMaps.get(candidateEntity.getBlacklist_id()) +
                 "<br>抓拍机：    " +
                 deviceName +
                 "</body></html>";
@@ -628,6 +628,23 @@ public class Tool {
             return birthday;
         } else {
             return "1900-01-01";
+        }
+    }
+
+    /*
+     * 更改时间格式为ISO8601
+     * 2019-04-10 12:24:17
+     *
+     * 1970-01-01T08:00:00Z
+     * */
+    public static String changeTimeToISO8601(String string) {
+        try {
+            StringBuffer buffer = new StringBuffer(string);
+            buffer.replace(10, 11, "T");
+            buffer.append("Z");
+            return buffer.toString();
+        } catch (Exception e) {
+            return "2030-12-31T23:59:59Z";
         }
     }
 }

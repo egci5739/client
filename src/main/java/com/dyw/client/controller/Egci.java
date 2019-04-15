@@ -22,8 +22,9 @@ public class Egci {
     public static AccountEntity accountEntity;
     private static LoginForm loginForm;
     public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
-    public static String fdLibIDForStranger;//给陌生人员用的电厂人员库ID
-    public static String fdLibIDForStaff;//给电厂人员用的电厂人员库ID
+    public static String fdLibIDForStranger;//给陌生人员用的ID
+    public static String fdLibIDForStaff;//给电厂人员用的ID
+    public static String fdLibIDForBlack;//给黑名单人员用的ID
     public static List<String> snapDeviceIpsOne = new ArrayList<>();//一核抓拍设备
     public static List<String> snapDeviceIpsTwo = new ArrayList<>();//二核抓拍设备
     public static List<String> snapDeviceIpsThree = new ArrayList<>();//三核抓拍设备

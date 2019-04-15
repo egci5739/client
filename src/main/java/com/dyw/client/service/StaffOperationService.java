@@ -192,7 +192,7 @@ public class StaffOperationService {
                     inboundDataSet.put("bornTime", newInfo.getBirthday());
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionSet, inboundDataSet);
                     if (resultData.getInt("statusCode") == 1) {
-//                    Tool.showMessage("添加成功", "提示", 0);
+                    // Tool.showMessage("添加成功", "提示", 0);
                     } else {
                         logger.info("更新脸谱服务器中的人员信息出错，错误码：" + resultData.getString("errorMsg"));
                     }

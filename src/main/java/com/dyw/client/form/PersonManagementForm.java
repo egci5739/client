@@ -190,13 +190,20 @@ public class PersonManagementForm {
             FDLibNames.clear();
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
-                FDLibNames.add(fdLibEntity.getName());
                 Egci.fdLibMaps.put(fdLibEntity.getFDID(), fdLibEntity.getName());
-                //获取给陌生人用的电厂人员库ID
-                if (fdLibEntity.getName().equals("电厂人员库MSR")) {
-                    Egci.fdLibIDForStranger = fdLibEntity.getFDID();
-                } else if (fdLibEntity.getName().equals("电厂人员库")) {
-                    Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                FDLibNames.add(fdLibEntity.getName());
+                switch (fdLibEntity.getName()) {
+                    case "电厂人员库MSR":
+                        Egci.fdLibIDForStranger = fdLibEntity.getFDID();
+                        break;
+                    case "电厂人员库":
+                        Egci.fdLibIDForStaff = fdLibEntity.getFDID();
+                        break;
+                    case "黑名单":
+                        Egci.fdLibIDForBlack = fdLibEntity.getFDID();
+                        break;
+                    default:
+                        break;
                 }
             }
             personManagementBaseList.setListData(FDLibNames.toArray());
