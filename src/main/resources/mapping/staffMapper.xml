@@ -46,7 +46,7 @@
     </select>
     <!--根据卡号查询待拍照人员表人员-->
     <select id="getWaitStaffWithCard" resultType="com.dyw.client.entity.StaffEntity">
-        SELECT * FROM TemporaryStaff where CardNumber=#{CardNumber};
+        SELECT * FROM TemporaryStaff where CardNumber=#{CardNumber} and CardNumber !='0';
     </select>
     <!--新增待拍照人员-->
     <insert id="insertWaitStaff" parameterType="com.dyw.client.entity.StaffEntity">
@@ -64,4 +64,8 @@
             flushCache="true">
         select * from Staff WHERE CardNumber = #{CardNumber} and CardNumber !='0';
     </select>
+    <!--删除一个待拍照人员-->
+    <delete id="deleteTemporaryStaff" parameterType="com.dyw.client.entity.StaffEntity">
+        delete from TemporaryStaff where CardNumber = #{CardNumber};
+    </delete>
 </mapper>

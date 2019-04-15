@@ -1,21 +1,14 @@
 package com.dyw.client.form;
 
-import ISAPI.HttpsClientUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
-import com.dyw.client.entity.protection.FaceInfoEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +19,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -45,6 +36,7 @@ public class RegisterForm {
     private StaffOperationService staffOperationService;
     private int addWaitStaffStatus = 0;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
+    private DefaultTableModel waitStaffModel;
 
 
     public JPanel getRegisterForm() {
@@ -87,7 +79,7 @@ public class RegisterForm {
     private JLabel IdPhoto;
     private JPanel waitStaffTitlePanel;
     private JPanel waitStaffListPanel;
-    private JList waitStaffList;
+    private JTable waitStaffTable;//待拍照人员列表
     private JPanel waitStaffButtonPanel;
     private JButton refreshButton;
     private JPanel identityTitlePanel;
@@ -140,34 +132,38 @@ public class RegisterForm {
         updateButton.setEnabled(false);
         deleteButton.setEnabled(false);
         saveButton.setEnabled(false);
-        waitStaffList.setEnabled(false);
+        waitStaffTable.setEnabled(false);
         changePhotoButton.setEnabled(false);
         inputDisabled();
-        //初始化结果表
+        //初始化查询结果表
         String[] columnNames = {"通行卡号", "中文名称", "证件号码"};
         model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
         resultTable.setModel(model);
         //获取待拍照人员列表
-        staffOperationService.getWaitStaffList();
-        waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
+        String[] columnWaits = {"姓名", "卡号"};
+        waitStaffModel = new DefaultTableModel();
+        waitStaffModel.setColumnIdentifiers(columnWaits);
+        waitStaffTable.setModel(waitStaffModel);
+        getWaitStaff();
         //点击待拍照人员后自动填充人员信息
-        waitStaffList.addListSelectionListener(new ListSelectionListener() {
+        waitStaffTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) {
                     return;
                 }
-                if (staffOperationService.getWaitStaffMap().get(waitStaffList.getSelectedValue()) != null) {
-                    fillStaffInfo(staffOperationService.getWaitStaffMap().get(waitStaffList.getSelectedValue()));
+                try {
+                    if (staffOperationService.getWaitStaffList().get(waitStaffTable.getSelectedRow()) != null) {
+                        fillStaffInfo(staffOperationService.getWaitStaffList().get(waitStaffTable.getSelectedRow()));
+                    }
+                } catch (Exception ignored) {
                 }
             }
         });
         //重新加载待拍照人员列表
         refreshButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //获取待拍照人员列表
-                staffOperationService.getWaitStaffList();
-                waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
+                getWaitStaff();
             }
         });
         //取消
@@ -294,8 +290,7 @@ public class RegisterForm {
                     if (staffOperationService.addWaitStaff(staffEntity)) {
                         cancel();
                         addWaitStaffButton.setText("新增人员");
-                        staffOperationService.getWaitStaffList();
-                        waitStaffList.setListData(staffOperationService.getCardNumbers().toArray());
+                        getWaitStaff();
                         addWaitStaffStatus = 0;
                     } else {
                         JOptionPane.showMessageDialog(null, "卡号已经存在！", "错误 ", 0);
@@ -328,7 +323,7 @@ public class RegisterForm {
     private void cancel() {
         oldStaff.setStaffId(0);
         cleanStaffInfo();
-        waitStaffList.setEnabled(false);
+        waitStaffTable.setEnabled(false);
         inputDisabled();
         saveButton.setEnabled(false);
         searchButton.setEnabled(true);
@@ -492,7 +487,7 @@ public class RegisterForm {
      * */
     public void add() {
         oldStaff.setStaffId(0);
-        waitStaffList.setEnabled(true);
+        waitStaffTable.setEnabled(true);
         inputEnable();
         searchButton.setEnabled(false);
         saveButton.setEnabled(true);
@@ -519,6 +514,9 @@ public class RegisterForm {
                     }
                 }
                 staffOperationService.save(staffEntity, oldStaff);
+                Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
+                Egci.session.commit();
+                getWaitStaff();
                 cancel();
             }
         }
@@ -669,6 +667,19 @@ public class RegisterForm {
             Tool.showMessage("选取本地照片出错", "提示", 0);
             IdPhoto.setIcon(null);
             logger.error("选取本地照片出错", e1);
+        }
+    }
+
+    /*
+     * 获取待拍照人员列表
+     * */
+    private void getWaitStaff() {
+        waitStaffModel.setRowCount(0);
+        for (StaffEntity staffEntity : staffOperationService.getWaitStaffList()) {
+            Vector vector = new Vector();
+            vector.add(0, staffEntity.getName());
+            vector.add(1, staffEntity.getCardNumber());
+            waitStaffModel.addRow(vector);
         }
     }
 }

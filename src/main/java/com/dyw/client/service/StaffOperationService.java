@@ -21,19 +21,8 @@ import java.util.*;
 public class StaffOperationService {
     private Logger logger = LoggerFactory.getLogger(StaffOperationService.class);
 
-    private Map<String, StaffEntity> waitStaffMap;
-    private List<String> cardNumbers;
     private Map<String, StaffEntity> resultStaffMap;
     private List<Vector> vectorList;
-
-
-    public Map<String, StaffEntity> getWaitStaffMap() {
-        return waitStaffMap;
-    }
-
-    public List<String> getCardNumbers() {
-        return cardNumbers;
-    }
 
     public Map<String, StaffEntity> getResultStaffMap() {
         return resultStaffMap;
@@ -44,8 +33,6 @@ public class StaffOperationService {
     }
 
     public StaffOperationService() {
-        waitStaffMap = new HashMap<String, StaffEntity>();
-        cardNumbers = new ArrayList<String>();
         resultStaffMap = new HashMap<String, StaffEntity>();
         vectorList = new ArrayList<Vector>();
     }
@@ -53,14 +40,8 @@ public class StaffOperationService {
     /*
      * 获取待拍照人员列表
      * */
-    public void getWaitStaffList() {
-        waitStaffMap.clear();
-        cardNumbers.clear();
-        List<StaffEntity> waitStaffList = Egci.session.selectList("mapping.staffMapper.getTemporaryStaff");
-        for (StaffEntity staffEntity : waitStaffList) {
-            waitStaffMap.put(staffEntity.getCardNumber(), staffEntity);
-            cardNumbers.add(staffEntity.getCardNumber());
-        }
+    public List<StaffEntity> getWaitStaffList() {
+        return Egci.session.selectList("mapping.staffMapper.getTemporaryStaff");
     }
 
     /*
@@ -155,9 +136,11 @@ public class StaffOperationService {
     public Boolean addWaitStaff(StaffEntity staffEntity) {
         Boolean status = false;
         //判断是否卡号已经存在
-        StaffEntity staffEntityStaff = Egci.session.selectOne("mapping.staffMapper.getResultStaffWithCard", staffEntity);
-        StaffEntity staffEntityTemporary = Egci.session.selectOne("mapping.staffMapper.getWaitStaffWithCard", staffEntity);
-        if (staffEntityStaff == null && staffEntityTemporary == null) {
+        List<StaffEntity> staffEntityStaff = Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber());
+        List<StaffEntity> staffEntityTemporary = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCard", staffEntity);
+        if (staffEntityStaff.size() > 0 || staffEntityTemporary.size() > 0) {
+            status = false;
+        } else {
             Egci.session.insert("mapping.staffMapper.insertWaitStaff", staffEntity);
             Egci.session.commit();
             status = true;
@@ -192,7 +175,7 @@ public class StaffOperationService {
                     inboundDataSet.put("bornTime", newInfo.getBirthday());
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionSet, inboundDataSet);
                     if (resultData.getInt("statusCode") == 1) {
-                    // Tool.showMessage("添加成功", "提示", 0);
+                        // Tool.showMessage("添加成功", "提示", 0);
                     } else {
                         logger.info("更新脸谱服务器中的人员信息出错，错误码：" + resultData.getString("errorMsg"));
                     }

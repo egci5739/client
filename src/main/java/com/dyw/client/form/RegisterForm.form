@@ -51,10 +51,11 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="4651e" class="javax.swing.JList" binding="waitStaffList">
+                  <component id="513e4" class="javax.swing.JTable" binding="waitStaffTable">
                     <constraints/>
                     <properties>
                       <font size="20"/>
+                      <rowHeight value="30"/>
                     </properties>
                   </component>
                 </children>
