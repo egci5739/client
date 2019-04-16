@@ -37,6 +37,7 @@ public class RegisterForm {
     private int addWaitStaffStatus = 0;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private DefaultTableModel waitStaffModel;
+    private List<StaffEntity> waitStaffList = new ArrayList<>();
 
 
     public JPanel getRegisterForm() {
@@ -153,8 +154,8 @@ public class RegisterForm {
                     return;
                 }
                 try {
-                    if (staffOperationService.getWaitStaffList().get(waitStaffTable.getSelectedRow()) != null) {
-                        fillStaffInfo(staffOperationService.getWaitStaffList().get(waitStaffTable.getSelectedRow()));
+                    if (waitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
+                        fillStaffInfo(waitStaffList.get(waitStaffTable.getSelectedRow()));
                     }
                 } catch (Exception ignored) {
                 }
@@ -336,6 +337,7 @@ public class RegisterForm {
         addWaitStaffButton.setText("新增人员");
         addWaitStaffStatus = 0;
         addWaitStaffButton.setEnabled(true);
+        waitStaffTable.getSelectionModel().clearSelection();
     }
 
     /*
@@ -539,6 +541,8 @@ public class RegisterForm {
             model.addRow(v);
         }
         addWaitStaffButton.setEnabled(false);
+        //查询待拍照人员表结果
+
     }
 
     /*
@@ -674,8 +678,10 @@ public class RegisterForm {
      * 获取待拍照人员列表
      * */
     private void getWaitStaff() {
+        waitStaffList.clear();
         waitStaffModel.setRowCount(0);
-        for (StaffEntity staffEntity : staffOperationService.getWaitStaffList()) {
+        waitStaffList = staffOperationService.getWaitStaffList();
+        for (StaffEntity staffEntity : waitStaffList) {
             Vector vector = new Vector();
             vector.add(0, staffEntity.getName());
             vector.add(1, staffEntity.getCardNumber());
