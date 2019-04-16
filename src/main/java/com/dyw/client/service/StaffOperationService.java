@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.StaffEntity;
@@ -12,30 +11,10 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class StaffOperationService {
     private Logger logger = LoggerFactory.getLogger(StaffOperationService.class);
-
-    private Map<String, StaffEntity> resultStaffMap;
-    private List<Vector> vectorList;
-
-    public Map<String, StaffEntity> getResultStaffMap() {
-        return resultStaffMap;
-    }
-
-    public List<Vector> getVectorList() {
-        return vectorList;
-    }
-
-    public StaffOperationService() {
-        resultStaffMap = new HashMap<String, StaffEntity>();
-        vectorList = new ArrayList<Vector>();
-    }
 
     /*
      * 获取待拍照人员列表
@@ -47,9 +26,7 @@ public class StaffOperationService {
     /*
      * 查询人员
      * */
-    public void search(String name, String card) {
-        resultStaffMap.clear();
-        vectorList.clear();
+    public List<StaffEntity> search(String name, String card) {
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setName(Tool.getSearchCondition(name));
         staffEntity.setCardNumber(Tool.getSearchCondition(card));
@@ -61,17 +38,25 @@ public class StaffOperationService {
         } else if (!card.equals("")) {
             resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCard", staffEntity);
         }
-        int i = 0;
-        assert resultStaffList != null;
-        for (StaffEntity staffEntity1 : resultStaffList) {
-            resultStaffMap.put(i + "", staffEntity1);
-            Vector v = new Vector();
-            v.add(0, staffEntity1.getCardNumber());
-            v.add(1, staffEntity1.getName());
-            v.add(2, staffEntity1.getCardId());
-            vectorList.add(v);
-            i = i + 1;
+        return resultStaffList;
+    }
+
+    /*
+     * 查询待拍照人员
+     * */
+    public List<StaffEntity> searchWaitStaff(String name, String card) {
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setName(Tool.getSearchCondition(name));
+        staffEntity.setCardNumber(Tool.getSearchCondition(card));
+        List<StaffEntity> resultStaffList = null;
+        if (!name.equals("") && !card.equals("")) {
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCardAndName", staffEntity);
+        } else if (!name.equals("")) {
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithName", staffEntity);
+        } else if (!card.equals("")) {
+            resultStaffList = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCard", staffEntity);
         }
+        return resultStaffList;
     }
 
     /*
@@ -137,7 +122,7 @@ public class StaffOperationService {
         Boolean status = false;
         //判断是否卡号已经存在
         List<StaffEntity> staffEntityStaff = Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber());
-        List<StaffEntity> staffEntityTemporary = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCard", staffEntity);
+        List<StaffEntity> staffEntityTemporary = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCardAccurate", staffEntity);
         if (staffEntityStaff.size() > 0 || staffEntityTemporary.size() > 0) {
             status = false;
         } else {

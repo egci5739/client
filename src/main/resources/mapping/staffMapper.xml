@@ -31,7 +31,8 @@
         SELECT * FROM TemporaryStaff;
     </select>
     <!--依据卡号和姓名查询人员-->
-    <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity">
+    <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
         select * from Staff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
     </select>
     <!--依据姓名查询人员-->
@@ -44,8 +45,8 @@
             flushCache="true">
         select * from Staff WHERE CardNumber LIKE #{CardNumber};
     </select>
-    <!--根据卡号查询待拍照人员表人员-->
-    <select id="getWaitStaffWithCard" resultType="com.dyw.client.entity.StaffEntity">
+    <!--根据卡号精确查询待拍照人员表人员-->
+    <select id="getWaitStaffWithCardAccurate" resultType="com.dyw.client.entity.StaffEntity">
         SELECT * FROM TemporaryStaff where CardNumber=#{CardNumber} and CardNumber !='0';
     </select>
     <!--新增待拍照人员-->
@@ -68,4 +69,19 @@
     <delete id="deleteTemporaryStaff" parameterType="com.dyw.client.entity.StaffEntity">
         delete from TemporaryStaff where CardNumber = #{CardNumber};
     </delete>
+    <!--依据卡号和姓名查询待拍照人员-->
+    <select id="getWaitStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
+        select * from TemporaryStaff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
+    </select>
+    <!--依据姓名查询待拍照人员-->
+    <select id="getWaitStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
+        select * from TemporaryStaff WHERE Name LIKE #{name};
+    </select>
+    <!--依据卡号查询待拍照人员-->
+    <select id="getWaitStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
+        select * from TemporaryStaff WHERE CardNumber LIKE #{CardNumber};
+    </select>
 </mapper>

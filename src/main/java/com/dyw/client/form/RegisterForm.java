@@ -38,6 +38,8 @@ public class RegisterForm {
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private DefaultTableModel waitStaffModel;
     private List<StaffEntity> waitStaffList = new ArrayList<>();
+    private List<StaffEntity> resultStaffList = new ArrayList<>();
+    private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
 
 
     public JPanel getRegisterForm() {
@@ -216,14 +218,13 @@ public class RegisterForm {
                     passCardText.setEnabled(false);
                     IdPhoto.setEnabled(true);
                     addButton.setEnabled(false);
-                    if (staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "") != null) {
-                        staffPhoto = staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "").getPhoto();
-                        fillStaffInfo(staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + ""));
-                        oldStaff = staffOperationService.getResultStaffMap().get(resultTable.getSelectedRow() + "");
+                    if (resultStaffList.get(resultTable.getSelectedRow()) != null) {
+                        staffPhoto = resultStaffList.get(resultTable.getSelectedRow()).getPhoto();
+                        fillStaffInfo(resultStaffList.get(resultTable.getSelectedRow()));
+                        oldStaff = resultStaffList.get(resultTable.getSelectedRow());
                     }
                 } catch (Exception e1) {
                     logger.error("将搜索结果加载到人员信息出错", e1);
-//                    model.setRowCount(0);
                 }
             }
         });
@@ -338,6 +339,7 @@ public class RegisterForm {
         addWaitStaffStatus = 0;
         addWaitStaffButton.setEnabled(true);
         waitStaffTable.getSelectionModel().clearSelection();
+        getWaitStaff();
     }
 
     /*
@@ -528,6 +530,10 @@ public class RegisterForm {
      * 查询人员
      * */
     public void search() {
+        resultStaffList.clear();
+        resultWaitStaffList.clear();
+        model.setRowCount(0);
+        waitStaffModel.setRowCount(0);
         if (chineseNameText.getText().equals("") && passCardText.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "请输入搜索条件！", "错误 ", 0);
             return;
@@ -535,14 +541,24 @@ public class RegisterForm {
         searchButton.setEnabled(false);
         addButton.setEnabled(true);
         saveButton.setEnabled(false);
-        model.setRowCount(0);
-        staffOperationService.search(chineseNameText.getText(), passCardText.getText());
-        for (Vector v : staffOperationService.getVectorList()) {
-            model.addRow(v);
+        resultStaffList = staffOperationService.search(chineseNameText.getText(), passCardText.getText());
+        for (StaffEntity staffEntity : resultStaffList) {
+            Vector vector = new Vector();
+            vector.add(0, staffEntity.getCardNumber());
+            vector.add(1, staffEntity.getName());
+            vector.add(2, staffEntity.getCardId());
+            model.addRow(vector);
         }
         addWaitStaffButton.setEnabled(false);
         //查询待拍照人员表结果
-
+        resultWaitStaffList = staffOperationService.searchWaitStaff(chineseNameText.getText(), passCardText.getText());
+        for (StaffEntity staffEntity : resultWaitStaffList) {
+            Vector vector = new Vector();
+            vector.add(0, staffEntity.getName());
+            vector.add(1, staffEntity.getCardNumber());
+            waitStaffModel.addRow(vector);
+        }
+        waitStaffTable.setEnabled(true);
     }
 
     /*
@@ -668,7 +684,7 @@ public class RegisterForm {
             IdPhoto.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getHeight(), 2));
             staffPhoto = pictureBytes;
         } catch (Exception e1) {
-            Tool.showMessage("选取本地照片出错", "提示", 0);
+            Tool.showMessage("未成功选取本地照片", "提示", 0);
             IdPhoto.setIcon(null);
             logger.error("选取本地照片出错", e1);
         }
