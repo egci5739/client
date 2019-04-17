@@ -1,14 +1,14 @@
-package com.dyw.client.controller;
+package com.dyw.client.service;
 
+import com.dyw.client.form.RegisterForm;
+import com.github.sarxos.webcam.*;
+import com.github.sarxos.webcam.util.ImageUtils;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.ByteBuffer;
-
-import javax.swing.*;
-
-import com.github.sarxos.webcam.*;
-import com.github.sarxos.webcam.util.ImageUtils;
 
 
 /**
@@ -16,76 +16,81 @@ import com.github.sarxos.webcam.util.ImageUtils;
  *
  * @author Bartosz Firyn (SarXos)
  */
-public class WebcamViewerExample extends JFrame implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener, WebcamDiscoveryListener {
+public class TakePhotoService extends JFrame implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener, WebcamDiscoveryListener {
     private static final long serialVersionUID = 1L;
     private Webcam webcam = null;
     private WebcamPanel panel = null;
     private WebcamPicker picker = null;
     private JButton takePicture = new JButton("拍照");
+    private RegisterForm registerForm;
 
+    public TakePhotoService(RegisterForm registerForm) {
+        this.registerForm = registerForm;
+    }
 
     @Override
     public void run() {
-        Webcam.addDiscoveryListener(this);
-        setTitle("人像采集");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        addWindowListener(this);
-        picker = new WebcamPicker();
-        picker.addItemListener(this);
+        try {
+            Webcam.addDiscoveryListener(this);
+            setTitle("人像采集");
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setLayout(new BorderLayout());
+            addWindowListener(this);
+            picker = new WebcamPicker();
+            picker.addItemListener(this);
 
-        webcam = picker.getSelectedWebcam();
+            webcam = picker.getSelectedWebcam();
 
-        if (webcam == null) {
-            System.out.println("No webcams found...");
-            System.exit(1);
+            if (webcam == null) {
+                System.out.println("No webcams found...");
+                JOptionPane.showMessageDialog(null, "打开摄像头出错");
+                this.dispose();
+            }
+
+            webcam.setViewSize(WebcamResolution.VGA.getSize());
+            webcam.addWebcamListener(TakePhotoService.this);
+
+            panel = new WebcamPanel(webcam, false);
+            panel.setFPSDisplayed(true);
+
+            add(picker, BorderLayout.NORTH);
+            add(panel, BorderLayout.CENTER);
+            add(takePicture, BorderLayout.SOUTH);
+
+            takePicture.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    takePicture.setEnabled(false);  //设置按钮不可点击
+                    //实现拍照保存-------start
+                    String fileName = "C:\\software\\client\\snap.jpg";       //保存路径即图片名称（不用加后缀）
+                    WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_JPG);//存入本地
+                    registerForm.displayPhoto();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            JOptionPane.showMessageDialog(null, "拍照成功");
+                            takePicture.setEnabled(true);    //设置按钮可点击
+                            return;
+                        }
+                    });
+                }
+            });
+            pack();
+            setVisible(true);
+            Thread t = new Thread() {
+                @Override
+                public void run() {
+                    panel.start();
+                }
+            };
+            t.setName("example-starter");
+            t.setDaemon(true);
+            t.setUncaughtExceptionHandler(this);
+            t.start();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "打开摄像头出错");
+            this.dispose();
         }
-
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webcam.addWebcamListener(WebcamViewerExample.this);
-
-        panel = new WebcamPanel(webcam, false);
-        panel.setFPSDisplayed(true);
-
-        add(picker, BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
-        add(takePicture, BorderLayout.SOUTH);
-
-        takePicture.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                takePicture.setEnabled(false);  //设置按钮不可点击
-                //实现拍照保存-------start
-                String fileName = "D://snap";       //保存路径即图片名称（不用加后缀）
-//                System.out.println(webcam.getImageBytes().array());
-                System.out.println(ByteBuffer.allocate(webcam.getImageBytes().capacity()).array().toString());
-                WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_JPG);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        JOptionPane.showMessageDialog(null, "拍照成功");
-                        takePicture.setEnabled(true);    //设置按钮可点击
-                        return;
-                    }
-                });
-            }
-        });
-        pack();
-        setVisible(true);
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                panel.start();
-            }
-        };
-        t.setName("example-starter");
-        t.setDaemon(true);
-        t.setUncaughtExceptionHandler(this);
-        t.start();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new WebcamViewerExample());
     }
 
     @Override

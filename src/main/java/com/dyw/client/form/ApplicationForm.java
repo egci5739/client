@@ -37,6 +37,7 @@ public class ApplicationForm {
                 initPersonManagementForm();
                 initResourceManagementForm();
                 initAlarmHistoryForm();
+                initExportStaffForm();
                 break;
             default:
                 break;
@@ -165,6 +166,15 @@ public class ApplicationForm {
         }
         AlarmHistoryForm alarmHistoryForm = new AlarmHistoryForm();
         applicationTabbedPane.add("报警历史", alarmHistoryForm.getAlarmHistoryForm());
+    }
+
+    /*
+     * 导出人员信息到excel
+     * init
+     * */
+    private void initExportStaffForm() {
+        ExportStaffForm exportStaffForm = new ExportStaffForm();
+        applicationTabbedPane.add("导出人员信息", exportStaffForm.getExportStaffForm());
     }
 
     public void init() {

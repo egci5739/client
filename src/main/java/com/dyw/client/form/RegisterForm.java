@@ -105,6 +105,7 @@ public class RegisterForm {
     private JScrollPane waitStaffScroll;
     private JButton addWaitStaffButton;
     private JButton choseLocalPictureButton;
+    private JButton takePhotoButton;
     private StaffEntity staffEntity;
 
     public RegisterForm() {
@@ -272,9 +273,41 @@ public class RegisterForm {
                 choseLocalPicture();
             }
         });
+        //打开摄像头
+        takePhotoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                takePhoto();
+            }
+        });
     }
 
-    //新增待拍照人员
+    /*
+     * 打开摄像头
+     * */
+    private void takePhoto() {
+        Thread thread = new Thread(new TakePhotoService(this));
+        thread.start();
+    }
+
+    /*
+     * 显示摄像头抓拍图片
+     * */
+    public void displayPhoto() {
+        try {
+            byte[] pictureBytes = Tool.getPictureStream("C:\\software\\client\\snap.jpg");
+            takePhoto = pictureBytes;
+            ImageIcon imageIcon = new ImageIcon(pictureBytes);
+            takePhotoLabel.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getWidth(), 1));
+        } catch (Exception e) {
+            IdPhoto.setIcon(null);
+            logger.error("显示摄像头抓拍图片出错", e);
+        }
+    }
+
+    /*
+     * 新增待拍照人员
+     * */
     private void addWaitStaff() {
         if (addWaitStaffStatus == 0) {
             inputEnable();
@@ -323,6 +356,7 @@ public class RegisterForm {
      * 取消操作
      * */
     private void cancel() {
+        getWaitStaff();
         oldStaff.setStaffId(0);
         cleanStaffInfo();
         waitStaffTable.setEnabled(false);
@@ -339,7 +373,6 @@ public class RegisterForm {
         addWaitStaffStatus = 0;
         addWaitStaffButton.setEnabled(true);
         waitStaffTable.getSelectionModel().clearSelection();
-        getWaitStaff();
     }
 
     /*
@@ -520,7 +553,7 @@ public class RegisterForm {
                 staffOperationService.save(staffEntity, oldStaff);
                 Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
                 Egci.session.commit();
-                getWaitStaff();
+//                getWaitStaff();
                 cancel();
             }
         }

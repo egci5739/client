@@ -84,4 +84,9 @@
             flushCache="true">
         select * from TemporaryStaff WHERE CardNumber LIKE #{CardNumber};
     </select>
+    <!--依据查询数量查询人员信息-->
+    <select id="getStaffByNumber" parameterType="Integer" resultType="com.dyw.client.entity.StaffEntity"
+            flushCache="true">
+        select top ${_parameter} * from Staff where CardNumber!='0';
+    </select>
 </mapper>
