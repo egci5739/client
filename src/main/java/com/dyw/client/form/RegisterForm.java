@@ -160,7 +160,8 @@ public class RegisterForm {
                     if (waitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
                         fillStaffInfo(waitStaffList.get(waitStaffTable.getSelectedRow()));
                     }
-                } catch (Exception ignored) {
+                } catch (Exception e1) {
+                    logger.error("点击待拍照人员后自动填充人员信息出错", e1);
                 }
             }
         });
@@ -356,10 +357,8 @@ public class RegisterForm {
      * 取消操作
      * */
     private void cancel() {
-        getWaitStaff();
         oldStaff.setStaffId(0);
         cleanStaffInfo();
-        waitStaffTable.setEnabled(false);
         inputDisabled();
         saveButton.setEnabled(false);
         searchButton.setEnabled(true);
@@ -372,7 +371,9 @@ public class RegisterForm {
         addWaitStaffButton.setText("新增人员");
         addWaitStaffStatus = 0;
         addWaitStaffButton.setEnabled(true);
+        getWaitStaff();
         waitStaffTable.getSelectionModel().clearSelection();
+        waitStaffTable.setEnabled(false);
     }
 
     /*
@@ -553,7 +554,6 @@ public class RegisterForm {
                 staffOperationService.save(staffEntity, oldStaff);
                 Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
                 Egci.session.commit();
-//                getWaitStaff();
                 cancel();
             }
         }
@@ -563,14 +563,14 @@ public class RegisterForm {
      * 查询人员
      * */
     public void search() {
-        resultStaffList.clear();
-        resultWaitStaffList.clear();
-        model.setRowCount(0);
-        waitStaffModel.setRowCount(0);
         if (chineseNameText.getText().equals("") && passCardText.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "请输入搜索条件！", "错误 ", 0);
             return;
         }
+        resultStaffList.clear();
+        resultWaitStaffList.clear();
+        model.setRowCount(0);
+        waitStaffModel.setRowCount(0);
         searchButton.setEnabled(false);
         addButton.setEnabled(true);
         saveButton.setEnabled(false);
@@ -727,14 +727,18 @@ public class RegisterForm {
      * 获取待拍照人员列表
      * */
     private void getWaitStaff() {
-        waitStaffList.clear();
-        waitStaffModel.setRowCount(0);
-        waitStaffList = staffOperationService.getWaitStaffList();
-        for (StaffEntity staffEntity : waitStaffList) {
-            Vector vector = new Vector();
-            vector.add(0, staffEntity.getName());
-            vector.add(1, staffEntity.getCardNumber());
-            waitStaffModel.addRow(vector);
+        try {
+            waitStaffList.clear();
+            waitStaffModel.setRowCount(0);
+            waitStaffList = staffOperationService.getWaitStaffList();
+            for (StaffEntity staffEntity : waitStaffList) {
+                Vector vector = new Vector();
+                vector.add(0, staffEntity.getName());
+                vector.add(1, staffEntity.getCardNumber());
+                waitStaffModel.addRow(vector);
+            }
+        } catch (Exception e) {
+            logger.error("获取待拍照人员列表出错", e);
         }
     }
 }

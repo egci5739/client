@@ -26,7 +26,7 @@
         </constraints>
         <properties>
           <font size="24"/>
-          <preferredSize width="50" height="37"/>
+          <preferredSize width="80" height="37"/>
         </properties>
       </component>
       <component id="72f3b" class="javax.swing.JButton" binding="exportStaffNumberButton">
