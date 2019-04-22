@@ -24,7 +24,7 @@ public class ExportExcelService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
             String now = dateFormat.format(new Date());
             //导出文件路径
-            String basePath = "C:\\software\\client\\staffInfo\\";
+            String basePath = System.getProperty("user.dir") + "\\staffInfo\\";
             //文件名
             String exportFileName = "人员信息_" + now + ".xlsx";
             String[] cellTitle = {"姓名", "性别", "出生年月", "年龄", "证件类型", "证件ID", "家庭地址", "电话号码", "组织机构", "头像url"};
@@ -55,7 +55,7 @@ public class ExportExcelService {
                     row.createCell(6).setCellValue("广州");
                     row.createCell(7).setCellValue("13500000000");
                     row.createCell(8).setCellValue("组织");
-                    row.createCell(9).setCellValue("C:\\software\\client\\staffInfo\\" + staffEntity.getName() + "_" + staffEntity.getCardNumber() + ".jpg ");
+                    row.createCell(9).setCellValue(System.getProperty("user.dir") + "\\staffInfo\\" + staffEntity.getName() + "_" + staffEntity.getCardNumber() + ".jpg ");
                     i++;
                 }
             }
@@ -79,7 +79,7 @@ public class ExportExcelService {
      * */
     private static Boolean savePhoto(byte[] bytes, String fileName) {
         try {
-            OutputStream os = new FileOutputStream("C:\\software\\client\\staffInfo\\" + fileName + ".jpg");
+            OutputStream os = new FileOutputStream(System.getProperty("user.dir") + "\\staffInfo\\" + fileName + ".jpg");
             os.write(bytes, 0, bytes.length);
             os.flush();
             os.close();

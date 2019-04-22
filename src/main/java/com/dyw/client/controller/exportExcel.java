@@ -25,7 +25,7 @@ public class exportExcel {
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
         String now = dateFormat.format(new Date());
         //导出文件路径
-        String basePath = "C:\\software\\client\\staffInfo\\";
+        String basePath = System.getProperty("user.dir") + "\\staffInfo\\";
         //文件名
         String exportFileName = "数据_" + now + ".xlsx";
         String[] cellTitle = {"姓名", "性别", "出生年月", "年龄", "证件类型", "证件ID", "家庭地址", "电话号码", "组织机构", "头像url"};

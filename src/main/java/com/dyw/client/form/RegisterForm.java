@@ -161,7 +161,7 @@ public class RegisterForm {
                         fillStaffInfo(waitStaffList.get(waitStaffTable.getSelectedRow()));
                     }
                 } catch (Exception e1) {
-                    logger.error("点击待拍照人员后自动填充人员信息出错", e1);
+                    logger.error("点击待拍照人员后自动填充人员信息不提示错误信息");
                 }
             }
         });
@@ -226,7 +226,7 @@ public class RegisterForm {
                         oldStaff = resultStaffList.get(resultTable.getSelectedRow());
                     }
                 } catch (Exception e1) {
-                    logger.error("将搜索结果加载到人员信息出错", e1);
+                    logger.error("将搜索结果加载到人员信息出错，不用提示这个错误");
                 }
             }
         });
@@ -296,7 +296,7 @@ public class RegisterForm {
      * */
     public void displayPhoto() {
         try {
-            byte[] pictureBytes = Tool.getPictureStream("C:\\software\\client\\snap.jpg");
+            byte[] pictureBytes = Tool.getPictureStream(System.getProperty("user.dir") + "/snap.jpg");
             takePhoto = pictureBytes;
             ImageIcon imageIcon = new ImageIcon(pictureBytes);
             takePhotoLabel.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getWidth(), 1));

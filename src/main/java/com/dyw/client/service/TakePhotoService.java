@@ -62,7 +62,7 @@ public class TakePhotoService extends JFrame implements Runnable, WebcamListener
                 public void actionPerformed(ActionEvent e) {
                     takePicture.setEnabled(false);  //设置按钮不可点击
                     //实现拍照保存-------start
-                    String fileName = "C:\\software\\client\\snap.jpg";       //保存路径即图片名称（不用加后缀）
+                    String fileName = System.getProperty("user.dir") + "\\snap.jpg";       //保存路径即图片名称（不用加后缀）
                     WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_JPG);//存入本地
                     registerForm.displayPhoto();
                     SwingUtilities.invokeLater(new Runnable() {

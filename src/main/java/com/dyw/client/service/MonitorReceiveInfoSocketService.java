@@ -45,7 +45,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
         try {
             os.write((info + "\n").getBytes());
             os.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("发送消息到服务端出错", e);
         }
     }
