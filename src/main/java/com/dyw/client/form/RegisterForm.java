@@ -24,6 +24,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class RegisterForm {
     private Logger logger = LoggerFactory.getLogger(RegisterForm.class);
@@ -40,6 +41,7 @@ public class RegisterForm {
     private List<StaffEntity> waitStaffList = new ArrayList<>();
     private List<StaffEntity> resultStaffList = new ArrayList<>();
     private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
+    private static String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
 
 
     public JPanel getRegisterForm() {
@@ -542,8 +544,8 @@ public class RegisterForm {
         if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
             StaffEntity staffEntity = getStaffEntity();
             staffEntity.setPhoto(staffPhoto);
-            if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null) {
-                JOptionPane.showMessageDialog(null, "中文名、卡号或照片缺失！", "错误 ", 0);
+            if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null || !Pattern.matches(cardNumberPattern, staffEntity.getCardNumber())) {
+                JOptionPane.showMessageDialog(null, "中文名、卡号或照片格式错误！", "错误 ", 0);
             } else {
                 if (!staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
                     if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
