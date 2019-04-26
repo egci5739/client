@@ -8,6 +8,8 @@ public class ApplicationForm {
     private JFrame frame;
     private JPanel applicationForm;
     private JTabbedPane applicationTabbedPane;
+    private JButton monitorEnterButton;
+    private JTextField monitorText;
 
     /*
      * 构造函数
@@ -142,6 +144,8 @@ public class ApplicationForm {
         RegisterForm registerForm = new RegisterForm();
         registerForm.init();
         applicationTabbedPane.add("办证端", registerForm.getRegisterForm());
+        monitorEnterButton = registerForm.getSearchButton();
+        monitorText = registerForm.getChineseNameText();
     }
 
     /*
@@ -183,6 +187,8 @@ public class ApplicationForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.getRootPane().setDefaultButton(monitorEnterButton);
         frame.setVisible(true);
+        monitorText.requestFocus();
     }
 }

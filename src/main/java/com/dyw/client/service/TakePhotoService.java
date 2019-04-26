@@ -68,7 +68,7 @@ public class TakePhotoService extends JFrame implements Runnable, WebcamListener
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            JOptionPane.showMessageDialog(null, "拍照成功");
+//                            JOptionPane.showMessageDialog(null, "拍照成功");
                             takePicture.setEnabled(true);    //设置按钮可点击
                             return;
                         }

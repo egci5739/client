@@ -38,7 +38,7 @@ public class RegisterForm {
     private int addWaitStaffStatus = 0;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private DefaultTableModel waitStaffModel;
-    private List<StaffEntity> waitStaffList = new ArrayList<>();
+    //    private List<StaffEntity> waitStaffList = new ArrayList<>();
     private List<StaffEntity> resultStaffList = new ArrayList<>();
     private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
     private static String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
@@ -159,8 +159,8 @@ public class RegisterForm {
                     return;
                 }
                 try {
-                    if (waitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
-                        fillStaffInfo(waitStaffList.get(waitStaffTable.getSelectedRow()));
+                    if (resultWaitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
+                        fillStaffInfo(resultWaitStaffList.get(waitStaffTable.getSelectedRow()));
                     }
                 } catch (Exception e1) {
                     logger.error("点击待拍照人员后自动填充人员信息不提示错误信息");
@@ -376,6 +376,7 @@ public class RegisterForm {
         getWaitStaff();
         waitStaffTable.getSelectionModel().clearSelection();
         waitStaffTable.setEnabled(false);
+        chineseNameText.requestFocus();
     }
 
     /*
@@ -410,9 +411,6 @@ public class RegisterForm {
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        //点击回车键搜索
-        frame.getRootPane().setDefaultButton(searchButton);
-//        frame.setVisible(true);
     }
 
     /*
@@ -730,10 +728,10 @@ public class RegisterForm {
      * */
     private void getWaitStaff() {
         try {
-            waitStaffList.clear();
+            resultWaitStaffList.clear();
             waitStaffModel.setRowCount(0);
-            waitStaffList = staffOperationService.getWaitStaffList();
-            for (StaffEntity staffEntity : waitStaffList) {
+            resultWaitStaffList = staffOperationService.getWaitStaffList();
+            for (StaffEntity staffEntity : resultWaitStaffList) {
                 Vector vector = new Vector();
                 vector.add(0, staffEntity.getName());
                 vector.add(1, staffEntity.getCardNumber());
@@ -742,5 +740,19 @@ public class RegisterForm {
         } catch (Exception e) {
             logger.error("获取待拍照人员列表出错", e);
         }
+    }
+
+    /*
+     * 获取查询按钮，用来监听enter
+     * */
+    public JButton getSearchButton() {
+        return searchButton;
+    }
+
+    /*
+     * 获取输入框输入焦点问题
+     * */
+    public JTextField getChineseNameText() {
+        return chineseNameText;
     }
 }
