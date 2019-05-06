@@ -89,7 +89,6 @@ public class LoginForm {
             NetStateService netStateService = new NetStateService();
             if (!netStateService.ping(Egci.configEntity.getFaceServerIp())) {
                 //ping不通脸谱服务器
-                System.out.println("服务ip:" + Egci.configEntity.getFaceServerIp());
                 return "error";
             }
             // 登陆脸谱服务器

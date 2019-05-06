@@ -93,8 +93,11 @@ public class Tool {
                         if (attrName.equals("queueIp")) {
                             configEntity.setQueueIp(childNodes.item(j).getFirstChild().getNodeValue());
                         }
-                        if (attrName.equals("socketPort")) {
-                            configEntity.setSocketPort(Short.parseShort(childNodes.item(j).getFirstChild().getNodeValue()));
+                        if (attrName.equals("serverRegisterPort")) {
+                            configEntity.setServerRegisterPort(Short.parseShort(childNodes.item(j).getFirstChild().getNodeValue()));
+                        }
+                        if (attrName.equals("serverMonitorPort")) {
+                            configEntity.setServerMonitorPort(Short.parseShort(childNodes.item(j).getFirstChild().getNodeValue()));
                         }
                         if (attrName.equals("testIp")) {
                             configEntity.setTestIp(childNodes.item(j).getFirstChild().getNodeValue());

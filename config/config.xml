@@ -45,6 +45,8 @@
     //socket服务端ip和端口
     <serverIp>localhost</serverIp>
     <serverPort>12345</serverPort>
+    <serverRegisterPort>12350</serverRegisterPort>
+    <serverMonitorPort>12360</serverMonitorPort>
     //采集设备的ip
     <faceCollectionIp>192.168.1.112</faceCollectionIp>
     //脸谱服务器ip和端口

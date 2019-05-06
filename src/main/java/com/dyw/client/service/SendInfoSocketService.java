@@ -20,7 +20,7 @@ public class SendInfoSocketService {
      * */
     public SendInfoSocketService() {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerPort());
+            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);

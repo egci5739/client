@@ -189,6 +189,9 @@ public class ApplicationForm {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.getRootPane().setDefaultButton(monitorEnterButton);
         frame.setVisible(true);
-        monitorText.requestFocus();
+        try {
+            monitorText.requestFocus();
+        } catch (Exception ignored) {
+        }
     }
 }

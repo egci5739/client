@@ -23,7 +23,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
      * */
     public RegisterReceiveInfoSocketService(RegisterForm registerForm) {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerPort());
+            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
             this.registerForm = registerForm;
             os = socket.getOutputStream();
         } catch (IOException e) {

@@ -46,6 +46,8 @@ public class ConfigEntity {
     //socket服务端ip和端口
     private String serverIp;
     private short serverPort;
+    private short serverRegisterPort;
+    private short serverMonitorPort;
     //采集设备的IP
     private String faceCollectionIp;
     //脸谱服务器ip和端口
@@ -330,5 +332,21 @@ public class ConfigEntity {
 
     public void setFaceServerPort(int faceServerPort) {
         this.faceServerPort = faceServerPort;
+    }
+
+    public short getServerRegisterPort() {
+        return serverRegisterPort;
+    }
+
+    public void setServerRegisterPort(short serverRegisterPort) {
+        this.serverRegisterPort = serverRegisterPort;
+    }
+
+    public short getServerMonitorPort() {
+        return serverMonitorPort;
+    }
+
+    public void setServerMonitorPort(short serverMonitorPort) {
+        this.serverMonitorPort = serverMonitorPort;
     }
 }

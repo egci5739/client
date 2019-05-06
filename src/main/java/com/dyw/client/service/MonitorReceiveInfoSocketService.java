@@ -28,7 +28,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
      * */
     public MonitorReceiveInfoSocketService(MonitorRealTimeForm monitorRealTimeForm) {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerPort());
+            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
             this.monitorRealTimeForm = monitorRealTimeForm;
             os = socket.getOutputStream();
         } catch (IOException e) {

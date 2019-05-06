@@ -163,7 +163,6 @@ public class RegisterForm {
                         fillStaffInfo(resultWaitStaffList.get(waitStaffTable.getSelectedRow()));
                     }
                 } catch (Exception e1) {
-                    logger.error("点击待拍照人员后自动填充人员信息不提示错误信息");
                 }
             }
         });
@@ -256,12 +255,6 @@ public class RegisterForm {
                 }
             }
         });
-        //重新连接服务程序
-        communicationStatusButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                reconnectToServer();
-            }
-        });
         //点击新增待拍照人员
         addWaitStaffButton.addActionListener(new ActionListener() {
             @Override
@@ -341,18 +334,17 @@ public class RegisterForm {
     /*
      * 重新连接到服务程序
      * */
-    private void reconnectToServer() {
-        if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
-            try {
-                RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
-                registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
-                registerReceiveInfoSocketService.start();
-                useIdCardCheckBox.setSelected(true);
-            } catch (Exception e) {
-                Tool.showMessage("重连失败，请确保服务程序运行正常", "提示", 0);
-            }
-
+    public void reconnectToServer() {
+//        if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
+        try {
+            RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
+            registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+            registerReceiveInfoSocketService.start();
+            useIdCardCheckBox.setSelected(true);
+        } catch (Exception e) {
+//            Tool.showMessage("重连失败，请确保服务程序运行正常", "提示", 0);
         }
+//        }
     }
 
     /*
@@ -647,6 +639,7 @@ public class RegisterForm {
          * 1：服务程序断开
          * 2：服务器网络异常
          * 3：采集设备网络异常
+         * 4：全部网络已断开
          * */
         switch (status) {
             case 0:
@@ -656,14 +649,26 @@ public class RegisterForm {
                 useIdCardCheckBox.setEnabled(true);
                 break;
             case 1:
-                communicationStatusButton.setBackground(Color.red);
-                communicationStatusButton.setText("服务程序断开");
-                communicationStatusButton.setEnabled(true);
+                communicationStatusButton.setBackground(Color.lightGray);
+                communicationStatusButton.setText("服务程序正在重连...");
+                communicationStatusButton.setEnabled(false);
                 useIdCardCheckBox.setEnabled(false);
                 break;
             case 2:
-                communicationStatusButton.setBackground(Color.red);
-                communicationStatusButton.setText("网络异常");
+                communicationStatusButton.setBackground(Color.lightGray);
+                communicationStatusButton.setText("服务器已断开");
+                communicationStatusButton.setEnabled(false);
+                useIdCardCheckBox.setEnabled(false);
+                break;
+            case 3:
+                communicationStatusButton.setBackground(Color.lightGray);
+                communicationStatusButton.setText("采集设备已断开");
+                communicationStatusButton.setEnabled(false);
+                useIdCardCheckBox.setEnabled(false);
+                break;
+            case 4:
+                communicationStatusButton.setBackground(Color.lightGray);
+                communicationStatusButton.setText("网络已断开");
                 communicationStatusButton.setEnabled(false);
                 useIdCardCheckBox.setEnabled(false);
                 break;

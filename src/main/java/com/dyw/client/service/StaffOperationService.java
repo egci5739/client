@@ -23,7 +23,6 @@ public class StaffOperationService {
         try {
             List<StaffEntity> list = Egci.session.selectList("mapping.staffMapper.getTemporaryStaff");
             Egci.session.commit();
-            System.out.println(list.size());
             return list;
         } catch (Exception e) {
             logger.error("获取待拍照人员列表出错", e);
