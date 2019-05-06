@@ -3,6 +3,7 @@ package com.dyw.client.service;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.CollectionEntity;
 import com.dyw.client.form.RegisterForm;
+import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
         try {
             os.write((info + "\n").getBytes());
             os.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("发送消息到服务端出错", e);
         }
     }
@@ -46,14 +47,13 @@ public class RegisterReceiveInfoSocketService extends Thread {
     /*
      * 持续接收服务端消息
      * */
-    public void receiveInfo() {
+    private void receiveInfo() {
         while (true) {
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String info = null;
                 info = br.readLine();
-                if (info == null) {
-                } else {
+                if (info != null) {
                     logger.info("接收到的消息为" + info);
                     CollectionEntity collectionEntity = new CollectionEntity();
                     collectionEntity.setId(Integer.parseInt(info));
