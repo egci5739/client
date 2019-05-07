@@ -65,7 +65,6 @@ public class MonitorReceiveInfoSocketService extends Thread {
                         PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
                         if (passInfoEntity != null) {
                             monitorRealTimeForm.addPassInfo(passInfoEntity);
-                            logger.info("设备名称：" + passInfoEntity.getEquipmentName());
                         }
                     } catch (Exception e) {
                         logger.error("接收数据出错", e);

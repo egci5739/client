@@ -74,7 +74,7 @@ public class StaffOperationService {
             if (staffEntity.getSex().equals("")) {
                 staffEntity.setSex("1");
             }
-            if (staffEntity.getBirthday().equals("")) {
+            if (staffEntity.getBirthday().equals("") || staffEntity.getCardNumber().length() < 10) {
                 staffEntity.setBirthday("1970-01-01");
             }
             if (oldStaff.getStaffId() > 0) {
@@ -83,7 +83,7 @@ public class StaffOperationService {
                 //更新
                 Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
                 Egci.session.commit();
-                //更新脸谱，暂时不用
+                //更新脸谱
                 if (Egci.faceServerStatus == 1) {
                     updateFaceServerFaceInfo(oldStaff, staffEntity);//更新脸谱服务器中的人员信息
                 }

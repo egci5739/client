@@ -43,6 +43,8 @@ public class RegisterForm {
     private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
     private static String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
 
+    private int operationCode;//操作码：1：新增；2：修改
+
 
     public JPanel getRegisterForm() {
         return registerForm;
@@ -161,6 +163,7 @@ public class RegisterForm {
                 try {
                     if (resultWaitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
                         fillStaffInfo(resultWaitStaffList.get(waitStaffTable.getSelectedRow()));
+                        oldStaff = resultWaitStaffList.get(waitStaffTable.getSelectedRow());
                     }
                 } catch (Exception e1) {
                 }
@@ -369,6 +372,7 @@ public class RegisterForm {
         waitStaffTable.getSelectionModel().clearSelection();
         waitStaffTable.setEnabled(false);
         chineseNameText.requestFocus();
+        operationCode = 0;
     }
 
     /*
@@ -392,6 +396,7 @@ public class RegisterForm {
         chineseNameText.setEnabled(true);
         passCardText.setEnabled(true);
         changePhotoButton.setEnabled(true);
+        operationCode = 2;
     }
 
     //初始化页面
@@ -525,6 +530,7 @@ public class RegisterForm {
         changePhotoButton.setEnabled(true);
         addWaitStaffButton.setEnabled(false);
         model.setRowCount(0);
+        operationCode = 1;
     }
 
     /*
@@ -537,16 +543,50 @@ public class RegisterForm {
             if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null || !Pattern.matches(cardNumberPattern, staffEntity.getCardNumber())) {
                 JOptionPane.showMessageDialog(null, "中文名、卡号或照片格式错误！", "错误 ", 0);
             } else {
-                if (!staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
+                if (staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
+                    if (operationCode == 2) {
+                        staffOperationService.save(staffEntity, oldStaff);
+                        Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
+                        Egci.session.commit();
+                        cancel();
+                    } else if (operationCode == 1) {
+                        if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+                            Tool.showMessage("卡号已存在", "提示", 0);
+                        } else {
+                            staffOperationService.save(staffEntity, oldStaff);
+                            Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
+                            Egci.session.commit();
+                            cancel();
+                        }
+                    }
+                } else {
                     if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
                         Tool.showMessage("卡号已存在", "提示", 0);
-                        return;
+                    } else {
+                        staffOperationService.save(staffEntity, oldStaff);
+                        Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
+                        Egci.session.commit();
+                        cancel();
                     }
                 }
-                staffOperationService.save(staffEntity, oldStaff);
-                Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
-                Egci.session.commit();
-                cancel();
+
+
+//                if (!staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
+//                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+//                        Tool.showMessage("卡号已存在", "提示", 0);
+//                        return;
+//                    }
+//                }
+//                if (operationCode == 1) {
+//                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+//                        Tool.showMessage("卡号已存在", "提示", 0);
+//                        return;
+//                    }
+//                }
+//                staffOperationService.save(staffEntity, oldStaff);
+//                Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
+//                Egci.session.commit();
+//                cancel();
             }
         }
     }
