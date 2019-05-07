@@ -215,7 +215,7 @@ public class Tool {
                 "<br>姓名：" +
                 passInfoEntity.getStaffName() +
                 "<br>时间：" +
-                passInfoEntity.getDate() +
+                passInfoEntity.getDate().toString().substring(0, 19) +
                 "<br>设备：" +
                 passInfoEntity.getEquipmentName() +
                 "</body></html>";
@@ -230,7 +230,7 @@ public class Tool {
                 "<br>姓名：" +
                 passInfoEntity.getStaffName() +
                 "<br>时间：" +
-                passInfoEntity.getDate() +
+                passInfoEntity.getDate().toString().substring(0, 19) +
                 "<br>设备：" +
                 passInfoEntity.getEquipmentName() +
                 "<br>原因：" +

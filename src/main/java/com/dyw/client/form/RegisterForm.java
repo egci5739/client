@@ -227,7 +227,7 @@ public class RegisterForm {
                         oldStaff = resultStaffList.get(resultTable.getSelectedRow());
                     }
                 } catch (Exception e1) {
-                    logger.error("将搜索结果加载到人员信息出错，不用提示这个错误");
+//                    logger.error("将搜索结果加载到人员信息出错，不用提示这个错误");
                 }
             }
         });

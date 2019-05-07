@@ -59,16 +59,16 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String info = null;
                 info = br.readLine();
-                if (info == null) {
-                } else {
+                if (info != null) {
                     logger.info("接收到的消息为" + info);
                     try {
                         PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
                         if (passInfoEntity != null) {
                             monitorRealTimeForm.addPassInfo(passInfoEntity);
+                            logger.info("设备名称：" + passInfoEntity.getEquipmentName());
                         }
-                    } catch (TooManyResultsException ignored) {
-
+                    } catch (Exception e) {
+                        logger.error("接收数据出错", e);
                     }
                 }
             } catch (IOException e) {

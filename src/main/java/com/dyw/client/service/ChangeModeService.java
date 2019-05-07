@@ -20,7 +20,7 @@ public class ChangeModeService {
      * */
     public ChangeModeService() {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
