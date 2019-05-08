@@ -40,6 +40,7 @@ public class ApplicationForm {
                 initResourceManagementForm();
                 initAlarmHistoryForm();
                 initExportStaffForm();
+                initFaultSummationForm();
                 break;
             default:
                 break;
@@ -179,6 +180,15 @@ public class ApplicationForm {
     private void initExportStaffForm() {
         ExportStaffForm exportStaffForm = new ExportStaffForm();
         applicationTabbedPane.add("导出人员信息", exportStaffForm.getExportStaffForm());
+    }
+
+    /*
+     * 失败次数统计
+     * init
+     * */
+    private void initFaultSummationForm() {
+        FaultSummationForm faultSummationForm = new FaultSummationForm();
+        applicationTabbedPane.add("失败次数统计", faultSummationForm.getFaultSummation());
     }
 
     public void init() {

@@ -19,8 +19,6 @@ public class ExportStaffForm {
     private JPanel exportStaffForm;
     private JLabel exportStaffNumberLabel;
     private JTextField exportStaffNumberText;
-
-
     private JButton exportStaffNumberButton;
 
     public ExportStaffForm() {

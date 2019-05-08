@@ -33,4 +33,12 @@
             and EventTypeId=#{EventTypeId}
         </if>
     </select>
+    <!--查询全部统计失败统计信息-->
+    <select id="getAllFaultSummation" resultType="com.dyw.client.entity.FaultSummationEntity" flushCache="true">
+        select * from FaultSummation INNER JOIN Staff ON FaultSummation.cardNumber=Staff.CardNumber
+    </select>
+    <!--清空全部失败统计信息-->
+    <delete id="deleteAllFaultSummation">
+        delete from FaultSummation
+    </delete>
 </mapper>
