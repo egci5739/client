@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.EquipmentManagementForm">
   <grid id="27dc6" binding="equipmentManagementForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="1153" height="800"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -51,6 +51,36 @@
                 <properties>
                   <font size="20"/>
                   <text value="导入人员"/>
+                </properties>
+              </component>
+              <component id="ffb55" class="javax.swing.JButton" binding="closeFaceButton">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value="关闭人脸通行"/>
+                </properties>
+              </component>
+              <component id="6102e" class="javax.swing.JButton" binding="cardAndFaceModeButton">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value="刷卡+人脸模式"/>
+                </properties>
+              </component>
+              <component id="c90ba" class="javax.swing.JButton" binding="faceModeButton">
+                <constraints>
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value="人脸模式"/>
                 </properties>
               </component>
             </children>

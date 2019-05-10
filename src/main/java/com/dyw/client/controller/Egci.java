@@ -52,6 +52,7 @@ public class Egci {
      * 主函数
      * */
     public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack", "true");
         Egci.initClient();
     }
 }

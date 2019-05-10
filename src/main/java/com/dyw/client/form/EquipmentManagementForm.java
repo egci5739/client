@@ -29,6 +29,9 @@ public class EquipmentManagementForm {
     private JScrollPane equipmentManagementContentScroll;
     private JTable equipmentManagementContentTable;
     private JButton importStaffButton;
+    private JButton closeFaceButton;
+    private JButton cardAndFaceModeButton;
+    private JButton faceModeButton;
 
     private DefaultTableModel equipmentManagerModel;
     private List<EquipmentEntity> equipmentEntityList;
@@ -93,6 +96,87 @@ public class EquipmentManagementForm {
                 importStaff();
             }
         });
+        //关闭人脸通行
+        closeFaceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeFace();
+            }
+        });
+        //切换到卡+人脸模式
+        cardAndFaceModeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                runFace();
+                setCardAndFaceMode();
+            }
+        });
+        //切换到刷脸模式
+        faceModeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                runFace();
+                setFaceMode();
+            }
+        });
+    }
+
+    /*
+     * 关闭人脸通行
+     * */
+    private void closeFace() {
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
+        if (Tool.showConfirm("确定关闭该设备的人脸识别通行？", "提示")) {
+            EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+            sendInfoSocketService.sendInfo("5#" + equipmentEntity.getStatusSwitchSocketIP() + "#0");
+            sendInfoSocketService.receiveInfoOnce();
+        }
+    }
+
+    /*
+     * 启用人脸识别
+     * */
+    private void runFace() {
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
+        EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        sendInfoSocketService.sendInfo("5#" + equipmentEntity.getStatusSwitchSocketIP() + "#1");
+        sendInfoSocketService.receiveInfoOnce();
+    }
+
+    /*
+     * 设置卡+人脸模式
+     * */
+    private void setCardAndFaceMode() {
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
+        EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#0");
+        sendInfoSocketService.receiveInfoOnce();
+    }
+
+    /*
+     * 设置人脸模式
+     * */
+    private void setFaceMode() {
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
+        EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#1");
+        sendInfoSocketService.receiveInfoOnce();
     }
 
     /*
@@ -105,7 +189,7 @@ public class EquipmentManagementForm {
         }
         if (Tool.showConfirm("确定导入人员信息到一体机设备？", "提示")) {
             EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService();
+            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
             sendInfoSocketService.sendInfo("9#" + equipmentEntity.getIP());
             sendInfoSocketService.receiveInfoOnce();
             Tool.showMessage("设备正在导入人员信息，请勿重复导入", "提示", 0);

@@ -97,7 +97,7 @@ public class StaffOperationService {
                 }
             }
             Thread.sleep(1000);
-            SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService();
+            SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
             insertSendInfoSocketService.sendInfo("1#" + staffEntity.getCardNumber() + "\n");
             insertSendInfoSocketService.receiveInfoOnce();
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class StaffOperationService {
      * */
     public void delete(StaffEntity staffEntity) {
         //特殊情况，需先删一体机里面的
-        SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService();
+        SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
         deleteSendInfoSocketService.sendInfo("2#" + staffEntity.getCardNumber());
         deleteSendInfoSocketService.receiveInfoOnce();
         //删除人脸服务器中人脸信息

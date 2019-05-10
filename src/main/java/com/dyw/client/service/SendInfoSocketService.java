@@ -18,9 +18,9 @@ public class SendInfoSocketService {
     /*
      * 构造函数
      * */
-    public SendInfoSocketService() {
+    public SendInfoSocketService(String ip, short port) {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
+            socket = new Socket(ip, port);
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
