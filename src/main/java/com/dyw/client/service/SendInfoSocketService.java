@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-import com.dyw.client.controller.Egci;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,17 +41,20 @@ public class SendInfoSocketService {
     /*
      * 接收一次服务端消息
      * */
-    public void receiveInfoOnce() {
+    public String receiveInfoOnce() {
+        String info = null;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String info = null;
             info = br.readLine();
-            if (info == null) {
-            } else {
+            if (info != null) {
                 logger.info("接收到的消息为" + info);
+                return info;
+            } else {
+                return "0";
             }
         } catch (IOException e) {
             logger.error("服务程序断开", e);
+            return "0";
         }
     }
 }

@@ -1,11 +1,16 @@
 package com.dyw.client.form;
 
+import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.entity.EquipmentStatusEntity;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
+import org.apache.poi.ss.formula.functions.T;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -32,27 +37,50 @@ public class EquipmentManagementForm {
     private JButton closeFaceButton;
     private JButton cardAndFaceModeButton;
     private JButton faceModeButton;
+    private JButton refreshEquipmentStatusButton;
 
     private DefaultTableModel equipmentManagerModel;
     private List<EquipmentEntity> equipmentEntityList;
+    private List<EquipmentStatusEntity> equipmentStatusEntityList;
 
     public EquipmentManagementForm() {
         //初始化设备管理表格
-        String[] columnEquipmentInfo = {"设备名称", "设备IP", "切换器IP"};
+        String[] columnEquipmentInfo = {"设备名称", "设备IP", "切换器IP", "人员数量"};
         equipmentManagerModel = new DefaultTableModel();
         equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
         equipmentManagementContentTable.setModel(equipmentManagerModel);
-        equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
         DefaultTableCellRenderer equipmentInfoTableCellRenderer = new DefaultTableCellRenderer();
         equipmentInfoTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
         equipmentManagementContentTable.setDefaultRenderer(Object.class, equipmentInfoTableCellRenderer);
-        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-            Vector v = new Vector();
-            v.add(0, equipmentEntity.getName());
-            v.add(1, equipmentEntity.getIP());
-            v.add(2, equipmentEntity.getStatusSwitchSocketIP());
-            equipmentManagerModel.addRow(v);
-        }
+        //切换设备
+        equipmentManagementContentTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                try {
+                    if (equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()) != null) {
+                        EquipmentStatusEntity equipmentStatusEntity = equipmentStatusEntityList.get(equipmentManagementContentTable.getSelectedRow());
+                        if (equipmentStatusEntity.getIsLogin().equals("0")) {
+                            cardAndFaceModeButton.setEnabled(false);
+                            importStaffButton.setEnabled(false);
+                            faceModeButton.setEnabled(false);
+                        } else {
+                            cardAndFaceModeButton.setEnabled(true);
+                            importStaffButton.setEnabled(true);
+                            faceModeButton.setEnabled(true);
+                            if (equipmentStatusEntity.getPassMode().equals("1")) {
+                                faceModeButton.setEnabled(false);
+                            } else {
+                                cardAndFaceModeButton.setEnabled(false);
+                            }
+                        }
+                    }
+                } catch (Exception e1) {
+                }
+            }
+        });
+
         //更改设备信息
         equipmentManagerModel.addTableModelListener(new TableModelListener() {
             @Override
@@ -119,6 +147,13 @@ public class EquipmentManagementForm {
                 setFaceMode();
             }
         });
+        //加载设备信息
+        refreshEquipmentStatusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshEquipmentList();
+            }
+        });
     }
 
     /*
@@ -163,6 +198,9 @@ public class EquipmentManagementForm {
         SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
         sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#0");
         sendInfoSocketService.receiveInfoOnce();
+        faceModeButton.setEnabled(true);
+        cardAndFaceModeButton.setEnabled(false);
+        Tool.showMessage("切换成功", "提示", 1);
     }
 
     /*
@@ -177,6 +215,9 @@ public class EquipmentManagementForm {
         SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
         sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#1");
         sendInfoSocketService.receiveInfoOnce();
+        faceModeButton.setEnabled(false);
+        cardAndFaceModeButton.setEnabled(true);
+        Tool.showMessage("切换成功", "提示", 1);
     }
 
     /*
@@ -200,6 +241,10 @@ public class EquipmentManagementForm {
      * 删除设备
      * */
     private void deleteEquipment() {
+        if (equipmentManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一台设备", "提示", 0);
+            return;
+        }
         if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
             Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()).getId());
             Egci.session.commit();
@@ -239,14 +284,28 @@ public class EquipmentManagementForm {
      * 重新加载设备列表
      * */
     private void refreshEquipmentList() {
+        importStaffButton.setEnabled(false);
+        faceModeButton.setEnabled(false);
+        cardAndFaceModeButton.setEnabled(false);
+        try {
+            equipmentEntityList.clear();
+            equipmentStatusEntityList.clear();
+        } catch (NullPointerException ignored) {
+        }
         equipmentManagerModel.setRowCount(0);
         equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        sendInfoSocketService.sendInfo("3#0");
+        equipmentStatusEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentStatusEntity.class);
+        int i = 0;
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {
             Vector v = new Vector();
             v.add(0, equipmentEntity.getName());
             v.add(1, equipmentEntity.getIP());
             v.add(2, equipmentEntity.getStatusSwitchSocketIP());
+            v.add(3, equipmentStatusEntityList.get(i).getCardNumber());
             equipmentManagerModel.addRow(v);
+            i++;
         }
     }
 }

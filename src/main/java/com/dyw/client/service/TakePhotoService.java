@@ -38,25 +38,18 @@ public class TakePhotoService extends JFrame implements Runnable, WebcamListener
             addWindowListener(this);
             picker = new WebcamPicker();
             picker.addItemListener(this);
-
             webcam = picker.getSelectedWebcam();
-
             if (webcam == null) {
-                System.out.println("No webcams found...");
                 JOptionPane.showMessageDialog(null, "打开摄像头出错");
                 this.dispose();
             }
-
             webcam.setViewSize(WebcamResolution.VGA.getSize());
             webcam.addWebcamListener(TakePhotoService.this);
-
             panel = new WebcamPanel(webcam, false);
             panel.setFPSDisplayed(true);
-
             add(picker, BorderLayout.NORTH);
             add(panel, BorderLayout.CENTER);
             add(takePicture, BorderLayout.SOUTH);
-
             takePicture.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
