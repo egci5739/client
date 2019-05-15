@@ -345,8 +345,8 @@ public class IntelligentApplicationForm {
                 whiteAlarmContentTableModel.addRow(vectorThree);
                 if (whiteAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(whiteAlarmScrollBar);
+                    whiteAlarmBottomStatus = 0;
                 }
-                whiteAlarmBottomStatus = 0;
             } else if (Egci.fdLibIDForStaff.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
                 //白名单报警
                 Vector vectorTwo = new Vector();
@@ -356,8 +356,8 @@ public class IntelligentApplicationForm {
                 blackAlarmContentTableModel.addRow(vectorTwo);
                 if (blackAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(blackAlarmScrollBar);
+                    blackAlarmBottomStatus = 0;
                 }
-                blackAlarmBottomStatus = 0;
             } else if (Egci.fdLibIDForBlack.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
                 //黑名单报警
                 Vector vectorOne = new Vector();
@@ -367,8 +367,8 @@ public class IntelligentApplicationForm {
                 snapAlarmContentTableModel.addRow(vectorOne);
                 if (snapAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(snapAlarmScrollBar);
+                    snapAlarmBottomStatus = 0;
                 }
-                snapAlarmBottomStatus = 0;
             }
         } catch (Exception e) {
             logger.error("显示报警结果出错", e);

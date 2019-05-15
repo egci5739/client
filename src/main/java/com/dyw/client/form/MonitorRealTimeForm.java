@@ -153,15 +153,15 @@ public class MonitorRealTimeForm {
             passSuccessModel.addRow(v);
             if (passSuccessRollingStatus == 1) {
                 moveScrollBarToBottom(passSuccessScrollBar);
+                passSuccessBottomStatus = 0;
             }
-            passSuccessBottomStatus = 0;
         } else {
             v.add(2, Tool.displayPassFaultResult(passInfoEntity));
             passFaultModel.addRow(v);
             if (passFaultRollingStatus == 1) {
                 moveScrollBarToBottom(passFaultScrollBar);
+                passFaultBottomStatus = 0;
             }
-            passFaultBottomStatus = 0;
         }
     }
 

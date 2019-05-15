@@ -7,8 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.net.Socket;
 
 public class SessionService {
@@ -21,10 +20,13 @@ public class SessionService {
     public SqlSession createSession() {
         try {
             //mybatis的配置文件
-            String resource = "config/conf.xml";
-            Reader reader = Resources.getResourceAsReader(resource);
+//            String resource = "config/conf.xml";
+//            String resource = System.getProperty("user.dir") + "\\config\\conf.xml";
+//            Reader reader = Resources.getResourceAsReader(resource);
+            File file = new File(System.getProperty("user.dir") + "\\config\\conf.xml");
+            FileInputStream fileInputStream = new FileInputStream(file);
             //构建sqlSession的工厂
-            SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+            SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(fileInputStream);
             //创建能执行映射文件中sql的sqlSession
             session = sessionFactory.openSession();
             if (session == null) {

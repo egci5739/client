@@ -13,18 +13,13 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -303,7 +298,6 @@ public class RegisterForm {
             takePhoto = pictureBytes;
             ImageIcon imageIcon = new ImageIcon(pictureBytes);
             takePhotoLabel.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getWidth(), 1));
-            changeSize(480, 640, System.getProperty("user.dir") + "/snap.jpg");
         } catch (Exception e) {
             IdPhoto.setIcon(null);
             logger.error("显示摄像头抓拍图片出错", e);
@@ -805,32 +799,5 @@ public class RegisterForm {
      * */
     public JTextField getChineseNameText() {
         return chineseNameText;
-    }
-
-    /*
-     * 改变抓拍图尺寸
-     * */
-    public boolean changeSize(int newWidth, int newHeight, String path) {
-        BufferedInputStream in = null;
-        try {
-            in = new BufferedInputStream(new FileInputStream(path));
-
-            //字节流转图片对象
-            Image bi = ImageIO.read(in);
-            //构建图片流
-            BufferedImage tag = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-            //绘制改变尺寸后的图
-            tag.getGraphics().drawImage(bi, 0, 0, newWidth, newHeight, null);
-            //输出流
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(path));
-            //JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            //encoder.encode(tag);
-            ImageIO.write(tag, "PNG", out);
-            in.close();
-            out.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 }

@@ -57,7 +57,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
         while (true) {
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String info = null;
+                String info;
                 info = br.readLine();
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
