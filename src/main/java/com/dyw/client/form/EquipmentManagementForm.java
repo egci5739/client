@@ -38,6 +38,7 @@ public class EquipmentManagementForm {
     private JButton cardAndFaceModeButton;
     private JButton faceModeButton;
     private JButton refreshEquipmentStatusButton;
+    private JButton timeSynchronizationButton;
 
     private DefaultTableModel equipmentManagerModel;
     private List<EquipmentEntity> equipmentEntityList;
@@ -152,6 +153,13 @@ public class EquipmentManagementForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 refreshEquipmentList();
+            }
+        });
+        //设备时间同步
+        timeSynchronizationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeSynchronization();
             }
         });
     }
@@ -307,5 +315,14 @@ public class EquipmentManagementForm {
             equipmentManagerModel.addRow(v);
             i++;
         }
+    }
+
+    /*
+     * 设备时间同步
+     * */
+    private void timeSynchronization() {
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        sendInfoSocketService.sendInfo("0#0");
+        Tool.showMessage("同步成功", "提示", 1);
     }
 }

@@ -53,19 +53,9 @@
                   <text value="导入人员"/>
                 </properties>
               </component>
-              <component id="ffb55" class="javax.swing.JButton" binding="closeFaceButton">
-                <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <font size="20"/>
-                  <text value="关闭人脸通行"/>
-                </properties>
-              </component>
               <component id="6102e" class="javax.swing.JButton" binding="cardAndFaceModeButton">
                 <constraints>
-                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
@@ -75,7 +65,7 @@
               </component>
               <component id="c90ba" class="javax.swing.JButton" binding="faceModeButton">
                 <constraints>
-                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
@@ -85,12 +75,32 @@
               </component>
               <component id="d62f5" class="javax.swing.JButton" binding="refreshEquipmentStatusButton">
                 <constraints>
-                  <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <font size="20"/>
                   <text value="刷新"/>
+                </properties>
+              </component>
+              <component id="9d86c" class="javax.swing.JButton" binding="timeSynchronizationButton">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value="同步时间"/>
+                </properties>
+              </component>
+              <component id="ffb55" class="javax.swing.JButton" binding="closeFaceButton">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value="关闭人脸通行"/>
                 </properties>
               </component>
             </children>

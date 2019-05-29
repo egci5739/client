@@ -77,7 +77,6 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/sarxos/webcam-capture/0.3.11/webcam-capture-0.3.11.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-shared-incremental/1.1/maven-shared-incremental-1.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-compiler-javac/2.7/plexus-compiler-javac-2.7.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/4.2.1/jna-4.2.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/main/lib/datepicker.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/ibatis/ibatis-core/3.0/ibatis-core-3.0.jar" path-in-jar="/" />
     </root>

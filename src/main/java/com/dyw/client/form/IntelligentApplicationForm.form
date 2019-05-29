@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.IntelligentApplicationForm">
   <grid id="27dc6" binding="intelligentApplicationForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1052" height="590"/>
+      <xy x="20" y="20" width="1142" height="814"/>
     </constraints>
     <properties/>
     <border type="none"/>

@@ -3,6 +3,7 @@ package com.dyw.client.form;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.protection.*;
+import com.dyw.client.functionForm.SearchByPicForm;
 import com.dyw.client.service.AlarmTableCellRenderer;
 import com.dyw.client.service.MyHttpHandlerService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
@@ -12,6 +13,7 @@ import com.sun.jna.NativeLibrary;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 import net.iharder.Base64;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -30,10 +33,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.security.spec.ECGenParameterSpec;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 public class IntelligentApplicationForm {
     public JPanel getIntelligentApplicationForm() {
@@ -101,6 +102,11 @@ public class IntelligentApplicationForm {
     private List<EmbeddedMediaPlayer> embeddedMediaPlayerList = new ArrayList<>();
     private List<EmbeddedMediaPlayerComponent> embeddedMediaPlayerComponentList = new ArrayList<>();
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
+
+    private JPopupMenu searchPopupMenu;
+    private JMenuItem searchMenuItem = new JMenuItem("查找人员库");
+    private JMenuItem viewMenuItem = new JMenuItem("查看录像");
+    private int menuStatus = 0;
 
     public IntelligentApplicationForm() {
         /*
@@ -225,11 +231,12 @@ public class IntelligentApplicationForm {
                 return false;
             }
         };
-        String[] columnWhiteAlarmInfo = {"抓拍图", "时间"};
+        String[] columnWhiteAlarmInfo = {"抓拍图", "时间", "图片URL"};
         whiteAlarmContentTableModel.setColumnIdentifiers(columnWhiteAlarmInfo);
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
         TableCellRenderer whiteAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
+        hideColumn(whiteAlarmContentTable, 2);
         whiteAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -272,6 +279,41 @@ public class IntelligentApplicationForm {
                     stopRTSP();
                     playButton.setText("播放");
                 }
+            }
+        });
+        /*
+         * 弹出右键菜单
+         * */
+        whiteAlarmContentTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    //在table显示
+                    searchPopupMenu = new JPopupMenu();
+                    //表格 的rowAtPoint方法返回坐标所在的行号，参数为坐标类型，
+                    menuStatus = whiteAlarmContentTable.rowAtPoint(e.getPoint());
+                    searchPopupMenu.add(searchMenuItem);
+                    searchPopupMenu.add(viewMenuItem);
+                    searchPopupMenu.show(whiteAlarmContentTable, e.getX(), e.getY());
+                }
+            }
+        });
+        /*
+         * 以图搜图
+         * */
+        searchMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchByPhoto((String) whiteAlarmContentTable.getValueAt(menuStatus, 2));//待解决
+            }
+        });
+        /*
+         * 查看录像
+         * */
+        viewMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                Tool.showMessage((String) whiteAlarmContentTable.getValueAt(menuStatus, 2), "提示", 1);
+                Tool.showMessage("未启用", "提示", 1);
             }
         });
     }
@@ -342,6 +384,7 @@ public class IntelligentApplicationForm {
                         "<br>抓拍机：" +
                         alarmResultEntity.getTargetAttrs().getDeviceName() +
                         "</body></html>");
+                vectorThree.add(2, alarmResultEntity.getImage());
                 whiteAlarmContentTableModel.addRow(vectorThree);
                 if (whiteAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(whiteAlarmScrollBar);
@@ -521,5 +564,52 @@ public class IntelligentApplicationForm {
         } catch (JSONException e1) {
             logger.error("获取人脸库列表出错", e1);
         }
+    }
+
+    /*
+     * 以图搜图
+     * */
+    private void searchByPhoto(String faceURL) {
+        String instructionSearchByPic = "/ISAPI/Intelligent/FDLib/searchByPic?format=json";
+        org.json.JSONObject inboundDataSearchByPhoto = new org.json.JSONObject();
+        Map<String, Object> mapSearchByPhoto = new HashMap<>();
+        JSONArray jsonArraySearchByPhoto = new JSONArray();
+        try {
+            inboundDataSearchByPhoto.put("searchResultPosition", 0);
+            inboundDataSearchByPhoto.put("maxResults", 20);
+            inboundDataSearchByPhoto.put("modelMaxNum", 20);
+            inboundDataSearchByPhoto.put("dataType", "URL");
+            inboundDataSearchByPhoto.put("startTime", "1900-01-01");
+            inboundDataSearchByPhoto.put("endTime", "2030-01-01");
+            inboundDataSearchByPhoto.put("maxSimilarity", 1.00);
+            inboundDataSearchByPhoto.put("minSimilarity", 0.00);
+            mapSearchByPhoto.put("FDID", Egci.fdLibIDForStaff);
+            jsonArraySearchByPhoto.put(0, mapSearchByPhoto);
+            inboundDataSearchByPhoto.put("FDLib", jsonArraySearchByPhoto);
+            inboundDataSearchByPhoto.put("faceURL", faceURL);
+            org.json.JSONObject resultDataSearchByPhoto = Tool.sendInstructionAndReceiveStatusAndData(3, instructionSearchByPic, inboundDataSearchByPhoto);
+            if (resultDataSearchByPhoto.getInt("statusCode") == 1) {
+                List<SearchByPicEntity> searchByPicEntityList = JSONObject.parseArray(resultDataSearchByPhoto.getString("MatchList"), SearchByPicEntity.class);
+                SearchByPicForm searchByPicForm = new SearchByPicForm(searchByPicEntityList);
+                searchByPicForm.init();
+            } else {
+                Tool.showMessage("以图搜图错误，错误码：" + resultDataSearchByPhoto.getInt("statusCode"), "提示", 0);
+            }
+        } catch (JSONException e) {
+            logger.error("以图搜图出错", e);
+        }
+    }
+
+    /*
+     * 隐藏图片url这一页
+     * */
+    protected void hideColumn(JTable table, int index) {
+        TableColumn tc = table.getColumnModel().getColumn(index);
+        tc.setMaxWidth(0);
+        tc.setPreferredWidth(0);
+        tc.setMinWidth(0);
+        tc.setWidth(0);
+        table.getTableHeader().getColumnModel().getColumn(index).setMaxWidth(0);
+        table.getTableHeader().getColumnModel().getColumn(index).setMinWidth(0);
     }
 }

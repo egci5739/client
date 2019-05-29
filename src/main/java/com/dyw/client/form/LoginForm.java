@@ -3,6 +3,7 @@ package com.dyw.client.form;
 import ISAPI.HttpsClientUtil;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
+import com.dyw.client.functionForm.SearchByPicForm;
 import com.dyw.client.service.NetStateService;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.HttpHostConnectException;

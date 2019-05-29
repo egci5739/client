@@ -5,10 +5,13 @@ import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.EventEntity;
 import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.service.DateSelectorButtonService;
+import com.dyw.client.service.ExportExcelService;
 import com.dyw.client.service.HistoryPhotoTableCellRenderer;
 import com.dyw.client.service.PageSelectionService;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +24,8 @@ import java.util.Map;
 import java.util.Vector;
 
 public class MonitorHistoryForm {
+    private Logger logger = LoggerFactory.getLogger(MonitorHistoryForm.class);
+
     public JPanel getMonitorHistoryForm() {
         return monitorHistoryForm;
     }
@@ -51,6 +56,7 @@ public class MonitorHistoryForm {
     private JButton perPageNumberButton;
     private JPanel passTotalNumberPanel;
     private JLabel passTotalNumberLabel;
+    private JButton exportPassInfoButton;
 
     private String passCardSelectionDefaultHint = "请输入卡号";
     private String nameSelectionDefaultHint = "请输入姓名";
@@ -179,6 +185,13 @@ public class MonitorHistoryForm {
 
         startTimeSelectionButton.setText(Tool.getCurrentDate() + " 00:00:00");
         endTimeSelectionButton.setText(Tool.getCurrentDate() + " 23:59:59");
+        //导出通行记录
+        exportPassInfoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportPassInfo();
+            }
+        });
     }
 
     /*
@@ -219,6 +232,24 @@ public class MonitorHistoryForm {
             resultModel.addRow(v);
         }
         passTotalNumberLabel.setText("共有： " + passInfoHistoryList.size() + " 条记录");
+    }
+
+    /*
+     * 导出历史通行记录
+     * */
+
+    private void exportPassInfo() {
+        try {
+            if (passInfoHistoryList.size() < 1) {
+                Tool.showMessage("没有数据", "提示", 0);
+                return;
+            }
+            ExportExcelService exportExcelService = new ExportExcelService();
+            exportExcelService.exportPassInfo(passInfoHistoryList);
+        } catch (Exception e) {
+            Tool.showMessage("没有数据", "提示", 0);
+            logger.error("导出历史通行记录出错", e);
+        }
     }
 
     private void createUIComponents() {
