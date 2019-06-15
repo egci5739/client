@@ -13,7 +13,7 @@
     </select>
     <!--查询所有设备信息-->
     <select id="getAllEquipment" resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from Equipment;
+        select * from Equipment ORDER BY GroupId;
     </select>
     <!--更新设备信息-->
     <update id="updateEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
@@ -28,4 +28,8 @@
     <delete id="deleteEquipment" parameterType="Integer">
         delete from Equipment where Id =#{Id};
     </delete>
+    <!--收取抓拍机信息-->
+    <select id="getAllCamera" resultType="com.dyw.client.entity.CameraEntity">
+        select * from Camera;
+    </select>
 </mapper>

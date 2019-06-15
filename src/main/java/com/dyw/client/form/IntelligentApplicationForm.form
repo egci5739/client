@@ -65,7 +65,7 @@
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -76,7 +76,7 @@
                   <grid id="e2955" binding="livePreviewContentTwoPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -87,7 +87,7 @@
                   <grid id="1a6a1" binding="livePreviewContentThreePanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -98,7 +98,7 @@
                   <grid id="3829e" binding="livePreviewContentFourPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -109,7 +109,7 @@
                   <grid id="e1895" binding="livePreviewContentFivePanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -120,7 +120,7 @@
                   <grid id="b01b7" binding="livePreviewContentSixPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -131,7 +131,7 @@
                   <grid id="62883" binding="livePreviewContentSevenPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>
@@ -142,7 +142,29 @@
                   <grid id="2651f" binding="livePreviewContentEightPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.25"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
+                    </constraints>
+                    <properties>
+                      <background color="-11711155"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="2ceb0" binding="livePreviewContentNinePanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
+                    </constraints>
+                    <properties>
+                      <background color="-11711155"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="11d70" binding="livePreviewContentTenPanel" layout-manager="GridBagLayout">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.2"/>
                     </constraints>
                     <properties>
                       <background color="-11711155"/>

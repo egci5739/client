@@ -1,15 +1,19 @@
 package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyw.client.HCNetSDK;
 import com.dyw.client.controller.Egci;
+import com.dyw.client.controller.JDialogPlayBackByTime;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.SearchByPicForm;
 import com.dyw.client.service.AlarmTableCellRenderer;
 import com.dyw.client.service.MyHttpHandlerService;
+import com.dyw.client.service.PlaybackService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.NativeLong;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 import net.iharder.Base64;
@@ -33,6 +37,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.security.spec.ECGenParameterSpec;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -80,6 +85,8 @@ public class IntelligentApplicationForm {
     private JScrollPane snapAlarmContentScroll;
     private JTable snapAlarmContentTable;
     private JButton playButton;
+    private JPanel livePreviewContentNinePanel;
+    private JPanel livePreviewContentTenPanel;
 
     private Logger logger = LoggerFactory.getLogger(IntelligentApplicationForm.class);
     private DefaultTableModel snapAlarmContentTableModel;
@@ -231,12 +238,14 @@ public class IntelligentApplicationForm {
                 return false;
             }
         };
-        String[] columnWhiteAlarmInfo = {"抓拍图", "时间", "图片URL"};
+        String[] columnWhiteAlarmInfo = {"抓拍图", "时间", "图片URL", "单独时间", "抓拍机名称"};
         whiteAlarmContentTableModel.setColumnIdentifiers(columnWhiteAlarmInfo);
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
         TableCellRenderer whiteAlarmCellRenderer = new SnapAlarmTableCellRenderer();
         whiteAlarmContentTable.setDefaultRenderer(Object.class, whiteAlarmCellRenderer);
         hideColumn(whiteAlarmContentTable, 2);
+        hideColumn(whiteAlarmContentTable, 3);
+        hideColumn(whiteAlarmContentTable, 4);
         whiteAlarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -313,7 +322,18 @@ public class IntelligentApplicationForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                Tool.showMessage((String) whiteAlarmContentTable.getValueAt(menuStatus, 2), "提示", 1);
-                Tool.showMessage("未启用", "提示", 1);
+                try {
+                    String timeInfo = whiteAlarmContentTable.getValueAt(menuStatus, 3).toString().substring(0, 19);
+                    logger.info("抓拍时间:" + timeInfo);
+                    HCNetSDK.NET_DVR_TIME struStartTime = segmentationTime(0, timeInfo);//start
+                    HCNetSDK.NET_DVR_TIME struStopTime = segmentationTime(1, timeInfo);//end
+                    PlaybackService playbackService = new PlaybackService();
+                    playbackService.playOrPause(struStartTime, struStopTime, Egci.cameraMap.get(whiteAlarmContentTable.getValueAt(menuStatus, 4).toString()));
+                } catch (Exception e1) {
+                    Tool.showMessage("查看录像出错", "提示", 0);
+                    logger.error("查看录像出错", e1);
+                }
+
             }
         });
     }
@@ -385,6 +405,8 @@ public class IntelligentApplicationForm {
                         alarmResultEntity.getTargetAttrs().getDeviceName() +
                         "</body></html>");
                 vectorThree.add(2, alarmResultEntity.getImage());
+                vectorThree.add(3, alarmResultEntity.getTargetAttrs().getFaceTime());
+                vectorThree.add(4, alarmResultEntity.getTargetAttrs().getDeviceName());
                 whiteAlarmContentTableModel.addRow(vectorThree);
                 if (whiteAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(whiteAlarmScrollBar);
@@ -593,7 +615,7 @@ public class IntelligentApplicationForm {
                 SearchByPicForm searchByPicForm = new SearchByPicForm(searchByPicEntityList);
                 searchByPicForm.init();
             } else {
-                Tool.showMessage("以图搜图错误，错误码：" + resultDataSearchByPhoto.getInt("statusCode"), "提示", 0);
+                Tool.showMessage("以图搜图错误，错误信息：" + resultDataSearchByPhoto.getString("errorMsg"), "提示", 0);
             }
         } catch (JSONException e) {
             logger.error("以图搜图出错", e);
@@ -603,7 +625,7 @@ public class IntelligentApplicationForm {
     /*
      * 隐藏图片url这一页
      * */
-    protected void hideColumn(JTable table, int index) {
+    private void hideColumn(JTable table, int index) {
         TableColumn tc = table.getColumnModel().getColumn(index);
         tc.setMaxWidth(0);
         tc.setPreferredWidth(0);
@@ -611,5 +633,46 @@ public class IntelligentApplicationForm {
         tc.setWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMaxWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMinWidth(0);
+    }
+
+    /*
+     * 分割时间数据
+     * type:0-开始   1-结束
+     * */
+    private HCNetSDK.NET_DVR_TIME segmentationTime(int type, String timeInfo) {
+        logger.info("时间：" + timeInfo);
+        HCNetSDK.NET_DVR_TIME struNTPTime = new HCNetSDK.NET_DVR_TIME();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            if (type == 0) {
+                Date dateBefore = simpleDateFormat.parse(timeInfo);
+                long timestamp = dateBefore.getTime() - 10000;
+                Date dateAfter = new Date(timestamp);
+                timeInfo = simpleDateFormat.format(dateAfter);
+                //2019-05-22 04:47:54
+                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
+                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
+                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
+                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
+                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
+                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
+            } else {
+                Date dateBefore = simpleDateFormat.parse(timeInfo);
+                long timestamp = dateBefore.getTime() + 10000;
+                Date dateAfter = new Date(timestamp);
+                timeInfo = simpleDateFormat.format(dateAfter);
+                //2019-05-22 04:47:54
+                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
+                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
+                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
+                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
+                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
+                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
+            }
+            return struNTPTime;
+        } catch (Exception e) {
+            logger.error("获取播放时段出错", e);
+            return null;
+        }
     }
 }

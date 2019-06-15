@@ -35,7 +35,7 @@ public class EquipmentManagementForm {
     private JTable equipmentManagementContentTable;
     private JButton importStaffButton;
     private JButton closeFaceButton;
-    private JButton cardAndFaceModeButton;
+    private JButton cardAndFaceModeButton;//开启人脸识别
     private JButton faceModeButton;
     private JButton refreshEquipmentStatusButton;
     private JButton timeSynchronizationButton;
@@ -73,7 +73,7 @@ public class EquipmentManagementForm {
                             if (equipmentStatusEntity.getPassMode().equals("1")) {
                                 faceModeButton.setEnabled(false);
                             } else {
-                                cardAndFaceModeButton.setEnabled(false);
+                                cardAndFaceModeButton.setEnabled(true);
                             }
                         }
                     }
@@ -207,7 +207,7 @@ public class EquipmentManagementForm {
         sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#0");
         sendInfoSocketService.receiveInfoOnce();
         faceModeButton.setEnabled(true);
-        cardAndFaceModeButton.setEnabled(false);
+        cardAndFaceModeButton.setEnabled(true);
         Tool.showMessage("切换成功", "提示", 1);
     }
 

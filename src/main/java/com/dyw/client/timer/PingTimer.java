@@ -15,7 +15,6 @@ public class PingTimer {
         this.registerForm = registerForm;
     }
 
-
     public void open() {
         Timer timer = new Timer();
         PingTask pingTask = new PingTask(registerForm);

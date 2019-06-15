@@ -53,6 +53,9 @@ public class ConfigEntity {
     //脸谱服务器ip和端口
     private String faceServerIp;
     private int faceServerPort;
+    //NVR服务器ip和端口
+    private String nvrServerIp;
+    private int nvrServerPort;
 
     public String getServerIp() {
         return serverIp;
@@ -348,5 +351,21 @@ public class ConfigEntity {
 
     public void setServerMonitorPort(short serverMonitorPort) {
         this.serverMonitorPort = serverMonitorPort;
+    }
+
+    public String getNvrServerIp() {
+        return nvrServerIp;
+    }
+
+    public void setNvrServerIp(String nvrServerIp) {
+        this.nvrServerIp = nvrServerIp;
+    }
+
+    public int getNvrServerPort() {
+        return nvrServerPort;
+    }
+
+    public void setNvrServerPort(int nvrServerPort) {
+        this.nvrServerPort = nvrServerPort;
     }
 }

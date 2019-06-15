@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -8,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.Socket;
 
 public class SessionService {
     private Logger logger = LoggerFactory.getLogger(SessionService.class);

@@ -1,6 +1,8 @@
 package com.dyw.client.controller;
 
+import com.dyw.client.HCNetSDK;
 import com.dyw.client.entity.AccountEntity;
+import com.dyw.client.entity.CameraEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.form.*;
 import com.dyw.client.service.SessionService;
@@ -30,6 +32,9 @@ public class Egci {
     public static List<String> snapDeviceIpsThree = new ArrayList<>();//三核抓拍设备
     public static List<String> snapDeviceIps = new ArrayList<>();//根据权限设置抓拍设备ip组
     public static int faceServerStatus = 0;//脸谱服务器状态：0禁用  1启用
+    //初始化静态对象
+    public static HCNetSDK hcNetSDK;
+    public static Map<String, Integer> cameraMap = new HashMap<>();//抓拍机信息
 
     /*
      * 初始化客户端程序
@@ -38,11 +43,32 @@ public class Egci {
         accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
+        //初始化SDK静态对象
+        try {
+            hcNetSDK = HCNetSDK.INSTANCE;
+        } catch (Exception e) {
+            logger.error("初始化SDK静态对象，失败", e);
+        }
+        //初始化SDK
+        if (!hcNetSDK.NET_DVR_Init()) {
+            logger.error("SDK初始化失败");
+            return;
+        }
         //获取配置文件
         configEntity = Tool.getConfig(System.getProperty("user.dir") + "/config/config.xml");
         //创建session对象
         SessionService sessionService = new SessionService();
         session = sessionService.createSession();
+        //获取抓拍机信息
+        try {
+            List<CameraEntity> cameraEntityList = session.selectList("mapping.equipmentMapper.getAllCamera");
+            for (CameraEntity cameraEntity : cameraEntityList) {
+                cameraMap.put(cameraEntity.getCameraName(), cameraEntity.getCameraChannel());
+            }
+            logger.info("抓拍机信息" + cameraEntityList.toString());
+        } catch (Exception e) {
+            logger.error("获取抓拍机信息出错", e);
+        }
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();

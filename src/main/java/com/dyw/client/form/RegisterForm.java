@@ -8,6 +8,7 @@ import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
+import com.dyw.client.timer.ReconnectionTimer;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -42,9 +43,7 @@ public class RegisterForm {
     private List<StaffEntity> resultStaffList = new ArrayList<>();
     private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
     private static String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
-
     private int operationCode;//操作码：1：新增；2：修改
-
 
     public JPanel getRegisterForm() {
         return registerForm;
@@ -401,9 +400,13 @@ public class RegisterForm {
 
     //初始化页面
     public void init() {
-        //启用ping功能
+        //启用ping功能,判断连接状态
         PingTimer pingTimer = new PingTimer(this);
         pingTimer.open();
+        //定时重连服务器
+        ReconnectionTimer reconnectionTimer = new ReconnectionTimer(this);
+        reconnectionTimer.open1();
+        reconnectionTimer.open2();
         JFrame frame = new JFrame("RegisterForm");
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

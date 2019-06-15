@@ -171,6 +171,12 @@ public class Tool {
                         if (attrName.equals("faceServerPort")) {
                             configEntity.setFaceServerPort(Integer.parseInt(childNodes.item(j).getFirstChild().getNodeValue()));
                         }
+                        if (attrName.equals("nvrServerIp")) {
+                            configEntity.setNvrServerIp(childNodes.item(j).getFirstChild().getNodeValue());
+                        }
+                        if (attrName.equals("nvrServerPort")) {
+                            configEntity.setNvrServerPort(Integer.parseInt(childNodes.item(j).getFirstChild().getNodeValue()));
+                        }
                     }
                 }
             }

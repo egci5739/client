@@ -24,7 +24,6 @@ public class RegisterReceiveInfoSocketService extends Thread {
      * */
     public RegisterReceiveInfoSocketService(RegisterForm registerForm) {
         try {
-            logger.info("IP和端口：" + Egci.configEntity.getServerIp() + Egci.configEntity.getServerRegisterPort());
             socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
             this.registerForm = registerForm;
             os = socket.getOutputStream();

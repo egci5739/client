@@ -74,7 +74,7 @@ public class MonitorHistoryForm {
         //初始化设备选择下拉框
         List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", Tool.getGroupId(Egci.accountEntity.getAccountPermission()));
         EquipmentEntity equipmentEntity1 = new EquipmentEntity();
-        equipmentEntity1.setName("--全部设备--");
+        equipmentEntity1.setName("--请先选择设备--");
         equipmentEntityList.add(0, equipmentEntity1);
         int i = 0;
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {
@@ -198,6 +198,10 @@ public class MonitorHistoryForm {
      * 查询历史记录
      * */
     private void search() {
+        if (equipmentSelectionCombo.getSelectedIndex() == 0 && passCardSelectionText.getText().equals("请输入卡号") && nameSelectionText.getText().equals("请输入姓名")) {
+            Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
+            return;
+        }
         PassInfoEntity condition = new PassInfoEntity();
         condition.setIP(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
         condition.setEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());

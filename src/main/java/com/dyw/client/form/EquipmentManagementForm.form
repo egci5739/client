@@ -60,7 +60,7 @@
                 </constraints>
                 <properties>
                   <font size="20"/>
-                  <text value="刷卡+人脸模式"/>
+                  <text value="开启人脸通行"/>
                 </properties>
               </component>
               <component id="c90ba" class="javax.swing.JButton" binding="faceModeButton">
@@ -69,8 +69,10 @@
                   <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
+                  <enabled value="true"/>
                   <font size="20"/>
                   <text value="人脸模式"/>
+                  <visible value="false"/>
                 </properties>
               </component>
               <component id="d62f5" class="javax.swing.JButton" binding="refreshEquipmentStatusButton">
