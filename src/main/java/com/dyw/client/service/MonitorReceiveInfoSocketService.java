@@ -1,12 +1,9 @@
 package com.dyw.client.service;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.CollectionEntity;
-import com.dyw.client.entity.PassInfoEntity;
 //import com.dyw.client.form.MonitorForm;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.form.MonitorRealTimeForm;
-import com.dyw.client.form.RegisterForm;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +25,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
      * */
     public MonitorReceiveInfoSocketService(MonitorRealTimeForm monitorRealTimeForm) {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+            socket = new Socket(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
             this.monitorRealTimeForm = monitorRealTimeForm;
             os = socket.getOutputStream();
         } catch (IOException e) {
@@ -62,7 +59,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
                     try {
-                        PassInfoEntity passInfoEntity = Egci.session.selectOne("mapping.passInfoMapper.getPassInfo", info);
+                        PassRecordEntity passInfoEntity = Egci.session.selectOne("mapping.passRecordMapper.getPassInfo", info);
                         if (passInfoEntity != null) {
                             monitorRealTimeForm.addPassInfo(passInfoEntity);
                         }

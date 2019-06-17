@@ -2,13 +2,12 @@ package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.CollectionEntity;
+import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
-import com.dyw.client.timer.ReconnectionTimer;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -118,12 +117,12 @@ public class RegisterForm {
         }
         //获取采集设备的ip
         try {
-            FaceCollectionEntity faceCollectionEntity = Egci.session.selectOne("mapping.faceCollectionMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
-            if (faceCollectionEntity == null) {
+            EquipmentEntity equipmentEntity = Egci.session.selectOne("mapping.equipmentMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
+            if (equipmentEntity == null) {
                 JOptionPane.showMessageDialog(null, "该主机未绑定采集设备", "错误", 0);
                 Egci.configEntity.setFaceCollectionIp("0.0.0.0");
             } else {
-                Egci.configEntity.setFaceCollectionIp(faceCollectionEntity.getFaceCollectionIp());
+                Egci.configEntity.setFaceCollectionIp(equipmentEntity.getEquipmentIp());
             }
         } catch (UnknownHostException e) {
             logger.error("获取采集设备ip出错", e);
@@ -224,7 +223,7 @@ public class RegisterForm {
                     IdPhoto.setEnabled(true);
                     addButton.setEnabled(false);
                     if (resultStaffList.get(resultTable.getSelectedRow()) != null) {
-                        staffPhoto = resultStaffList.get(resultTable.getSelectedRow()).getPhoto();
+                        staffPhoto = resultStaffList.get(resultTable.getSelectedRow()).getStaffImage();
                         fillStaffInfo(resultStaffList.get(resultTable.getSelectedRow()));
                         oldStaff = resultStaffList.get(resultTable.getSelectedRow());
                     }
@@ -246,12 +245,12 @@ public class RegisterForm {
                 // 判断是否被选择
                 if (jcb.isSelected()) {
                     ChangeModeService changeModeService = null;
-                    changeModeService = new ChangeModeService();
+                    changeModeService = new ChangeModeService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketRegisterPort());
                     changeModeService.sendInfo("6#" + Egci.configEntity.getFaceCollectionIp() + "#0\n");
                     changeModeService.receiveInfoOnce();
                 } else {
                     ChangeModeService changeModeService = null;
-                    changeModeService = new ChangeModeService();
+                    changeModeService = new ChangeModeService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketRegisterPort());
                     changeModeService.sendInfo("6#" + Egci.configEntity.getFaceCollectionIp() + "#1\n");
                     changeModeService.receiveInfoOnce();
                 }
@@ -316,7 +315,7 @@ public class RegisterForm {
         } else {
             if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
                 StaffEntity staffEntity = getStaffEntity();
-                if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("")) {
+                if (staffEntity.getStaffName().equals("") || staffEntity.getStaffCardNumber().equals("")) {
                     JOptionPane.showMessageDialog(null, "中文名或卡号缺失！", "错误 ", 0);
                     return;
                 } else {
@@ -403,10 +402,6 @@ public class RegisterForm {
         //启用ping功能,判断连接状态
         PingTimer pingTimer = new PingTimer(this);
         pingTimer.open();
-        //定时重连服务器
-        ReconnectionTimer reconnectionTimer = new ReconnectionTimer(this);
-        reconnectionTimer.open1();
-        reconnectionTimer.open2();
         JFrame frame = new JFrame("RegisterForm");
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -418,21 +413,20 @@ public class RegisterForm {
      * */
     private void fillStaffInfo(StaffEntity staffEntity) {
         try {
-            chineseNameText.setText(staffEntity.getName());
-            englishNameText.setText(staffEntity.getNameEn());
-            passCardText.setText(staffEntity.getCardNumber());
-            IdNumberText.setText(staffEntity.getCardId());
-            birthdayText.setText(staffEntity.getBirthday());
-            sexText.setText(staffEntity.getSex());
-            companyText.setText(staffEntity.getCompany());
+            chineseNameText.setText(staffEntity.getStaffName());
+            passCardText.setText(staffEntity.getStaffCardNumber());
+            IdNumberText.setText(staffEntity.getStaffCardId());
+            birthdayText.setText(staffEntity.getStaffBirthday());
+            sexText.setText(String.valueOf(staffEntity.getStaffGender()));
+            companyText.setText(staffEntity.getStaffCompany());
             try {
-                staffEntity.setPhoto(staffEntity.getPhoto());
+                staffEntity.setStaffImage(staffEntity.getStaffImage());
             } catch (Exception e) {
 //                logger.error("获取表格人员信息出错", e);
-                staffEntity.setPhoto(null);
+                staffEntity.setStaffImage(null);
             }
             try {
-                ImageIcon imageIcon = new ImageIcon(staffEntity.getPhoto());
+                ImageIcon imageIcon = new ImageIcon(staffEntity.getStaffImage());
                 IdPhoto.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getHeight(), 2));
             } catch (Exception e) {
                 IdPhoto.setIcon(null);
@@ -447,19 +441,19 @@ public class RegisterForm {
     /*
      * 将采集的信息填入身份信息表中
      * */
-    public void fillCollectionInfo(CollectionEntity collectionEntity) {
+    public void fillCollectionInfo(FaceCollectionEntity collectionEntity) {
         try {
-            idSimilarityLabel.setText(collectionEntity.getSimilation());
-            idNameLabel.setText(collectionEntity.getName());
-            idCardNumberLabel.setText(collectionEntity.getCardId());
-            idNationLabel.setText(collectionEntity.getNation());
-            idSexLabel.setText(collectionEntity.getSex());
-            idBirthdayLabel.setText(collectionEntity.getBirthday());
-            idValidityPeriodLabel.setText(collectionEntity.getExpirationDate());
-            idOrganizationLabel.setText(collectionEntity.getOrganization());
-            takePhoto = collectionEntity.getStaffPhoto();
+            idSimilarityLabel.setText(String.valueOf(collectionEntity.getFaceCollectionSimilarity()));
+            idNameLabel.setText(collectionEntity.getFaceCollectionName());
+            idCardNumberLabel.setText(collectionEntity.getFaceCollectionCardId());
+            idNationLabel.setText(collectionEntity.getFaceCollectionNation());
+            idSexLabel.setText(String.valueOf(collectionEntity.getFaceCollectionGender()));
+            idBirthdayLabel.setText(collectionEntity.getFaceCollectionBirthday());
+            idValidityPeriodLabel.setText(collectionEntity.getFaceCollectionExpirationDate());
+            idOrganizationLabel.setText(collectionEntity.getFaceCollectionOrganization());
+            takePhoto = collectionEntity.getFaceCollectionStaffImage();
             try {
-                ImageIcon imageIcon = new ImageIcon(collectionEntity.getStaffPhoto());
+                ImageIcon imageIcon = new ImageIcon(collectionEntity.getFaceCollectionStaffImage());
                 takePhotoLabel.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getWidth(), 1));
             } catch (Exception e) {
                 IdPhoto.setIcon(null);
@@ -504,18 +498,17 @@ public class RegisterForm {
      * */
     private StaffEntity getStaffEntity() {
         StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setName(chineseNameText.getText());
-        staffEntity.setNameEn(englishNameText.getText());
-        staffEntity.setCardNumber(passCardText.getText());
-        staffEntity.setCardId(IdNumberText.getText());
-        staffEntity.setBirthday(birthdayText.getText());
-        staffEntity.setSex(sexText.getText());
-        staffEntity.setCompany(companyText.getText());
+        staffEntity.setStaffName(chineseNameText.getText());
+        staffEntity.setStaffCardNumber(passCardText.getText());
+        staffEntity.setStaffCardId(IdNumberText.getText());
+        staffEntity.setStaffBirthday(birthdayText.getText());
+        staffEntity.setStaffGender(Integer.parseInt(sexText.getText()));
+        staffEntity.setStaffCompany(companyText.getText());
         try {
-            staffEntity.setPhoto(staffPhoto);
+            staffEntity.setStaffImage(staffPhoto);
         } catch (Exception e) {
             logger.error("获取表格人员信息出错", e);
-            staffEntity.setPhoto(null);
+            staffEntity.setStaffImage(null);
         }
         return staffEntity;
     }
@@ -542,33 +535,27 @@ public class RegisterForm {
     private void save() {
         if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
             StaffEntity staffEntity = getStaffEntity();
-            staffEntity.setPhoto(staffPhoto);
-            if (staffEntity.getName().equals("") || staffEntity.getCardNumber().equals("") || staffEntity.getPhoto() == null || !Pattern.matches(cardNumberPattern, staffEntity.getCardNumber())) {
+            staffEntity.setStaffImage(staffPhoto);
+            if (staffEntity.getStaffName().equals("") || staffEntity.getStaffCardNumber().equals("") || staffEntity.getStaffImage() == null || !Pattern.matches(cardNumberPattern, staffEntity.getStaffCardNumber())) {
                 JOptionPane.showMessageDialog(null, "中文名、卡号或照片格式错误！", "错误 ", 0);
             } else {
-                if (staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
+                if (staffEntity.getStaffCardNumber().equals(oldStaff.getStaffCardNumber())) {
                     if (operationCode == 2) {
                         staffOperationService.save(staffEntity, oldStaff);
-                        Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
-                        Egci.session.commit();
                         cancel();
                     } else if (operationCode == 1) {
-                        if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+                        if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getStaffCardNumber()).size() > 0) {
                             Tool.showMessage("卡号已存在", "提示", 0);
                         } else {
                             staffOperationService.save(staffEntity, oldStaff);
-                            Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
-                            Egci.session.commit();
                             cancel();
                         }
                     }
                 } else {
-                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
+                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getStaffCardNumber()).size() > 0) {
                         Tool.showMessage("卡号已存在", "提示", 0);
                     } else {
                         staffOperationService.save(staffEntity, oldStaff);
-                        Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
-                        Egci.session.commit();
                         cancel();
                     }
                 }
@@ -612,9 +599,9 @@ public class RegisterForm {
         resultStaffList = staffOperationService.search(chineseNameText.getText(), passCardText.getText());
         for (StaffEntity staffEntity : resultStaffList) {
             Vector vector = new Vector();
-            vector.add(0, staffEntity.getCardNumber());
-            vector.add(1, staffEntity.getName());
-            vector.add(2, staffEntity.getCardId());
+            vector.add(0, staffEntity.getStaffCardNumber());
+            vector.add(1, staffEntity.getStaffName());
+            vector.add(2, staffEntity.getStaffCardId());
             model.addRow(vector);
         }
         addWaitStaffButton.setEnabled(false);
@@ -622,8 +609,8 @@ public class RegisterForm {
         resultWaitStaffList = staffOperationService.searchWaitStaff(chineseNameText.getText(), passCardText.getText());
         for (StaffEntity staffEntity : resultWaitStaffList) {
             Vector vector = new Vector();
-            vector.add(0, staffEntity.getName());
-            vector.add(1, staffEntity.getCardNumber());
+            vector.add(0, staffEntity.getStaffName());
+            vector.add(1, staffEntity.getStaffCardNumber());
             waitStaffModel.addRow(vector);
         }
         waitStaffTable.setEnabled(true);
@@ -781,8 +768,8 @@ public class RegisterForm {
             resultWaitStaffList = staffOperationService.getWaitStaffList();
             for (StaffEntity staffEntity : resultWaitStaffList) {
                 Vector vector = new Vector();
-                vector.add(0, staffEntity.getName());
-                vector.add(1, staffEntity.getCardNumber());
+                vector.add(0, staffEntity.getStaffName());
+                vector.add(1, staffEntity.getStaffCardNumber());
                 waitStaffModel.addRow(vector);
             }
         } catch (Exception e) {

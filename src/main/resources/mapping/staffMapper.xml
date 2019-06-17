@@ -4,89 +4,91 @@
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.staffMapper">
     <!--查询单个人员的采集信息-->
-    <select id="getStaffCollectionInfo" parameterType="com.dyw.client.entity.CollectionEntity"
-            resultType="com.dyw.client.entity.CollectionEntity">
-        select * from FaceCollectionTemp where Id=#{Id};
+    <select id="getStaffCollectionInfo" parameterType="Integer"
+            resultType="com.dyw.client.entity.FaceCollectionEntity">
+        select * from FaceCollectionTable where faceCollectionId=#{_parameter};
     </select>
     <!--新增人员信息-->
     <insert id="insertStaff" parameterType="com.dyw.client.entity.StaffEntity" useGeneratedKeys="true"
-            keyProperty="StaffId">
+            keyProperty="staffId">
         INSERT INTO
-        Staff
-        (Name,NameEn,CardId,CardNumber,Birthday,Sex,Company,Photo) values
-        (#{Name},#{NameEn},#{CardId},#{CardNumber},#{Birthday},#{Sex},#{Company},#{Photo});
+        StaffTable
+        (staffName,staffCardId,staffCardNumber,staffBirthday,staffGender,staffCompany,staffImage,staffValidity) values
+        (#{staffName},#{staffCardId},#{staffCardNumber},#{staffBirthday},#{staffGender},#{staffCompany},#{staffImage},1);
     </insert>
     <!--修改人员信息-->
     <update id="updateStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        UPDATE Staff SET Name=#{Name},NameEn=#{NameEn},CardId=#{CardId},CardNumber=#{CardNumber},Birthday=#{Birthday},
-        Sex=#{Sex},Company=#{Company},Photo=#{Photo} WHERE StaffId=#{StaffId};
+        UPDATE StaffTable SET
+        staffName=#{staffName},staffCardId=#{staffCardId},staffCardNumber=#{staffCardNumber},staffBirthday=#{staffBirthday},staffGender=#{staffGender},
+        staffCompany=#{staffCompany},staffImage=#{staffImage},staffValidity=1 WHERE staffId=#{staffId};
     </update>
     <!--删除人员信息:将人员卡号在数据库中设为0-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
         <!--DELETE FROM Staff WHERE CardNumber=#{CardNumber};-->
-        UPDATE Staff SET CardNumber=#{CardNumber} WHERE StaffId=#{StaffId};
+        UPDATE StaffTable SET staffValidity=0 WHERE staffId=#{staffId};
     </delete>
     <!--查询待拍照人员列表-->
     <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        SELECT * FROM TemporaryStaff;
+        SELECT * FROM StaffTable where staffValidity = 2;
     </select>
     <!--依据卡号和姓名查询人员-->
     <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from Staff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
+        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber};
     </select>
     <!--依据姓名查询人员-->
     <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from Staff WHERE Name LIKE #{name};
+        select * from StaffTable WHERE staffName LIKE #{staffName};
     </select>
     <!--依据卡号查询人员-->
     <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from Staff WHERE CardNumber LIKE #{CardNumber};
+        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber};
     </select>
     <!--根据卡号精确查询待拍照人员表人员-->
     <select id="getWaitStaffWithCardAccurate" resultType="com.dyw.client.entity.StaffEntity">
-        SELECT * FROM TemporaryStaff where CardNumber=#{CardNumber} and CardNumber !='0';
+        SELECT * FROM StaffTable where staffCardNumber=#{staffCardNumber} and staffCardNumber !='0';
     </select>
     <!--新增待拍照人员-->
     <insert id="insertWaitStaff" parameterType="com.dyw.client.entity.StaffEntity">
         INSERT INTO
-        TemporaryStaff
+        StaffTable
         (Name,NameEn,CardId,CardNumber,Birthday,Sex,Company) values
         (#{Name},#{NameEn},#{CardId},#{CardNumber},#{Birthday},#{Sex},#{Company});
     </insert>
     <!--获取全部人员信息-->
     <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        select * from Staff where CardNumber!='0';
+        select * from StaffTable where staffCardNumber!='0';
     </select>
     <!--依据卡号精确查询人员-->
     <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from Staff WHERE CardNumber = #{CardNumber} and CardNumber !='0';
+        select * from StaffTable WHERE staffCardNumber = #{staffCardNumber} and staffCardNumber !='0';
     </select>
     <!--删除一个待拍照人员-->
     <delete id="deleteTemporaryStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        delete from TemporaryStaff where CardNumber = #{CardNumber};
+        delete from StaffTable where staffCardNumber = #{staffCardNumber};
     </delete>
     <!--依据卡号和姓名查询待拍照人员-->
     <select id="getWaitStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from TemporaryStaff WHERE Name LIKE #{name} OR CardNumber LIKE #{CardNumber};
+        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber} where
+        staffValidity = 2;
     </select>
     <!--依据姓名查询待拍照人员-->
     <select id="getWaitStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from TemporaryStaff WHERE Name LIKE #{name};
+        select * from StaffTable WHERE staffName LIKE #{staffName} and staffValidity = 2;
     </select>
     <!--依据卡号查询待拍照人员-->
     <select id="getWaitStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from TemporaryStaff WHERE CardNumber LIKE #{CardNumber};
+        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber} and staffValidity = 2;
     </select>
     <!--依据查询数量查询人员信息-->
     <select id="getStaffByNumber" parameterType="Integer" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select top ${_parameter} * from Staff where CardNumber!='0';
+        select top ${_parameter} * from StaffTable where staffCardNumber!='0';
     </select>
 </mapper>

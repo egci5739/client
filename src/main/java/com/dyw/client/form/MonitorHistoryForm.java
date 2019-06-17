@@ -3,7 +3,7 @@ package com.dyw.client.form;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.EventEntity;
-import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.service.DateSelectorButtonService;
 import com.dyw.client.service.ExportExcelService;
 import com.dyw.client.service.HistoryPhotoTableCellRenderer;
@@ -63,36 +63,34 @@ public class MonitorHistoryForm {
     private Map<Integer, String> conditionEquipmentMap;
     private Map<Integer, Integer> conditionEventMap;
     private DefaultTableModel resultModel;
-    private List<PassInfoEntity> passInfoHistoryList;
+    private List<PassRecordEntity> passInfoHistoryList;
     private PageSelectionService pageSelectionService;
 
     public MonitorHistoryForm() {
-        conditionEquipmentMap = new HashMap<Integer, String>();
-        conditionEventMap = new HashMap<Integer, Integer>();
+        conditionEquipmentMap = new HashMap<>();
+        conditionEventMap = new HashMap<>();
         pageSelectionService = new PageSelectionService();
         perPageNumberSpinner.setValue(5);//每页默认显示数量
         //初始化设备选择下拉框
         List<EquipmentEntity> equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition", Tool.getGroupId(Egci.accountEntity.getAccountPermission()));
         EquipmentEntity equipmentEntity1 = new EquipmentEntity();
-        equipmentEntity1.setName("--请先选择设备--");
+        equipmentEntity1.setEquipmentName("--请先选择设备--");
         equipmentEntityList.add(0, equipmentEntity1);
         int i = 0;
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-            equipmentSelectionCombo.addItem(equipmentEntity.getName());
-            conditionEquipmentMap.put(i, equipmentEntity.getIP());
+            equipmentSelectionCombo.addItem(equipmentEntity.getEquipmentName());
+            conditionEquipmentMap.put(i, equipmentEntity.getEquipmentIp());
             i++;
         }
         //初始化事件选择下拉框
-        List<EventEntity> eventEntityList = Egci.session.selectList("mapping.eventMapper.getEventOn");
-        EventEntity eventEntity1 = new EventEntity();
-        eventEntity1.setEventName("--全部事件--");
-        eventEntityList.add(0, eventEntity1);
-        int j = 0;
-        for (EventEntity eventEntity : eventEntityList) {
-            eventSelectionCombo.addItem(eventEntity.getEventName());
-            conditionEventMap.put(j, eventEntity.getEventId());
-            j++;
-        }
+        eventSelectionCombo.addItem("--全部事件--");
+        conditionEventMap.put(0, 0);
+        eventSelectionCombo.addItem("人证比对通过");
+        conditionEventMap.put(1, 105);
+        eventSelectionCombo.addItem("人证比对失败");
+        conditionEventMap.put(2, 112);
+        eventSelectionCombo.addItem("无此卡号");
+        conditionEventMap.put(3, 9);
         //输入卡号框选中/未选中时
         passCardSelectionText.setText(passCardSelectionDefaultHint);
         passCardSelectionText.addFocusListener(new FocusAdapter() {
@@ -202,37 +200,37 @@ public class MonitorHistoryForm {
             Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
             return;
         }
-        PassInfoEntity condition = new PassInfoEntity();
-        condition.setIP(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
-        condition.setEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
+        PassRecordEntity condition = new PassRecordEntity();
+        condition.setPassRecordEquipmentIp(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
+        condition.setPassRecordEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
         if (!passCardSelectionText.getText().equals(passCardSelectionDefaultHint)) {
-            condition.setCardNumber(passCardSelectionText.getText());
+            condition.setPassRecordCardNumber(passCardSelectionText.getText());
         }
         if (!nameSelectionText.getText().equals(nameSelectionDefaultHint)) {
-            condition.setStaffName(nameSelectionText.getText());
+            condition.setPassRecordName(nameSelectionText.getText());
         }
         condition.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
         condition.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
         resultModel.setRowCount(0);
-        passInfoHistoryList = Egci.session.selectList("mapping.passInfoMapper.getHistoryPassInfo", condition);
+        passInfoHistoryList = Egci.session.selectList("mapping.passRecordMapper.getHistoryPassInfo", condition);
         displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
     }
 
     /*
      * 将查询结果显示在结果框中
      * */
-    private void displaySearchResult(List<PassInfoEntity> passInfoEntityList) {
+    private void displaySearchResult(List<PassRecordEntity> passInfoEntityList) {
         resultModel.setRowCount(0);
-        for (PassInfoEntity passInfoEntity : passInfoEntityList) {
+        for (PassRecordEntity passInfoEntity : passInfoEntityList) {
             Vector v = new Vector();
-            v.add(0, passInfoEntity.getDate());
-            v.add(1, passInfoEntity.getStaffName());
-            v.add(2, passInfoEntity.getCardNumber());
-            v.add(3, Tool.eventIdToEventName(passInfoEntity.getEventTypeId()));
-            v.add(4, passInfoEntity.getSimilarity());
-            v.add(5, passInfoEntity.getEquipmentName());
-            v.add(6, Base64.encodeBytes(passInfoEntity.getPhoto()));
-            v.add(7, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
+            v.add(0, passInfoEntity.getPassRecordPassTime());
+            v.add(1, passInfoEntity.getPassRecordName());
+            v.add(2, passInfoEntity.getPassRecordCardNumber());
+            v.add(3, Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()));
+            v.add(4, passInfoEntity.getPassRecordSimilarity());
+            v.add(5, passInfoEntity.getPassRecordEquipmentName());
+            v.add(6, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
+            v.add(7, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
             resultModel.addRow(v);
         }
         passTotalNumberLabel.setText("共有： " + passInfoHistoryList.size() + " 条记录");

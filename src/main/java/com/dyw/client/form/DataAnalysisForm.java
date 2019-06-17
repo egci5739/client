@@ -2,7 +2,7 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
-import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.service.DateSelectorButtonService;
 import com.dyw.client.tool.Tool;
 
@@ -88,25 +88,25 @@ public class DataAnalysisForm {
         for (int i = 0; i < equipmentEntityList.size(); i++) {
             Vector v = new Vector();
             EquipmentEntity equipmentEntity = equipmentEntityList.get(i);
-            PassInfoEntity passInfoEntity = new PassInfoEntity();
-            passInfoEntity.setIP(equipmentEntity.getIP());
+            PassRecordEntity passInfoEntity = new PassRecordEntity();
+            passInfoEntity.setPassRecordEquipmentIp(equipmentEntity.getEquipmentIp());
             passInfoEntity.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
             passInfoEntity.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
-            v.add(0, equipmentEntity.getName());
+            v.add(0, equipmentEntity.getEquipmentName());
             //获取总数
-            passInfoEntity.setEventTypeId(0);
+            passInfoEntity.setPassRecordEventTypeId(0);
             int totalNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(1, totalNumber);
             //获取通过数量
-            passInfoEntity.setEventTypeId(105);
+            passInfoEntity.setPassRecordEventTypeId(105);
             int successNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(2, successNumber);
             //获取失败数量
-            passInfoEntity.setEventTypeId(112);
+            passInfoEntity.setPassRecordEventTypeId(112);
             int faultNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(3, faultNumber);
             //获取卡号不存在数量
-            passInfoEntity.setEventTypeId(9);
+            passInfoEntity.setPassRecordEventTypeId(9);
             int noCardNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
             v.add(4, noCardNumber);
             //成功率

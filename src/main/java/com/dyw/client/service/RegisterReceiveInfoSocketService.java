@@ -1,9 +1,8 @@
 package com.dyw.client.service;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.CollectionEntity;
+import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.form.RegisterForm;
-import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
      * */
     public RegisterReceiveInfoSocketService(RegisterForm registerForm) {
         try {
-            socket = new Socket(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
+            socket = new Socket(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketRegisterPort());
             this.registerForm = registerForm;
             os = socket.getOutputStream();
         } catch (IOException e) {
@@ -55,9 +54,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
                 info = br.readLine();
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
-                    CollectionEntity collectionEntity = new CollectionEntity();
-                    collectionEntity.setId(Integer.parseInt(info));
-                    collectionEntity = Egci.session.selectOne("mapping.staffMapper.getStaffCollectionInfo", collectionEntity);
+                    FaceCollectionEntity collectionEntity = Egci.session.selectOne("mapping.staffMapper.getStaffCollectionInfo", Integer.parseInt(info));
                     Egci.session.commit();
                     registerForm.fillCollectionInfo(collectionEntity);
                 }

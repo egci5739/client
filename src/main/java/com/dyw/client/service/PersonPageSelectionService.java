@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-import com.dyw.client.entity.PassInfoEntity;
 import com.dyw.client.entity.protection.FaceInfoEntity;
 
 import java.util.ArrayList;

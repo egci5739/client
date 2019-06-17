@@ -1,49 +1,85 @@
 package com.dyw.client.entity;
 
 public class EquipmentEntity {
-    private int Id;//id
-    private int GroupId;//核数
-    private String Name;//设备名称
-    private String IP;//设备ip
-    private String StatusSwitchSocketIP;//切换器ip
+    private int equipmentId;
+    private String equipmentName;
+    private String equipmentIp;
+    private int equipmentType;
+    private int equipmentPermission;
+    private String equipmentSwitchIp;
+    private String equipmentHostIp;
+    private String equipmentChannel;
+    private int equipmentValidity;
 
-    public int getId() {
-        return Id;
+    public int getEquipmentId() {
+        return equipmentId;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setEquipmentId(int equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
-    public int getGroupId() {
-        return GroupId;
+    public String getEquipmentName() {
+        return equipmentName;
     }
 
-    public void setGroupId(int groupId) {
-        GroupId = groupId;
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
     }
 
-    public String getName() {
-        return Name;
+    public String getEquipmentIp() {
+        return equipmentIp;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setEquipmentIp(String equipmentIp) {
+        this.equipmentIp = equipmentIp;
     }
 
-    public String getIP() {
-        return IP;
+    public int getEquipmentType() {
+        return equipmentType;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public void setEquipmentType(int equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
-    public String getStatusSwitchSocketIP() {
-        return StatusSwitchSocketIP;
+    public int getEquipmentPermission() {
+        return equipmentPermission;
     }
 
-    public void setStatusSwitchSocketIP(String statusSwitchSocketIP) {
-        StatusSwitchSocketIP = statusSwitchSocketIP;
+    public void setEquipmentPermission(int equipmentPermission) {
+        this.equipmentPermission = equipmentPermission;
+    }
+
+    public String getEquipmentSwitchIp() {
+        return equipmentSwitchIp;
+    }
+
+    public void setEquipmentSwitchIp(String equipmentSwitchIp) {
+        this.equipmentSwitchIp = equipmentSwitchIp;
+    }
+
+    public String getEquipmentHostIp() {
+        return equipmentHostIp;
+    }
+
+    public void setEquipmentHostIp(String equipmentHostIp) {
+        this.equipmentHostIp = equipmentHostIp;
+    }
+
+    public String getEquipmentChannel() {
+        return equipmentChannel;
+    }
+
+    public void setEquipmentChannel(String equipmentChannel) {
+        this.equipmentChannel = equipmentChannel;
+    }
+
+    public int getEquipmentValidity() {
+        return equipmentValidity;
+    }
+
+    public void setEquipmentValidity(int equipmentValidity) {
+        this.equipmentValidity = equipmentValidity;
     }
 }

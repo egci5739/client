@@ -1,10 +1,9 @@
 package com.dyw.client.service;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.tool.Tool;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,7 +14,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class ExportExcelService {
     private Logger logger = LoggerFactory.getLogger(ExportExcelService.class);
@@ -45,18 +43,18 @@ public class ExportExcelService {
             //插入需导出的数据
             int i = 0;
             for (StaffEntity staffEntity : dataList) {
-                if (savePhoto(staffEntity.getPhoto(), staffEntity.getName() + "_" + staffEntity.getCardNumber())) {
+                if (savePhoto(staffEntity.getStaffImage(), staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber())) {
                     XSSFRow row = sheet.createRow(i + 1);
-                    row.createCell(0).setCellValue(staffEntity.getName());
-                    row.createCell(1).setCellValue(staffEntity.getSex());
-                    row.createCell(2).setCellValue(staffEntity.getBirthday());
+                    row.createCell(0).setCellValue(staffEntity.getStaffName());
+                    row.createCell(1).setCellValue(staffEntity.getStaffGender());
+                    row.createCell(2).setCellValue(staffEntity.getStaffBirthday());
                     row.createCell(3).setCellValue(20);
                     row.createCell(4).setCellValue("身份证");
-                    row.createCell(5).setCellValue(staffEntity.getCardNumber());
+                    row.createCell(5).setCellValue(staffEntity.getStaffCardNumber());
                     row.createCell(6).setCellValue("广州");
                     row.createCell(7).setCellValue("13500000000");
                     row.createCell(8).setCellValue("组织");
-                    row.createCell(9).setCellValue(System.getProperty("user.dir") + "\\staffInfo\\" + staffEntity.getName() + "_" + staffEntity.getCardNumber() + ".jpg ");
+                    row.createCell(9).setCellValue(System.getProperty("user.dir") + "\\staffInfo\\" + staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + ".jpg ");
                     i++;
                 }
             }
@@ -93,7 +91,7 @@ public class ExportExcelService {
     /*
      * 导出通行信息
      * */
-    public void exportPassInfo(List<PassInfoEntity> passInfoHistoryList) {
+    public void exportPassInfo(List<PassRecordEntity> passInfoHistoryList) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
             String now = dateFormat.format(new Date());
@@ -115,14 +113,14 @@ public class ExportExcelService {
             }
             //插入需导出的数据
             int i = 0;
-            for (PassInfoEntity passInfoEntity : passInfoHistoryList) {
+            for (PassRecordEntity passInfoEntity : passInfoHistoryList) {
                 XSSFRow row = sheet.createRow(i + 1);
-                row.createCell(0).setCellValue(passInfoEntity.getDate().toString());
-                row.createCell(1).setCellValue(passInfoEntity.getStaffName());
-                row.createCell(2).setCellValue(passInfoEntity.getCardNumber());
-                row.createCell(3).setCellValue(passInfoEntity.getEventTypeId());
-                row.createCell(4).setCellValue(passInfoEntity.getSimilarity());
-                row.createCell(5).setCellValue(passInfoEntity.getEquipmentName());
+                row.createCell(0).setCellValue(passInfoEntity.getPassRecordPassTime().toString());
+                row.createCell(1).setCellValue(passInfoEntity.getPassRecordName());
+                row.createCell(2).setCellValue(passInfoEntity.getPassRecordCardNumber());
+                row.createCell(3).setCellValue(passInfoEntity.getPassRecordEventTypeId());
+                row.createCell(4).setCellValue(passInfoEntity.getPassRecordSimilarity());
+                row.createCell(5).setCellValue(passInfoEntity.getPassRecordEquipmentName());
                 i++;
             }
             File file = new File(basePath + exportFileName);

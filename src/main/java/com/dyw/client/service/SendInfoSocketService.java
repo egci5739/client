@@ -1,5 +1,6 @@
 package com.dyw.client.service;
 
+import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ public class SendInfoSocketService {
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
+            Tool.showMessage("连接服务程序失败", "提示", 0);
         }
     }
 
@@ -33,7 +35,7 @@ public class SendInfoSocketService {
         try {
             os.write((info + "\n").getBytes());
             os.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("发送消息到服务端出错", e);
         }
     }

@@ -1,112 +1,94 @@
 package com.dyw.client.entity;
 
 public class StaffEntity {
-    private String OldCard;
-    private int StaffId;
-    private String Name;
-    private String NameEn;
-    private String CardId;
-    private String CardNumber;
-    private String Birthday;
-    private String Sex;
-    private String Company;
-    private byte[] Photo;
-    private String organization;
-    private String validityPeriod;
+    private String oldCard;
+    private int staffId;
+    private String staffName;
+    private String staffCardId;
+    private String staffCardNumber;
+    private String staffBirthday;
+    private int staffGender;
+    private String staffCompany;
+    private byte[] staffImage;
+    private int staffValidity;
 
     public String getOldCard() {
-        return OldCard;
+        return oldCard;
     }
 
     public void setOldCard(String oldCard) {
-        OldCard = oldCard;
+        this.oldCard = oldCard;
     }
 
     public int getStaffId() {
-        return StaffId;
+        return staffId;
     }
 
     public void setStaffId(int staffId) {
-        StaffId = staffId;
+        this.staffId = staffId;
     }
 
-    public String getName() {
-        return Name;
+    public String getStaffName() {
+        return staffName;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
-    public String getNameEn() {
-        return NameEn;
+    public String getStaffCardId() {
+        return staffCardId;
     }
 
-    public void setNameEn(String nameEn) {
-        NameEn = nameEn;
+    public void setStaffCardId(String staffCardId) {
+        this.staffCardId = staffCardId;
     }
 
-    public String getCardId() {
-        return CardId;
+    public String getStaffCardNumber() {
+        return staffCardNumber;
     }
 
-    public void setCardId(String cardId) {
-        CardId = cardId;
+    public void setStaffCardNumber(String staffCardNumber) {
+        this.staffCardNumber = staffCardNumber;
     }
 
-    public String getCardNumber() {
-        return CardNumber;
+    public String getStaffBirthday() {
+        return staffBirthday;
     }
 
-    public void setCardNumber(String cardNumber) {
-        CardNumber = cardNumber;
+    public void setStaffBirthday(String staffBirthday) {
+        this.staffBirthday = staffBirthday;
     }
 
-    public String getBirthday() {
-        return Birthday;
+    public int getStaffGender() {
+        return staffGender;
     }
 
-    public void setBirthday(String birthday) {
-        Birthday = birthday;
+    public void setStaffGender(int staffGender) {
+        this.staffGender = staffGender;
     }
 
-    public String getSex() {
-        return Sex;
+    public String getStaffCompany() {
+        return staffCompany;
     }
 
-    public void setSex(String sex) {
-        Sex = sex;
+    public void setStaffCompany(String staffCompany) {
+        this.staffCompany = staffCompany;
     }
 
-    public String getCompany() {
-        return Company;
+    public byte[] getStaffImage() {
+        return staffImage;
     }
 
-    public void setCompany(String company) {
-        Company = company;
+    public void setStaffImage(byte[] staffImage) {
+        this.staffImage = staffImage;
     }
 
-    public byte[] getPhoto() {
-        return Photo;
+    public int getStaffValidity() {
+        return staffValidity;
     }
 
-    public void setPhoto(byte[] photo) {
-        Photo = photo;
-    }
-
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
-    public String getValidityPeriod() {
-        return validityPeriod;
-    }
-
-    public void setValidityPeriod(String validityPeriod) {
-        this.validityPeriod = validityPeriod;
+    public void setStaffValidity(int staffValidity) {
+        this.staffValidity = staffValidity;
     }
 }

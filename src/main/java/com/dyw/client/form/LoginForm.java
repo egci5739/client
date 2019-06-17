@@ -74,10 +74,8 @@ public class LoginForm {
             JOptionPane.showMessageDialog(null, "用户名或密码错误", "登陆提示", 0);
             return;
         }
-        if (accountEntity.getAccountRole() != 2) {
-            if (loginFaceServer().equals("error")) {
-                JOptionPane.showMessageDialog(null, "登陆脸谱服务器失败", "提示", JOptionPane.INFORMATION_MESSAGE);
-            }
+        if (loginFaceServer().equals("error")) {
+            JOptionPane.showMessageDialog(null, "登陆脸谱服务器失败", "提示", JOptionPane.INFORMATION_MESSAGE);
         }
         ApplicationForm applicationForm = new ApplicationForm();
         applicationForm.init();

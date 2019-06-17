@@ -6,7 +6,6 @@ import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.EquipmentStatusEntity;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
-import org.apache.poi.ss.formula.functions.T;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -91,11 +90,11 @@ public class EquipmentManagementForm {
                 try {
                     EquipmentEntity equipmentEntity = equipmentEntityList.get(row);
                     if (col == 0) {
-                        equipmentEntity.setName((String) equipmentManagerModel.getValueAt(row, col));
+                        equipmentEntity.setEquipmentName((String) equipmentManagerModel.getValueAt(row, col));
                     } else if (col == 1) {
-                        equipmentEntity.setIP((String) equipmentManagerModel.getValueAt(row, col));
+                        equipmentEntity.setEquipmentIp((String) equipmentManagerModel.getValueAt(row, col));
                     } else if (col == 2) {
-                        equipmentEntity.setStatusSwitchSocketIP((String) equipmentManagerModel.getValueAt(row, col));
+                        equipmentEntity.setEquipmentSwitchIp((String) equipmentManagerModel.getValueAt(row, col));
                     }
                     Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                     Egci.session.commit();
@@ -174,8 +173,8 @@ public class EquipmentManagementForm {
         }
         if (Tool.showConfirm("确定关闭该设备的人脸识别通行？", "提示")) {
             EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
-            sendInfoSocketService.sendInfo("5#" + equipmentEntity.getStatusSwitchSocketIP() + "#0");
+            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+            sendInfoSocketService.sendInfo("5#" + equipmentEntity.getEquipmentSwitchIp() + "#0");
             sendInfoSocketService.receiveInfoOnce();
         }
     }
@@ -189,8 +188,8 @@ public class EquipmentManagementForm {
             return;
         }
         EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
-        sendInfoSocketService.sendInfo("5#" + equipmentEntity.getStatusSwitchSocketIP() + "#1");
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+        sendInfoSocketService.sendInfo("5#" + equipmentEntity.getEquipmentSwitchIp() + "#1");
         sendInfoSocketService.receiveInfoOnce();
     }
 
@@ -203,8 +202,8 @@ public class EquipmentManagementForm {
             return;
         }
         EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
-        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#0");
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getEquipmentIp() + "#0");
         sendInfoSocketService.receiveInfoOnce();
         faceModeButton.setEnabled(true);
         cardAndFaceModeButton.setEnabled(true);
@@ -220,8 +219,8 @@ public class EquipmentManagementForm {
             return;
         }
         EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
-        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getIP() + "#1");
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+        sendInfoSocketService.sendInfo("4#" + equipmentEntity.getEquipmentIp() + "#1");
         sendInfoSocketService.receiveInfoOnce();
         faceModeButton.setEnabled(false);
         cardAndFaceModeButton.setEnabled(true);
@@ -238,8 +237,8 @@ public class EquipmentManagementForm {
         }
         if (Tool.showConfirm("确定导入人员信息到一体机设备？", "提示")) {
             EquipmentEntity equipmentEntity = equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow());
-            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
-            sendInfoSocketService.sendInfo("9#" + equipmentEntity.getIP());
+            SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+            sendInfoSocketService.sendInfo("9#" + equipmentEntity.getEquipmentIp());
             sendInfoSocketService.receiveInfoOnce();
             Tool.showMessage("设备正在导入人员信息，请勿重复导入", "提示", 0);
         }
@@ -254,7 +253,7 @@ public class EquipmentManagementForm {
             return;
         }
         if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
-            Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()).getId());
+            Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()).getEquipmentId());
             Egci.session.commit();
             refreshEquipmentList();
         }
@@ -276,10 +275,10 @@ public class EquipmentManagementForm {
                 groupId = 4;
             }
             EquipmentEntity equipmentEntity = new EquipmentEntity();
-            equipmentEntity.setName("");
-            equipmentEntity.setIP("");
-            equipmentEntity.setStatusSwitchSocketIP("");
-            equipmentEntity.setGroupId(groupId);
+            equipmentEntity.setEquipmentName("");
+            equipmentEntity.setEquipmentIp("");
+            equipmentEntity.setEquipmentSwitchIp("");
+            equipmentEntity.setEquipmentPermission(groupId);
             Vector v = new Vector();
             equipmentManagerModel.addRow(v);
             Egci.session.insert("mapping.equipmentMapper.addEquipment", equipmentEntity);
@@ -302,15 +301,15 @@ public class EquipmentManagementForm {
         }
         equipmentManagerModel.setRowCount(0);
         equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
         sendInfoSocketService.sendInfo("3#0");
         equipmentStatusEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentStatusEntity.class);
         int i = 0;
         for (EquipmentEntity equipmentEntity : equipmentEntityList) {
             Vector v = new Vector();
-            v.add(0, equipmentEntity.getName());
-            v.add(1, equipmentEntity.getIP());
-            v.add(2, equipmentEntity.getStatusSwitchSocketIP());
+            v.add(0, equipmentEntity.getEquipmentName());
+            v.add(1, equipmentEntity.getEquipmentIp());
+            v.add(2, equipmentEntity.getEquipmentSwitchIp());
             v.add(3, equipmentStatusEntityList.get(i).getCardNumber());
             equipmentManagerModel.addRow(v);
             i++;
@@ -321,7 +320,7 @@ public class EquipmentManagementForm {
      * 设备时间同步
      * */
     private void timeSynchronization() {
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerMonitorPort());
+        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
         sendInfoSocketService.sendInfo("0#0");
         Tool.showMessage("同步成功", "提示", 1);
     }

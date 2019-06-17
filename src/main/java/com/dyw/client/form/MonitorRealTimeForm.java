@@ -1,11 +1,13 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +16,8 @@ import java.awt.event.*;
 import java.util.Vector;
 
 public class MonitorRealTimeForm {
+    private Logger logger = LoggerFactory.getLogger(MonitorRealTimeForm.class);
+
     public JPanel getMonitorRealTimePanel() {
         return monitorRealTimePanel;
     }
@@ -144,24 +148,28 @@ public class MonitorRealTimeForm {
     /*
      * 新增通行记录
      * */
-    public void addPassInfo(PassInfoEntity passInfoEntity) {
-        Vector v = new Vector();
-        v.add(0, Base64.encodeBytes(passInfoEntity.getPhoto()));
-        v.add(1, Base64.encodeBytes(passInfoEntity.getCapturePhoto()));
-        if (passInfoEntity.getPass()) {
-            v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
-            passSuccessModel.addRow(v);
-            if (passSuccessRollingStatus == 1) {
-                moveScrollBarToBottom(passSuccessScrollBar);
-                passSuccessBottomStatus = 0;
+    public void addPassInfo(PassRecordEntity passInfoEntity) {
+        try {
+            Vector v = new Vector();
+            v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
+            v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
+            if (passInfoEntity.getPassRecordPassResult() == 1) {
+                v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
+                passSuccessModel.addRow(v);
+                if (passSuccessRollingStatus == 1) {
+                    moveScrollBarToBottom(passSuccessScrollBar);
+                    passSuccessBottomStatus = 0;
+                }
+            } else {
+                v.add(2, Tool.displayPassFaultResult(passInfoEntity));
+                passFaultModel.addRow(v);
+                if (passFaultRollingStatus == 1) {
+                    moveScrollBarToBottom(passFaultScrollBar);
+                    passFaultBottomStatus = 0;
+                }
             }
-        } else {
-            v.add(2, Tool.displayPassFaultResult(passInfoEntity));
-            passFaultModel.addRow(v);
-            if (passFaultRollingStatus == 1) {
-                moveScrollBarToBottom(passFaultScrollBar);
-                passFaultBottomStatus = 0;
-            }
+        } catch (Exception e) {
+            logger.error("新增通行记录出错", e);
         }
     }
 

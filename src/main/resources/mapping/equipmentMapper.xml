@@ -6,30 +6,34 @@
     <!--根据条件查询所有设备-->
     <select id="getAllEquipmentWithCondition" parameterType="Integer"
             resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from Equipment
+        select * from EquipmentTable
         <if test="_parameter != 1">
-            where GroupId = #{_parameter};
+            where equipmentPermission = #{_parameter};
         </if>
     </select>
     <!--查询所有设备信息-->
     <select id="getAllEquipment" resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from Equipment ORDER BY GroupId;
+        select * from EquipmentTable ORDER BY equipmentPermission;
     </select>
     <!--更新设备信息-->
     <update id="updateEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
-        update Equipment set Name=#{Name},IP=#{IP},StatusSwitchSocketIP=#{StatusSwitchSocketIP} where Id=#{Id};
+        update EquipmentTable set Name=#{Name},IP=#{IP},StatusSwitchSocketIP=#{StatusSwitchSocketIP} where Id=#{Id};
     </update>
     <!--新增设备-->
     <insert id="addEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
-        insert into Equipment (Name,IP,StatusSwitchSocketIP,GroupId,SortId)
+        insert into EquipmentTable (Name,IP,StatusSwitchSocketIP,GroupId,SortId)
         values(#{Name},#{IP},#{StatusSwitchSocketIP},#{GroupId},6);
     </insert>
     <!--删除设备-->
     <delete id="deleteEquipment" parameterType="Integer">
-        delete from Equipment where Id =#{Id};
+        delete from EquipmentTable where Id =#{Id};
     </delete>
     <!--收取抓拍机信息-->
-    <select id="getAllCamera" resultType="com.dyw.client.entity.CameraEntity">
+    <select id="getAllCamera" resultType="com.dyw.client.entity.EquipmentEntity">
         select * from Camera;
+    </select>
+    <!--根据主机IP读取采集设备信息-->
+    <select id="getFaceCollectionWithHostIp" parameterType="String" resultType="com.dyw.client.entity.EquipmentEntity">
+        select * from EquipmentTable where equipmentHostIp = #{_parameter} and equipmentType = 2
     </select>
 </mapper>

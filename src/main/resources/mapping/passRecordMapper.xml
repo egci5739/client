@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.passRecordMapper">
+    <!--获取通行信息-->
+    <select id="getPassInfo" resultType="com.dyw.client.entity.PassRecordEntity">
+        select * from PassRecordTable where passRecordId=#{passRecordId};
+    </select>
+    <!--获取历史通行记录-->
+    <select id="getHistoryPassInfo" resultType="com.dyw.client.entity.PassRecordEntity">
+        select * from PassRecordTable INNER JOIN Staff ON PassRecordTable.CardNumber=Staff.CardNumber
+        where PassRecordTable.Date &gt; #{startDate} and PassRecordTable.Date &lt; #{endDate}
+        <if test="IP != null">
+            and PassRecordTable.IP=#{IP}
+        </if>
+        <if test="EventTypeId != 0">
+            and PassRecordTable.EventTypeId=#{EventTypeId}
+        </if>
+        <if test="CardNumber != null">
+            and PassRecordTable.CardNumber=#{CardNumber}
+        </if>
+        <if test="StaffName != null">
+            and PassRecordTable.StaffName=#{StaffName}
+        </if>
+        ORDER BY PassRecordTable.Date;
+    </select>
+    <!--获取单台设备通行总数-->
+    <select id="getPassNumberCount" resultType="Integer">
+        select count(*) from PassRecordTable where IP=#{IP} and PassRecordTable.Date &gt; #{startDate} and
+        PassRecordTable.Date
+        &lt;
+        #{endDate}
+        <if test="EventTypeId!=0">
+            and EventTypeId=#{EventTypeId}
+        </if>
+    </select>
+    <!--&lt;!&ndash;查询全部统计失败统计信息&ndash;&gt;-->
+    <!--<select id="getAllFaultSummation" resultType="com.dyw.client.entity.FaultSummationEntity" flushCache="true">-->
+    <!--select * from FaultSummation INNER JOIN Staff ON FaultSummation.cardNumber=Staff.CardNumber-->
+    <!--</select>-->
+    <!--&lt;!&ndash;清空全部失败统计信息&ndash;&gt;-->
+    <!--<delete id="deleteAllFaultSummation">-->
+    <!--delete from FaultSummation-->
+    <!--</delete>-->
+</mapper>

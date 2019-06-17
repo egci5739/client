@@ -29,9 +29,9 @@ public class PingTask extends TimerTask {
     @Override
     public void run() {
         try {
-            if (!netStateService.ping(Egci.configEntity.getServerIp()) && !netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
+            if (!netStateService.ping(Egci.configEntity.getSocketIp()) && !netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
                 registerForm.changeCommunicationStatus(4);
-            } else if (!netStateService.ping(Egci.configEntity.getServerIp())) {
+            } else if (!netStateService.ping(Egci.configEntity.getSocketIp())) {
                 registerForm.changeCommunicationStatus(2);
             } else if (Egci.workStatus == 1) {
                 registerForm.changeCommunicationStatus(5);

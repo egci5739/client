@@ -3,8 +3,8 @@ package com.dyw.client.entity;
 public class AccountEntity {
     private String accountName;
     private String accountPass;
+    private String accountFunction;
     private int accountPermission;
-    private int accountRole;
 
     public String getAccountName() {
         return accountName;
@@ -22,19 +22,19 @@ public class AccountEntity {
         this.accountPass = accountPass;
     }
 
+    public String getAccountFunction() {
+        return accountFunction;
+    }
+
+    public void setAccountFunction(String accountFunction) {
+        this.accountFunction = accountFunction;
+    }
+
     public int getAccountPermission() {
         return accountPermission;
     }
 
     public void setAccountPermission(int accountPermission) {
         this.accountPermission = accountPermission;
-    }
-
-    public int getAccountRole() {
-        return accountRole;
-    }
-
-    public void setAccountRole(int accountRole) {
-        this.accountRole = accountRole;
     }
 }

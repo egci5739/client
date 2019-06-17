@@ -16,34 +16,63 @@ public class ApplicationForm {
      * init
      * */
     public ApplicationForm() {
-        switch (Egci.accountEntity.getAccountRole()) {
-            case 1:
-                initRegisterForm();
-                break;
-            case 2:
-                initMonitorRealTimeForm();
-                initMonitorHistoryForm();
-                break;
-            case 3:
-                initIntelligentApplicationForm();
-                break;
-            case 0:
-                initAccountManagementForm();
-                initDataAnalysisForm();
-                initEquipmentManagementForm();
-                initFaceCollectionManagementForm();
-                initIntelligentApplicationForm();
-                initMonitorHistoryForm();
-                initMonitorManagementForm();
-                initMonitorRealTimeForm();
-                initPersonManagementForm();
-                initResourceManagementForm();
-                initAlarmHistoryForm();
-                initExportStaffForm();
-                initFaultSummationForm();
-                break;
-            default:
-                break;
+        /*
+         * 功能与编号对照
+         *
+         * 0：initRegisterForm：办证
+         * 1：initMonitorRealTimeForm：实时通行记录
+         * 2：initMonitorHistoryForm：历史通行记录
+         * 3：initIntelligentApplicationForm：智能应用
+         * 4：initAccountManagementForm：用户管理
+         * 5：initDataAnalysisForm：数据分析
+         * 6：initEquipmentManagementForm：设备管理
+         * 7：initPersonManagementForm：布控名单管理
+         * 8：initResourceManagementForm：布控设备管理
+         * 9：initAlarmHistoryForm：布控报警历史
+         * 10：initExportStaffForm：导出人员信息
+         * 11：initFaultSummationForm：失败次数统计
+         * */
+        String[] functions = Egci.accountEntity.getAccountFunction().split(",");
+        for (String function : functions) {
+            switch (Integer.parseInt(function)) {
+                case 0:
+                    initRegisterForm();
+                    break;
+                case 1:
+                    initMonitorRealTimeForm();
+                    break;
+                case 2:
+                    initMonitorHistoryForm();
+                case 3:
+                    initIntelligentApplicationForm();
+                    break;
+                case 4:
+                    initAccountManagementForm();
+                    break;
+                case 5:
+                    initDataAnalysisForm();
+                    break;
+                case 6:
+                    initEquipmentManagementForm();
+                    break;
+                case 7:
+                    initPersonManagementForm();
+                    break;
+                case 8:
+                    initResourceManagementForm();
+                    break;
+                case 9:
+                    initAlarmHistoryForm();
+                    break;
+                case 10:
+                    initExportStaffForm();
+                    break;
+                case 11:
+                    initFaultSummationForm();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -72,15 +101,6 @@ public class ApplicationForm {
     private void initEquipmentManagementForm() {
         EquipmentManagementForm equipmentManagementForm = new EquipmentManagementForm();
         applicationTabbedPane.add("设备管理", equipmentManagementForm.getEquipmentManagementForm());
-    }
-
-    /*
-     * 采集设备管理
-     * init
-     * */
-    private void initFaceCollectionManagementForm() {
-        FaceCollectionManagementForm faceCollectionManagementForm = new FaceCollectionManagementForm();
-        applicationTabbedPane.add("采集设备管理", faceCollectionManagementForm.getFaceCollectionManagementForm());
     }
 
     /*

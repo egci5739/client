@@ -6,7 +6,9 @@ import java.text.ParseException;
 
 public class Test extends javax.swing.JDialog {
     public static void main(String[] args) {
-        Tool.showMessage(String.valueOf(Runtime.getRuntime().maxMemory()), "", 1);
-        while (true) ;
+        String function = "\"功能一\", \"功能二\", \"功能三\"";
+        String[] functions = function.split(",");
+        System.out.println(functions[1]);
+
     }
 }

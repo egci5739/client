@@ -2,9 +2,7 @@ package com.dyw.client.controller;
 
 import com.dyw.client.HCNetSDK;
 import com.dyw.client.entity.AccountEntity;
-import com.dyw.client.entity.CameraEntity;
 import com.dyw.client.entity.ConfigEntity;
-import com.dyw.client.entity.ConfigTableEntity;
 import com.dyw.client.form.*;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.tool.Tool;
@@ -19,6 +17,7 @@ import java.util.Map;
 
 public class Egci {
     private static Logger logger = LoggerFactory.getLogger(Egci.class);
+    public static Map<String, String> functions = new HashMap<>();
     public static ConfigEntity configEntity;
     public static SqlSession session;
     public static int workStatus;
@@ -41,6 +40,7 @@ public class Egci {
      * 初始化客户端程序
      * */
     private static void initClient() {
+        //构造功能map
         accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
@@ -69,16 +69,6 @@ public class Egci {
             logger.error("读取配置信息出错", e);
             Tool.showMessage(e.getMessage(), "连接数据库出错", 0);
             return;
-        }
-        //获取抓拍机信息
-        try {
-            List<CameraEntity> cameraEntityList = session.selectList("mapping.equipmentMapper.getAllCamera");
-            for (CameraEntity cameraEntity : cameraEntityList) {
-                cameraMap.put(cameraEntity.getCameraName(), cameraEntity.getCameraChannel());
-            }
-            logger.info("抓拍机信息" + cameraEntityList.toString());
-        } catch (Exception e) {
-            logger.error("获取抓拍机信息出错", e);
         }
         //创建登陆客户端
         loginForm = new LoginForm();

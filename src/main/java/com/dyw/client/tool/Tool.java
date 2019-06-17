@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.ConfigTableEntity;
-import com.dyw.client.entity.PassInfoEntity;
+import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.CandidateEntity;
 //import com.dyw.client.form.ProtectionForm;
@@ -15,19 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -55,62 +47,11 @@ public class Tool {
             if (attrName.equals("devicePass")) {
                 configEntity.setDevicePass(configTableEntity.getConfigValue());
             }
-            if (attrName.equals("dataBaseIp")) {
-                configEntity.setDataBaseIp(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("dataBasePort")) {
-                configEntity.setDataBasePort(Short.parseShort(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("dataBaseName")) {
-                configEntity.setDataBaseName(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("dataBasePass")) {
-                configEntity.setDataBasePass(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("dataBaseLib")) {
-                configEntity.setDataBaseLib(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("dataBaseTime")) {
-                configEntity.setDataBaseTime(Long.parseLong(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("queueIp")) {
-                configEntity.setQueueIp(configTableEntity.getConfigValue());
-            }
             if (attrName.equals("socketRegisterPort")) {
                 configEntity.setSocketRegisterPort(Short.parseShort(configTableEntity.getConfigValue()));
             }
             if (attrName.equals("socketMonitorPort")) {
                 configEntity.setSocketMonitorPort(Short.parseShort(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("synchronization")) {
-                configEntity.setSynchronization(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("synchronizationHour")) {
-                configEntity.setSynchronizationHour(Integer.parseInt(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("synchronizationMinute")) {
-                configEntity.setSynchronizationMinute(Integer.parseInt(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("synchronizationSecond")) {
-                configEntity.setSynchronizationSecond(Integer.parseInt(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("synchronizationTime")) {
-                configEntity.setSynchronizationTime(Long.parseLong(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("onGuardIp")) {
-                configEntity.setOnGuardIp(configTableEntity.getConfigValue());
-            }
-            if (attrName.equals("onGuardPort")) {
-                configEntity.setOnGuardPort(Short.parseShort(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("alarmTime")) {
-                configEntity.setAlarmTime(Long.parseLong(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("pushTime")) {
-                configEntity.setPushTime(Long.parseLong(configTableEntity.getConfigValue()));
-            }
-            if (attrName.equals("callBackTime")) {
-                configEntity.setCallBackTime(Long.parseLong(configTableEntity.getConfigValue()));
             }
             if (attrName.equals("ntpServerIp")) {
                 configEntity.setNtpServerIp(configTableEntity.getConfigValue());
@@ -173,32 +114,32 @@ public class Tool {
     /*
      * 显示通行成功结果
      * */
-    public static String displayPassSuccessResult(PassInfoEntity passInfoEntity) {
+    public static String displayPassSuccessResult(PassRecordEntity passInfoEntity) {
         return "<html><body>卡号：" +
-                passInfoEntity.getCardNumber() +
+                passInfoEntity.getPassRecordCardNumber() +
                 "<br>姓名：" +
-                passInfoEntity.getStaffName() +
+                passInfoEntity.getPassRecordName() +
                 "<br>时间：" +
-                passInfoEntity.getDate().toString().substring(0, 19) +
+                passInfoEntity.getPassRecordPassTime().toString().substring(0, 19) +
                 "<br>设备：" +
-                passInfoEntity.getEquipmentName() +
+                passInfoEntity.getPassRecordEquipmentName() +
                 "</body></html>";
     }
 
     /*
      * 显示通行失败结果
      * */
-    public static String displayPassFaultResult(PassInfoEntity passInfoEntity) {
+    public static String displayPassFaultResult(PassRecordEntity passInfoEntity) {
         return "<html><body>卡号：" +
-                passInfoEntity.getCardNumber() +
+                passInfoEntity.getPassRecordCardNumber() +
                 "<br>姓名：" +
-                passInfoEntity.getStaffName() +
+                passInfoEntity.getPassRecordName() +
                 "<br>时间：" +
-                passInfoEntity.getDate().toString().substring(0, 19) +
+                passInfoEntity.getPassRecordPassTime().toString().substring(0, 19) +
                 "<br>设备：" +
-                passInfoEntity.getEquipmentName() +
+                passInfoEntity.getPassRecordEquipmentName() +
                 "<br>原因：" +
-                Tool.eventIdToEventName(passInfoEntity.getEventTypeId()) +
+                Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()) +
                 "</body></html>";
     }
 
@@ -514,8 +455,8 @@ public class Tool {
     public static StaffEntity splitNameAndGetStaff(String nameInfo) {
         StaffEntity staffEntity = new StaffEntity();
         String[] staffInfo = nameInfo.split("_");
-        staffEntity.setName(staffInfo[0]);
-        staffEntity.setCardNumber(staffInfo[1]);
+        staffEntity.setStaffName(staffInfo[0]);
+        staffEntity.setStaffCardNumber(staffInfo[1]);
         staffEntity.setStaffId(Integer.parseInt(staffInfo[2]));
         return staffEntity;
     }

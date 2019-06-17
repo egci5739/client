@@ -35,8 +35,8 @@ public class StaffOperationService {
      * */
     public List<StaffEntity> search(String name, String card) {
         StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setName(Tool.getSearchCondition(name));
-        staffEntity.setCardNumber(Tool.getSearchCondition(card));
+        staffEntity.setStaffName(Tool.getSearchCondition(name));
+        staffEntity.setStaffCardNumber(Tool.getSearchCondition(card));
         List<StaffEntity> resultStaffList = null;
         if (!name.equals("") && !card.equals("")) {
             resultStaffList = Egci.session.selectList("mapping.staffMapper.getResultStaffWithCardAndName", staffEntity);
@@ -53,8 +53,8 @@ public class StaffOperationService {
      * */
     public List<StaffEntity> searchWaitStaff(String name, String card) {
         StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setName(Tool.getSearchCondition(name));
-        staffEntity.setCardNumber(Tool.getSearchCondition(card));
+        staffEntity.setStaffName(Tool.getSearchCondition(name));
+        staffEntity.setStaffCardNumber(Tool.getSearchCondition(card));
         List<StaffEntity> resultStaffList = null;
         if (!name.equals("") && !card.equals("")) {
             resultStaffList = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCardAndName", staffEntity);
@@ -71,14 +71,11 @@ public class StaffOperationService {
      * */
     public void save(StaffEntity staffEntity, StaffEntity oldStaff) {
         try {
-            if (staffEntity.getSex().equals("")) {
-                staffEntity.setSex("1");
-            }
-            if (staffEntity.getBirthday().equals("") || staffEntity.getCardNumber().length() < 10) {
-                staffEntity.setBirthday("1970-01-01");
+            if (staffEntity.getStaffBirthday().equals("") || staffEntity.getStaffCardNumber().length() < 10) {
+                staffEntity.setStaffBirthday("1970-01-01");
             }
             if (oldStaff.getStaffId() > 0) {
-                staffEntity.setOldCard(oldStaff.getCardNumber());
+                staffEntity.setOldCard(oldStaff.getStaffCardNumber());
                 staffEntity.setStaffId(oldStaff.getStaffId());
                 //更新
                 Egci.session.update("mapping.staffMapper.updateStaff", staffEntity);
@@ -97,8 +94,8 @@ public class StaffOperationService {
                 }
             }
             Thread.sleep(1000);
-            SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
-            insertSendInfoSocketService.sendInfo("1#" + staffEntity.getCardNumber() + "\n");
+            SendInfoSocketService insertSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketRegisterPort());
+            insertSendInfoSocketService.sendInfo("1#" + staffEntity.getStaffCardNumber() + "\n");
             insertSendInfoSocketService.receiveInfoOnce();
         } catch (Exception e) {
             logger.error("保存人员信息出错", e);
@@ -110,14 +107,14 @@ public class StaffOperationService {
      * */
     public void delete(StaffEntity staffEntity) {
         //特殊情况，需先删一体机里面的
-        SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getServerIp(), Egci.configEntity.getServerRegisterPort());
-        deleteSendInfoSocketService.sendInfo("2#" + staffEntity.getCardNumber());
+        SendInfoSocketService deleteSendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketRegisterPort());
+        deleteSendInfoSocketService.sendInfo("2#" + staffEntity.getStaffCardNumber());
         deleteSendInfoSocketService.receiveInfoOnce();
         //删除人脸服务器中人脸信息
         if (Egci.faceServerStatus == 1) {
             deleteFaceServerFaceInfo(staffEntity);
         }
-        staffEntity.setCardNumber("0");
+        staffEntity.setStaffCardNumber("0");
         Egci.session.delete("mapping.staffMapper.deleteStaff", staffEntity);
         Egci.session.commit();
     }
@@ -128,7 +125,7 @@ public class StaffOperationService {
     public Boolean addWaitStaff(StaffEntity staffEntity) {
         Boolean status = false;
         //判断是否卡号已经存在
-        List<StaffEntity> staffEntityStaff = Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber());
+        List<StaffEntity> staffEntityStaff = Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getStaffCardNumber());
         List<StaffEntity> staffEntityTemporary = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCardAccurate", staffEntity);
         if (staffEntityStaff.size() > 0 || staffEntityTemporary.size() > 0) {
             status = false;
@@ -155,16 +152,16 @@ public class StaffOperationService {
                     inboundDataGet.put("maxResults", 100);
                     inboundDataGet.put("faceLibType", "blackFD");
                     inboundDataGet.put("FDID", fdLibEntity.getFDID());
-                    inboundDataGet.put("name", oldInfo.getName() + "_" + oldInfo.getCardNumber() + "_" + oldInfo.getStaffId());
+                    inboundDataGet.put("name", oldInfo.getStaffName() + "_" + oldInfo.getStaffCardNumber() + "_" + oldInfo.getStaffId());
                     FaceInfoEntity faceInfoEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGet).getString("MatchList"), FaceInfoEntity.class).get(0);
                     //更改信息
                     org.json.JSONObject inboundDataSet = new org.json.JSONObject();
                     String instructionSet = "/ISAPI/Intelligent/FDLib/FDSearch?format=json&FDID=" + fdLibEntity.getFDID() + "&FPID=" + faceInfoEntity.getFPID() + "&faceLibType=blackFD";
                     inboundDataSet.put("faceURL", faceInfoEntity.getFaceURL());
                     inboundDataSet.put("faceLibType", "blackFD");
-                    inboundDataSet.put("name", newInfo.getName() + "_" + newInfo.getCardNumber() + "_" + newInfo.getStaffId());//名字_卡号_id
-                    inboundDataSet.put("gender", Tool.changeGenderToMaleAndFemale(newInfo.getSex()));
-                    inboundDataSet.put("bornTime", newInfo.getBirthday());
+                    inboundDataSet.put("name", newInfo.getStaffName() + "_" + newInfo.getStaffCardNumber() + "_" + newInfo.getStaffId());//名字_卡号_id
+                    inboundDataSet.put("gender", Tool.changeGenderToMaleAndFemale(String.valueOf(newInfo.getStaffGender())));
+                    inboundDataSet.put("bornTime", newInfo.getStaffBirthday());
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(2, instructionSet, inboundDataSet);
                     if (resultData.getInt("statusCode") == 1) {
                         // Tool.showMessage("添加成功", "提示", 0);
@@ -186,39 +183,34 @@ public class StaffOperationService {
     private void addFaceServerFaceInfo(StaffEntity staffEntity) {
         String instruction = "/ISAPI/Intelligent/FDLib/FaceDataRecord?format=json";
         try {
-            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, Egci.fdLibIDForStaff, staffEntity.getPhoto(), null);
+            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, Egci.fdLibIDForStaff, staffEntity.getStaffImage(), null);
             //添加到电厂人员库
             org.json.JSONObject inboundDataStaff = new org.json.JSONObject();
             inboundDataStaff.put("faceURL", resultFaceUrlData.getString("URL"));
             inboundDataStaff.put("faceLibType", "blackFD");
             inboundDataStaff.put("FDID", Egci.fdLibIDForStaff);
-            inboundDataStaff.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
-            if (staffEntity.getSex() == null) {
-                staffEntity.setSex("0");//unknown
+            inboundDataStaff.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
+
+            inboundDataStaff.put("gender", Tool.changeGenderToMaleAndFemale(String.valueOf(staffEntity.getStaffGender())));
+            if (staffEntity.getStaffBirthday() == null) {
+                staffEntity.setStaffBirthday("1900-01-01");
             }
-            inboundDataStaff.put("gender", Tool.changeGenderToMaleAndFemale(staffEntity.getSex()));
-            if (staffEntity.getBirthday() == null) {
-                staffEntity.setBirthday("1900-01-01");
-            }
-            inboundDataStaff.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
+            inboundDataStaff.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getStaffBirthday()));
             Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataStaff);
             //添加到陌生人库
             org.json.JSONObject inboundDataStranger = new org.json.JSONObject();
             inboundDataStranger.put("faceURL", resultFaceUrlData.getString("URL"));
             inboundDataStranger.put("faceLibType", "blackFD");
             inboundDataStranger.put("FDID", Egci.fdLibIDForStranger);
-            inboundDataStranger.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
-            if (staffEntity.getSex() == null) {
-                staffEntity.setSex("0");//unknown
+            inboundDataStranger.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
+            inboundDataStranger.put("gender", Tool.changeGenderToMaleAndFemale(String.valueOf(staffEntity.getStaffGender())));
+            if (staffEntity.getStaffBirthday() == null || staffEntity.getStaffBirthday().equals("")) {
+                staffEntity.setStaffBirthday("1900-01-01");
             }
-            inboundDataStranger.put("gender", Tool.changeGenderToMaleAndFemale(staffEntity.getSex()));
-            if (staffEntity.getBirthday() == null || staffEntity.getBirthday().equals("")) {
-                staffEntity.setBirthday("1900-01-01");
-            }
-            inboundDataStranger.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
+            inboundDataStranger.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getStaffBirthday()));
             Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataStranger);
         } catch (JSONException e) {
-            logger.error("添加人员出错，卡号：" + staffEntity.getCardNumber());
+            logger.error("添加人员出错，卡号：" + staffEntity.getStaffCardNumber());
         }
     }
 
@@ -234,7 +226,7 @@ public class StaffOperationService {
             inboundDataGetStaff.put("maxResults", 100);
             inboundDataGetStaff.put("faceLibType", "blackFD");
             inboundDataGetStaff.put("FDID", Egci.fdLibIDForStaff);
-            inboundDataGetStaff.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());
+            inboundDataGetStaff.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());
             FaceInfoEntity faceInfoEntityStaff = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGetStaff).getString("MatchList"), FaceInfoEntity.class).get(0);
             org.json.JSONObject deleteInboundDataStaff = new org.json.JSONObject();
             HashMap<String, Object> mapStaff = new HashMap<String, Object>();
@@ -249,7 +241,7 @@ public class StaffOperationService {
             inboundDataGetStranger.put("maxResults", 100);
             inboundDataGetStranger.put("faceLibType", "blackFD");
             inboundDataGetStranger.put("FDID", Egci.fdLibIDForStranger);
-            inboundDataGetStranger.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());
+            inboundDataGetStranger.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());
             FaceInfoEntity faceInfoEntityStranger = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(3, instructionGet, inboundDataGetStranger).getString("MatchList"), FaceInfoEntity.class).get(0);
             org.json.JSONObject deleteInboundDataStranger = new org.json.JSONObject();
             HashMap<String, Object> mapStranger = new HashMap<String, Object>();

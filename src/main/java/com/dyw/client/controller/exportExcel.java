@@ -45,18 +45,18 @@ public class exportExcel {
         //插入需导出的数据
         int i = 0;
         for (StaffEntity staffEntity : dataList) {
-            if (savePhoto(staffEntity.getPhoto(), staffEntity.getName() + "_" + staffEntity.getCardNumber())) {
+            if (savePhoto(staffEntity.getStaffImage(), staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber())) {
                 XSSFRow row = sheet.createRow(i + 1);
-                row.createCell(0).setCellValue(staffEntity.getName());
-                row.createCell(1).setCellValue(staffEntity.getSex());
-                row.createCell(2).setCellValue(staffEntity.getBirthday());
+                row.createCell(0).setCellValue(staffEntity.getStaffName());
+                row.createCell(1).setCellValue(staffEntity.getStaffGender());
+                row.createCell(2).setCellValue(staffEntity.getStaffBirthday());
                 row.createCell(3).setCellValue(20);
                 row.createCell(4).setCellValue("身份证");
-                row.createCell(5).setCellValue(staffEntity.getCardNumber());
+                row.createCell(5).setCellValue(staffEntity.getStaffCardNumber());
                 row.createCell(6).setCellValue("广州");
                 row.createCell(7).setCellValue("13500000000");
                 row.createCell(8).setCellValue("组织");
-                row.createCell(9).setCellValue("C:\\software\\client\\staffInfo\\" + staffEntity.getName() + "_" + staffEntity.getCardNumber() + ".jpg ");
+                row.createCell(9).setCellValue("C:\\software\\client\\staffInfo\\" + staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + ".jpg ");
                 i++;
             }
         }

@@ -39,7 +39,7 @@ public class AccountManagementForm {
             Vector v = new Vector();
             v.add(0, accountEntity.getAccountName());
             v.add(1, accountEntity.getAccountPass());
-            v.add(2, accountEntity.getAccountRole());
+            v.add(2, accountEntity.getAccountFunction());
             v.add(3, accountEntity.getAccountPermission());
             accountManagementModel.addRow(v);
         }

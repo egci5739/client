@@ -254,7 +254,7 @@ public class PersonManagementForm {
                     Tool.showMessage("人员不存在", "提示", 0);
                 } else {
                     //第一步：先将人员图片发送到脸谱服务器，获取faceURL
-                    org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, FDID, staffEntity.getPhoto(), null);
+                    org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, FDID, staffEntity.getStaffImage(), null);
                     if (resultFaceUrlData == null) {
                         Tool.showMessage("添加失败", "提示", 0);
                         return;
@@ -265,12 +265,12 @@ public class PersonManagementForm {
                     inboundData.put("faceURL", resultFaceUrlData.getString("URL"));
                     inboundData.put("faceLibType", "blackFD");
                     inboundData.put("FDID", FDID);
-                    inboundData.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
-                    inboundData.put("gender", Tool.changeGenderToMaleAndFemale(staffEntity.getSex()));
-                    if (staffEntity.getBirthday() == null) {
-                        staffEntity.setBirthday("1900-01-01");
+                    inboundData.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
+                    inboundData.put("gender", Tool.changeGenderToMaleAndFemale(String.valueOf(staffEntity.getStaffGender())));
+                    if (staffEntity.getStaffBirthday() == null) {
+                        staffEntity.setStaffBirthday("1900-01-01");
                     }
-                    inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
+                    inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getStaffBirthday()));
                     org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                     if (resultData.getInt("statusCode") == 1) {
                         showSelectBase();
@@ -357,10 +357,10 @@ public class PersonManagementForm {
             if (faceInfoEntity.getName().contains("_")) {//显示卡号
                 StaffEntity staffEntity = Tool.splitNameAndGetStaff(faceInfoEntity.getName());
                 Vector v = new Vector();
-                v.add(0, staffEntity.getName());
+                v.add(0, staffEntity.getStaffName());
                 v.add(1, faceInfoEntity.getGender());
                 v.add(2, faceInfoEntity.getBornTime());
-                v.add(3, staffEntity.getCardNumber());
+                v.add(3, staffEntity.getStaffCardNumber());
                 personManagementContentResultTableModel.addRow(v);
             } else {//没有卡号
                 Vector v = new Vector();

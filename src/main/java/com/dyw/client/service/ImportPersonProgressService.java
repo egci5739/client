@@ -37,26 +37,23 @@ public class ImportPersonProgressService extends Thread {
         int num = 0;
         for (StaffEntity staffEntity : staffEntityList) {
             String instruction = "/ISAPI/Intelligent/FDLib/FaceDataRecord?format=json";
-            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, FDID, staffEntity.getPhoto(), null);
+            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, FDID, staffEntity.getStaffImage(), null);
             org.json.JSONObject inboundData = new org.json.JSONObject();
             try {
                 inboundData.put("faceURL", resultFaceUrlData.getString("URL"));
                 inboundData.put("faceLibType", "blackFD");
                 inboundData.put("FDID", FDID);
-                inboundData.put("name", staffEntity.getName() + "_" + staffEntity.getCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
-                if (staffEntity.getSex() == null) {
-                    staffEntity.setSex("0");//unknown
+                inboundData.put("name", staffEntity.getStaffName() + "_" + staffEntity.getStaffCardNumber() + "_" + staffEntity.getStaffId());//名字_卡号_id
+                inboundData.put("gender", Tool.changeGenderToMaleAndFemale(String.valueOf(staffEntity.getStaffGender())));
+                if (staffEntity.getStaffBirthday() == null) {
+                    staffEntity.setStaffBirthday("1900-01-01");
                 }
-                inboundData.put("gender", Tool.changeGenderToMaleAndFemale(staffEntity.getSex()));
-                if (staffEntity.getBirthday() == null) {
-                    staffEntity.setBirthday("1900-01-01");
-                }
-                inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getBirthday()));
+                inboundData.put("bornTime", Tool.judgeBirthdayFormat(staffEntity.getStaffBirthday()));
                 Tool.sendInstructionAndReceiveStatus(3, instruction, inboundData);
                 num++;
                 jProgressBar.setValue((int) ((float) num / (float) staffEntityList.size() * 100));
             } catch (JSONException e) {
-                logger.error("添加人员出错，卡号：" + staffEntity.getCardNumber());
+                logger.error("添加人员出错，卡号：" + staffEntity.getStaffCardNumber());
             }
         }
         jButton.setEnabled(true);
