@@ -4,6 +4,7 @@ import com.dyw.client.HCNetSDK;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.CameraEntity;
 import com.dyw.client.entity.ConfigEntity;
+import com.dyw.client.entity.ConfigTableEntity;
 import com.dyw.client.form.*;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.tool.Tool;
@@ -54,11 +55,21 @@ public class Egci {
             logger.error("SDK初始化失败");
             return;
         }
-        //获取配置文件
-        configEntity = Tool.getConfig(System.getProperty("user.dir") + "/config/config.xml");
-        //创建session对象
-        SessionService sessionService = new SessionService();
-        session = sessionService.createSession();
+        //初始化session对象
+        try {
+            SessionService sessionService = new SessionService();
+            session = sessionService.createSession();
+        } catch (Exception e) {
+            logger.error("创建session对象失败", e);
+        }
+        //读取配置文件
+        try {
+            configEntity = Tool.getConfig(session.selectList("mapping.configMapper.getConfig"));
+        } catch (Exception e) {
+            logger.error("读取配置信息出错", e);
+            Tool.showMessage(e.getMessage(), "连接数据库出错", 0);
+            return;
+        }
         //获取抓拍机信息
         try {
             List<CameraEntity> cameraEntityList = session.selectList("mapping.equipmentMapper.getAllCamera");
