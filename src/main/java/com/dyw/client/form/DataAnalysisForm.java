@@ -95,19 +95,19 @@ public class DataAnalysisForm {
             v.add(0, equipmentEntity.getEquipmentName());
             //获取总数
             passInfoEntity.setPassRecordEventTypeId(0);
-            int totalNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
+            int totalNumber = Egci.session.selectOne("mapping.passRecordMapper.getPassNumberCount", passInfoEntity);
             v.add(1, totalNumber);
             //获取通过数量
             passInfoEntity.setPassRecordEventTypeId(105);
-            int successNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
+            int successNumber = Egci.session.selectOne("mapping.passRecordMapper.getPassNumberCount", passInfoEntity);
             v.add(2, successNumber);
             //获取失败数量
             passInfoEntity.setPassRecordEventTypeId(112);
-            int faultNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
+            int faultNumber = Egci.session.selectOne("mapping.passRecordMapper.getPassNumberCount", passInfoEntity);
             v.add(3, faultNumber);
             //获取卡号不存在数量
             passInfoEntity.setPassRecordEventTypeId(9);
-            int noCardNumber = Egci.session.selectOne("mapping.passInfoMapper.getPassNumberCount", passInfoEntity);
+            int noCardNumber = Egci.session.selectOne("mapping.passRecordMapper.getPassNumberCount", passInfoEntity);
             v.add(4, noCardNumber);
             //成功率
             v.add(5, df.format((float) successNumber / (successNumber + faultNumber) * 100) + "%");

@@ -7,8 +7,8 @@
     <select id="getAllEquipmentWithCondition" parameterType="Integer"
             resultType="com.dyw.client.entity.EquipmentEntity">
         select * from EquipmentTable
-        <if test="_parameter != 1">
-            where equipmentPermission = #{_parameter};
+        <if test="_parameter != 0">
+            where equipmentPermission = #{_parameter} and equipmentType = 1;
         </if>
     </select>
     <!--查询所有设备信息-->
@@ -17,7 +17,11 @@
     </select>
     <!--更新设备信息-->
     <update id="updateEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
-        update EquipmentTable set Name=#{Name},IP=#{IP},StatusSwitchSocketIP=#{StatusSwitchSocketIP} where Id=#{Id};
+        update EquipmentTable set
+        equipmentName=#{equipmentName},equipmentIp=#{equipmentIp},equipmentType=#{equipmentType},equipmentPermission=#{equipmentPermission},
+        equipmentSwitchIp=#{equipmentSwitchIp},equipmentHostIp=#{equipmentHostIp},equipmentChannel=#{equipmentChannel}
+        where
+        equipmentId=#{equipmentId};
     </update>
     <!--新增设备-->
     <insert id="addEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
@@ -26,11 +30,11 @@
     </insert>
     <!--删除设备-->
     <delete id="deleteEquipment" parameterType="Integer">
-        delete from EquipmentTable where Id =#{Id};
+        delete from EquipmentTable where equipmentId =#{equipmentId};
     </delete>
     <!--收取抓拍机信息-->
     <select id="getAllCamera" resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from Camera;
+        select * from EquipmentTable where equipmentType = 3;
     </select>
     <!--根据主机IP读取采集设备信息-->
     <select id="getFaceCollectionWithHostIp" parameterType="String" resultType="com.dyw.client.entity.EquipmentEntity">

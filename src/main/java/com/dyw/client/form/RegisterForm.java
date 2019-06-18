@@ -9,6 +9,7 @@ import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.service.*;
 import com.dyw.client.timer.PingTimer;
 import com.dyw.client.tool.Tool;
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class RegisterForm {
     private JLabel IdPhotoLabel;
     private JLabel sexLabel;
     private JLabel companyLabel;
-    private JTextField sexText;
+    private JComboBox sexSelectionCombo;
     private JTextField companyText;
     private JButton searchButton;
     private JButton addButton;
@@ -115,6 +116,10 @@ public class RegisterForm {
         if (Egci.faceServerStatus == 1) {
             getFDLib();
         }
+        //初始化性别选择框
+        sexSelectionCombo.addItem("未知");
+        sexSelectionCombo.addItem("男");
+        sexSelectionCombo.addItem("女");
         //获取采集设备的ip
         try {
             EquipmentEntity equipmentEntity = Egci.session.selectOne("mapping.equipmentMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
@@ -126,6 +131,8 @@ public class RegisterForm {
             }
         } catch (UnknownHostException e) {
             logger.error("获取采集设备ip出错", e);
+        } catch (TooManyResultsException e) {
+            logger.error(e.getMessage(), e);
         }
         //创建接收采集信息的socket对象
         RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
@@ -417,7 +424,7 @@ public class RegisterForm {
             passCardText.setText(staffEntity.getStaffCardNumber());
             IdNumberText.setText(staffEntity.getStaffCardId());
             birthdayText.setText(staffEntity.getStaffBirthday());
-            sexText.setText(String.valueOf(staffEntity.getStaffGender()));
+            sexSelectionCombo.setSelectedIndex(staffEntity.getStaffGender());
             companyText.setText(staffEntity.getStaffCompany());
             try {
                 staffEntity.setStaffImage(staffEntity.getStaffImage());
@@ -473,7 +480,7 @@ public class RegisterForm {
             passCardText.setText("");
             IdNumberText.setText("");
             birthdayText.setText("");
-            sexText.setText("");
+            sexSelectionCombo.setSelectedIndex(0);
             companyText.setText("");
             idSimilarityLabel.setText("");
             idNameLabel.setText("");
@@ -502,7 +509,7 @@ public class RegisterForm {
         staffEntity.setStaffCardNumber(passCardText.getText());
         staffEntity.setStaffCardId(IdNumberText.getText());
         staffEntity.setStaffBirthday(birthdayText.getText());
-        staffEntity.setStaffGender(Integer.parseInt(sexText.getText()));
+        staffEntity.setStaffGender(sexSelectionCombo.getSelectedIndex());
         staffEntity.setStaffCompany(companyText.getText());
         try {
             staffEntity.setStaffImage(staffPhoto);
@@ -559,24 +566,6 @@ public class RegisterForm {
                         cancel();
                     }
                 }
-
-
-//                if (!staffEntity.getCardNumber().equals(oldStaff.getCardNumber())) {
-//                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
-//                        Tool.showMessage("卡号已存在", "提示", 0);
-//                        return;
-//                    }
-//                }
-//                if (operationCode == 1) {
-//                    if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getCardNumber()).size() > 0) {
-//                        Tool.showMessage("卡号已存在", "提示", 0);
-//                        return;
-//                    }
-//                }
-//                staffOperationService.save(staffEntity, oldStaff);
-//                Egci.session.delete("mapping.staffMapper.deleteTemporaryStaff", staffEntity);
-//                Egci.session.commit();
-//                cancel();
             }
         }
     }
@@ -642,7 +631,7 @@ public class RegisterForm {
         englishNameText.setEnabled(false);
         IdNumberText.setEnabled(false);
         birthdayText.setEnabled(false);
-        sexText.setEnabled(false);
+        sexSelectionCombo.setEnabled(false);
         companyText.setEnabled(false);
         IdPhoto.setEnabled(false);
     }
@@ -654,7 +643,7 @@ public class RegisterForm {
         englishNameText.setEnabled(true);
         IdNumberText.setEnabled(true);
         birthdayText.setEnabled(true);
-        sexText.setEnabled(true);
+        sexSelectionCombo.setEnabled(true);
         companyText.setEnabled(true);
         IdPhoto.setEnabled(true);
     }

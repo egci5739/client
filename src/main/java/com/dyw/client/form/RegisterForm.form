@@ -255,7 +255,7 @@
                   <text value="所属公司"/>
                 </properties>
               </component>
-              <component id="7c0a1" class="javax.swing.JTextField" binding="sexText">
+              <component id="1ba17" class="javax.swing.JComboBox" binding="sexSelectionCombo">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>

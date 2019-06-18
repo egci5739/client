@@ -2,6 +2,7 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
+import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -20,13 +21,12 @@ public class AccountManagementForm {
     private JPanel accountManagementContentPanel;
     private JScrollPane accountManagementContentScroll;
     private JTable accountManagementContentTable;
-
     private DefaultTableModel accountManagementModel;
     private List<AccountEntity> accountEntityList;
 
     public AccountManagementForm() {
         //初始化用户管理表格
-        String[] columnAccountInfo = {"用户名", "密码", "角色", "权限"};
+        String[] columnAccountInfo = {"用户", "密码", "功能", "权限"};
         accountManagementModel = new DefaultTableModel();
         accountManagementModel.setColumnIdentifiers(columnAccountInfo);
         accountManagementContentTable.setModel(accountManagementModel);
@@ -40,7 +40,7 @@ public class AccountManagementForm {
             v.add(0, accountEntity.getAccountName());
             v.add(1, accountEntity.getAccountPass());
             v.add(2, accountEntity.getAccountFunction());
-            v.add(3, accountEntity.getAccountPermission());
+            v.add(3, Tool.accountPermissionIdToName(accountEntity.getAccountPermission()));
             accountManagementModel.addRow(v);
         }
     }

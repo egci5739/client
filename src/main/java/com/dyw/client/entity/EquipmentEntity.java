@@ -11,6 +11,12 @@ public class EquipmentEntity {
     private String equipmentChannel;
     private int equipmentValidity;
 
+    //独有
+    private int cardNumber;//卡数量
+    private int isLogin;//是否在线
+    private int passMode;//通行模式
+
+
     public int getEquipmentId() {
         return equipmentId;
     }
@@ -81,5 +87,29 @@ public class EquipmentEntity {
 
     public void setEquipmentValidity(int equipmentValidity) {
         this.equipmentValidity = equipmentValidity;
+    }
+
+    public int getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public int getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(int isLogin) {
+        this.isLogin = isLogin;
+    }
+
+    public int getPassMode() {
+        return passMode;
+    }
+
+    public void setPassMode(int passMode) {
+        this.passMode = passMode;
     }
 }

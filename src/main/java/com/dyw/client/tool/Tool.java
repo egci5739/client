@@ -161,23 +161,6 @@ public class Tool {
     }
 
     /*
-     * 历史遗留问题
-     * 核数和sortid不配对
-     * */
-    public static int getGroupId(int value) {
-        int result = 0;
-        if (value == 1)
-            result = 2;
-        else if (value == 2)
-            result = 3;
-        else if (value == 3)
-            result = 4;
-        else if (value == 0)
-            result = 1;
-        return result;
-    }
-
-    /*
      * 将事件id转为事件名称
      * */
     public static String eventIdToEventName(int value) {
@@ -237,19 +220,34 @@ public class Tool {
     }
 
     /*
-     * 将用户角色id转为中文
+     * 将通行模式权限转为中文
      * */
-    public static String accountRoleIdToName(int value) {
+    public static String equipmentPassModeToName(int value) {
         String name = "";
         switch (value) {
             case 0:
-                name = "管理员";
+                name = "卡+人脸";
                 break;
             case 1:
-                name = "办证端";
+                name = "人脸";
                 break;
-            case 2:
-                name = "监控端";
+            default:
+                break;
+        }
+        return name;
+    }
+
+    /*
+     * 是否在线
+     * */
+    public static String isLogin(int value) {
+        String name = "";
+        switch (value) {
+            case 0:
+                name = "离线";
+                break;
+            case 1:
+                name = "在线";
                 break;
             default:
                 break;
@@ -264,7 +262,7 @@ public class Tool {
         String name = "";
         switch (value) {
             case 0:
-                name = "全局";
+                name = "全厂";
                 break;
             case 1:
                 name = "一核";

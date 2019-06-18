@@ -9,30 +9,31 @@
     </select>
     <!--获取历史通行记录-->
     <select id="getHistoryPassInfo" resultType="com.dyw.client.entity.PassRecordEntity">
-        select * from PassRecordTable INNER JOIN Staff ON PassRecordTable.CardNumber=Staff.CardNumber
-        where PassRecordTable.Date &gt; #{startDate} and PassRecordTable.Date &lt; #{endDate}
-        <if test="IP != null">
-            and PassRecordTable.IP=#{IP}
+        select * from PassRecordTable where passRecordPassTime &gt; #{startDate} and passRecordPassTime &lt;
+        #{endDate}
+        <if test="passRecordEquipmentIp != null">
+            and passRecordEquipmentIp=#{passRecordEquipmentIp}
         </if>
-        <if test="EventTypeId != 0">
-            and PassRecordTable.EventTypeId=#{EventTypeId}
+        <if test="passRecordEventTypeId != 0">
+            and passRecordEventTypeId=#{passRecordEventTypeId}
         </if>
-        <if test="CardNumber != null">
-            and PassRecordTable.CardNumber=#{CardNumber}
+        <if test="passRecordCardNumber != null">
+            and passRecordCardNumber=#{passRecordCardNumber}
         </if>
-        <if test="StaffName != null">
-            and PassRecordTable.StaffName=#{StaffName}
+        <if test="passRecordName != null">
+            and passRecordName=#{passRecordName}
         </if>
-        ORDER BY PassRecordTable.Date;
+        ORDER BY passRecordPassTime;
     </select>
     <!--获取单台设备通行总数-->
     <select id="getPassNumberCount" resultType="Integer">
-        select count(*) from PassRecordTable where IP=#{IP} and PassRecordTable.Date &gt; #{startDate} and
-        PassRecordTable.Date
+        select count(*) from PassRecordTable where passRecordEquipmentIp=#{passRecordEquipmentIp} and passRecordPassTime
+        &gt; #{startDate} and
+        passRecordPassTime
         &lt;
         #{endDate}
-        <if test="EventTypeId!=0">
-            and EventTypeId=#{EventTypeId}
+        <if test="passRecordEventTypeId!=0">
+            and passRecordEventTypeId=#{passRecordEventTypeId}
         </if>
     </select>
     <!--&lt;!&ndash;查询全部统计失败统计信息&ndash;&gt;-->
