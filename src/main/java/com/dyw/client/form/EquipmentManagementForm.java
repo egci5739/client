@@ -340,7 +340,6 @@ public class EquipmentManagementForm {
                         int col = e.getColumn();
                         try {
                             EquipmentEntity equipmentEntity = equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString());
-                            System.out.println("设备名称1：" + equipmentEntity.getEquipmentName());
                             if (col == 0) {
                                 equipmentEntity.setEquipmentName((String) equipmentManagerModel.getValueAt(row, col));
                             } else if (col == 1) {
@@ -381,7 +380,6 @@ public class EquipmentManagementForm {
                         int col = e.getColumn();
                         try {
                             EquipmentEntity equipmentEntity = equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString());
-                            System.out.println("设备名称2：" + equipmentEntity.getEquipmentName());
                             if (col == 0) {
                                 equipmentEntity.setEquipmentName((String) equipmentManagerModel.getValueAt(row, col));
                             } else if (col == 1) {
