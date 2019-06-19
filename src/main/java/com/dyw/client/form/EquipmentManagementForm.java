@@ -350,7 +350,6 @@ public class EquipmentManagementForm {
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();
                         } catch (IndexOutOfBoundsException e1) {
-                            return;
                         }
                     }
                 });
@@ -390,13 +389,50 @@ public class EquipmentManagementForm {
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();
                         } catch (IndexOutOfBoundsException e1) {
-                            return;
                         }
                     }
                 });
                 break;
             case 3:
                 //初始化抓拍机设备管理表格
+                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "视频流通道", "是否在线"};
+                equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
+                equipmentManagementContentTable.setModel(equipmentManagerModel);
+                equipmentManagerModel.setRowCount(0);
+                for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+                    if (equipmentEntity.getEquipmentType() == 3) {
+                        Vector v = new Vector();
+                        v.add(0, equipmentEntity.getEquipmentName());
+                        v.add(1, equipmentEntity.getEquipmentIp());
+                        v.add(2, equipmentEntity.getEquipmentChannel());
+                        v.add(3, Tool.isLogin(equipmentEntity.getIsLogin()));
+                        equipmentManagerModel.addRow(v);
+                    }
+                }
+                //更改抓拍机设备信息
+                equipmentManagerModel.addTableModelListener(new TableModelListener() {
+                    @Override
+                    public void tableChanged(TableModelEvent e) {
+                        int row = e.getFirstRow();
+                        int col = e.getColumn();
+                        try {
+                            EquipmentEntity equipmentEntity = equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString());
+                            if (col == 0) {
+                                equipmentEntity.setEquipmentName((String) equipmentManagerModel.getValueAt(row, col));
+                            } else if (col == 1) {
+                                equipmentEntity.setEquipmentIp((String) equipmentManagerModel.getValueAt(row, col));
+                            } else if (col == 2) {
+                                equipmentEntity.setEquipmentChannel((String) equipmentManagerModel.getValueAt(row, col));
+                            }
+                            Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
+                            Egci.session.commit();
+                        } catch (IndexOutOfBoundsException e1) {
+                        }
+                    }
+                });
+                break;
+            default:
+                break;
         }
     }
 }
