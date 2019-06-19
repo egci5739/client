@@ -12,6 +12,7 @@ public class PassRecordEntity {
     private String passRecordEquipmentName;
     private String passRecordEquipmentIp;
     private int passRecordPassResult;
+    private int passRecordNoteId;
     private String passRecordNote;
     private int passRecordSimilarity;
     private int passRecordEventTypeId;
@@ -146,5 +147,13 @@ public class PassRecordEntity {
 
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
+    }
+
+    public int getPassRecordNoteId() {
+        return passRecordNoteId;
+    }
+
+    public void setPassRecordNoteId(int passRecordNoteId) {
+        this.passRecordNoteId = passRecordNoteId;
     }
 }

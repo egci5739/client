@@ -46,7 +46,7 @@ public class ResourceManagementForm {
             //获取区域列表
             regionEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter/" + ctrlCenterEntity.getCtrlCenterID(), null).getString("region"), RegionEntity.class);
         } catch (JSONException e) {
-            e.printStackTrace();
+            logger.error("获取根控制中心和区域列表出错", e);
         }
         //初始化全部设备表格
         deviceManagementContentTableModel = new DefaultTableModel();

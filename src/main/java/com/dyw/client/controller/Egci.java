@@ -21,7 +21,7 @@ public class Egci {
     public static ConfigEntity configEntity;
     public static SqlSession session;
     public static int workStatus;
-    public static AccountEntity accountEntity;
+    public static AccountEntity accountEntity = new AccountEntity();
     private static LoginForm loginForm;
     public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
     public static String fdLibIDForStranger;//给陌生人员用的ID
@@ -40,8 +40,6 @@ public class Egci {
      * 初始化客户端程序
      * */
     private static void initClient() {
-        //构造功能map
-        accountEntity = new AccountEntity();
         //初始化系统状态
         workStatus = 0;
         //初始化SDK静态对象

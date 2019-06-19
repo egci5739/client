@@ -3,8 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.configMapper">
-    <!--更新进程id-->
+    <!--获取配置信息-->
     <select id="getConfig" resultType="com.dyw.client.entity.ConfigTableEntity">
         select * from ConfigTable;
+    </select>
+    <!--获取事件信息-->
+    <select id="getNote" resultType="com.dyw.client.entity.NoteEntity">
+        select * from NoteTable;
     </select>
 </mapper>
