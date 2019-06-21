@@ -8,7 +8,12 @@
         select * from AccountTable where accountName=#{accountName} and accountPass=#{accountPass};
     </select>
     <!--查询所有用户信息-->
-    <select id="getAllAccount" resultType="com.dyw.client.entity.AccountEntity">
+    <select id="getAllAccount" resultType="com.dyw.client.entity.AccountEntity" flushCache="true">
         select * from AccountTable;
     </select>
+    <!--新增用户-->
+    <insert id="addAccount" parameterType="com.dyw.client.entity.AccountEntity" flushCache="true">
+        insert into AccountTable (accountName,accountPass,accountFunction,accountPermission) values
+        (#{accountName},#{accountPass},#{accountFunction},#{accountPermission});
+    </insert>
 </mapper>

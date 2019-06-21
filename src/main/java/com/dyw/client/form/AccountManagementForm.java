@@ -2,11 +2,14 @@ package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
+import com.dyw.client.functionForm.AccountFunction;
 import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -21,6 +24,8 @@ public class AccountManagementForm {
     private JPanel accountManagementContentPanel;
     private JScrollPane accountManagementContentScroll;
     private JTable accountManagementContentTable;
+    private JButton accountAddButton;
+    private JButton accountDeleteButton;
     private DefaultTableModel accountManagementModel;
     private List<AccountEntity> accountEntityList;
 
@@ -33,6 +38,30 @@ public class AccountManagementForm {
         DefaultTableCellRenderer accountTableCellRenderer = new DefaultTableCellRenderer();
         accountTableCellRenderer.setHorizontalAlignment(JLabel.CENTER);
         accountManagementContentTable.setDefaultRenderer(Object.class, accountTableCellRenderer);
+        showAccountInfo();
+        /*
+         * 新增用户
+         * */
+        accountAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addAccount();
+            }
+        });
+    }
+
+    /*
+     * 新增用户
+     * */
+    private void addAccount() {
+        AccountFunction accountFunction = new AccountFunction(this);
+        accountFunction.init();
+    }
+
+    /*
+     * 加载用户信息
+     * */
+    public void showAccountInfo() {
         accountManagementModel.setRowCount(0);
         accountEntityList = Egci.session.selectList("mapping.accountMapper.getAllAccount");
         for (AccountEntity accountEntity : accountEntityList) {

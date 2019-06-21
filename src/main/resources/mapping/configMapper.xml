@@ -11,4 +11,8 @@
     <select id="getNote" resultType="com.dyw.client.entity.NoteEntity">
         select * from NoteTable;
     </select>
+    <!--获取功能点信息-->
+    <select id="getFunction" resultType="com.dyw.client.entity.FunctionEntity" flushCache="true">
+        select * from FunctionTable order by functionSort;
+    </select>
 </mapper>
