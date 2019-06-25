@@ -1,9 +1,12 @@
 package com.dyw.client.service;
 
+import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 //import com.dyw.client.form.MonitorForm;
+import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.form.MonitorRealTimeForm;
+import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +22,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
     private OutputStream os;
     private Socket socket;
     private MonitorRealTimeForm monitorRealTimeForm;
+    private EquipmentEntity equipmentEntity;
 
     /*
      * 构造函数
@@ -59,9 +63,18 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
                     try {
-                        PassRecordEntity passInfoEntity = Egci.session.selectOne("mapping.passRecordMapper.getPassInfo", info);
-                        if (passInfoEntity != null) {
-                            monitorRealTimeForm.addPassInfo(passInfoEntity);
+                        if (info.split("#")[0].equals("status")) {
+                            equipmentEntity = JSON.parseObject(info.split("#")[1], EquipmentEntity.class);
+                            if (equipmentEntity.getIsLogin() == 0) {
+                                Tool.showMessage("设备：" + equipmentEntity.getEquipmentName() + "离线", "提示", 1);
+                            } else {
+                                Tool.showMessage("设备：" + equipmentEntity.getEquipmentName() + "上线", "提示", 1);
+                            }
+                        } else {
+                            PassRecordEntity passInfoEntity = Egci.session.selectOne("mapping.passRecordMapper.getPassInfo", info);
+                            if (passInfoEntity != null) {
+                                monitorRealTimeForm.addPassInfo(passInfoEntity);
+                            }
                         }
                     } catch (Exception e) {
                         logger.error("接收数据出错", e);
@@ -69,6 +82,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
+                Tool.showMessage("与服务程序断开连接", "提示", 1);
                 Egci.workStatus = 1;
 //                monitorForm.changeCommunicationStatus(1);
                 break;

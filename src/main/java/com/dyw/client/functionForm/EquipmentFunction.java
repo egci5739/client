@@ -1,4 +1,7 @@
 package com.dyw.client.functionForm;
+/*
+ * 添加布控设备的类
+ * */
 
 import com.dyw.client.entity.protection.CtrlCenterEntity;
 import com.dyw.client.entity.protection.DeviceEntity;

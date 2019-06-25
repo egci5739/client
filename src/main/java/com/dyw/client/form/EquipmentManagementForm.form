@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.EquipmentManagementForm">
   <grid id="27dc6" binding="equipmentManagementForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1119" height="779"/>
+      <xy x="20" y="20" width="1104" height="759"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -113,6 +113,16 @@
                 <properties>
                   <font size="20"/>
                   <model/>
+                </properties>
+              </component>
+              <component id="fb272" class="javax.swing.JLabel" binding="searchStatus">
+                <constraints>
+                  <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="20" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font size="20"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>

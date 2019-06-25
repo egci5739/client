@@ -1,8 +1,10 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
+import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.NoteEntity;
 import com.dyw.client.entity.PassRecordEntity;
+import com.dyw.client.functionForm.NoteFunction;
 import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.tool.Tool;
@@ -60,8 +62,6 @@ public class MonitorRealTimeForm {
 
     List<NoteEntity> noteEntityList;
     private JPopupMenu searchPopupMenu;
-    private String[] menu = {"one", "two", "three"};
-    private List<JMenuItem> jMenuItemList = new ArrayList<>();
     private int menuStatus = 0;
 
     public MonitorRealTimeForm() {
@@ -228,10 +228,15 @@ public class MonitorRealTimeForm {
         PassRecordEntity passRecordEntity = new PassRecordEntity();
         passRecordEntity.setPassRecordId(passId);
         passRecordEntity.setPassRecordNoteId(noteId);
-        passRecordEntity.setPassRecordNote(noteName);
-        Egci.session.update("mapping.passRecordMapper.updatePassRecordNote", passRecordEntity);
-        Egci.session.commit();
-        passFaultModel.removeRow(menuStatus);
+        if (noteId == 0) {
+            NoteFunction noteFunction = new NoteFunction(this, passRecordEntity);
+            noteFunction.init();
+        } else {
+            passRecordEntity.setPassRecordNote(noteName);
+            Egci.session.update("mapping.passRecordMapper.updatePassRecordNote", passRecordEntity);
+            Egci.session.commit();
+            passFaultModel.removeRow(menuStatus);
+        }
     }
 
     /*
@@ -245,5 +250,14 @@ public class MonitorRealTimeForm {
         tc.setWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMaxWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMinWidth(0);
+    }
+
+    /*
+     * 存储事件为 其他 的通行记录
+     * */
+    public void saveOtherEvent(PassRecordEntity passRecordEntity) {
+        Egci.session.update("mapping.passRecordMapper.updatePassRecordNote", passRecordEntity);
+        Egci.session.commit();
+        passFaultModel.removeRow(menuStatus);
     }
 }

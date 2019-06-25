@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.EquipmentStatusEntity;
+import com.dyw.client.functionForm.DeviceFunction;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -25,6 +28,7 @@ public class EquipmentManagementForm {
         return equipmentManagementForm;
     }
 
+    private Logger logger = LoggerFactory.getLogger(EquipmentManagementForm.class);
     private JPanel equipmentManagementForm;
     private JPanel equipmentManagementPanel;
     private JPanel equipmentManagementToolBarPanel;
@@ -40,12 +44,14 @@ public class EquipmentManagementForm {
     private JButton refreshEquipmentStatusButton;
     private JButton timeSynchronizationButton;
     private JComboBox equipmentTypeChangeCombo;//设备类型切换
+    private JLabel searchStatus;//查询状态
 
     private DefaultTableModel equipmentManagerModel = new DefaultTableModel();
     private DefaultTableCellRenderer equipmentInfoTableCellRenderer = new DefaultTableCellRenderer();
     String[] columnEquipmentInfo;
     private List<EquipmentEntity> equipmentEntityList = new ArrayList<>();
     private Map<String, EquipmentEntity> equipmentEntityMap = new HashMap<>();
+    private EquipmentEntity equipmentEntity;//用在新增设备中使用
 
     public EquipmentManagementForm() {
         /*
@@ -73,22 +79,27 @@ public class EquipmentManagementForm {
                 }
                 try {
                     if (equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()) != null) {
-//                        if (equipmentStatusEntity.getIsLogin().equals("0")) {
-//                            cardAndFaceModeButton.setEnabled(false);
-//                            importStaffButton.setEnabled(false);
-//                            faceModeButton.setEnabled(false);
-//                        } else {
-//                            cardAndFaceModeButton.setEnabled(true);
-//                            importStaffButton.setEnabled(true);
-//                            faceModeButton.setEnabled(true);
-//                            if (equipmentStatusEntity.getPassMode().equals("1")) {
-//                                faceModeButton.setEnabled(false);
-//                            } else {
-//                                cardAndFaceModeButton.setEnabled(true);
-//                            }
-//                        }
+                        EquipmentEntity equipmentEntity = equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString());
+
+                        if (equipmentEntity.getEquipmentType() == 1) {
+                            if (equipmentEntity.getIsLogin() == 0) {
+                                cardAndFaceModeButton.setEnabled(false);
+                                importStaffButton.setEnabled(false);
+                                faceModeButton.setEnabled(false);
+                            } else {
+                                cardAndFaceModeButton.setEnabled(true);
+                                importStaffButton.setEnabled(true);
+                                faceModeButton.setEnabled(true);
+                                if (equipmentEntity.getPassMode() == 1) {
+                                    faceModeButton.setEnabled(false);
+                                } else {
+                                    cardAndFaceModeButton.setEnabled(true);
+                                }
+                            }
+                        }
                     }
                 } catch (Exception e1) {
+                    logger.error("切换设备出错", e);
                 }
             }
         });
@@ -165,6 +176,7 @@ public class EquipmentManagementForm {
             SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
             sendInfoSocketService.sendInfo("5#" + equipmentEntity.getEquipmentSwitchIp() + "#0");
             sendInfoSocketService.receiveInfoOnce();
+            Tool.showMessage("请在onGuard系统上开启该门禁的密码验证功能", "提示", 1);
         }
     }
 
@@ -196,7 +208,7 @@ public class EquipmentManagementForm {
         sendInfoSocketService.receiveInfoOnce();
         faceModeButton.setEnabled(true);
         cardAndFaceModeButton.setEnabled(true);
-        Tool.showMessage("切换成功", "提示", 1);
+        Tool.showMessage("请在onGuard系统上关闭该门禁的密码验证功能", "提示", 1);
     }
 
     /*
@@ -242,9 +254,10 @@ public class EquipmentManagementForm {
             return;
         }
         if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "删除提示", 0) == 0) {
-            Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityList.get(equipmentManagementContentTable.getSelectedRow()).getEquipmentId());
+            Egci.session.delete("mapping.equipmentMapper.deleteEquipment", equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString()));
             Egci.session.commit();
-            refreshEquipmentList();
+            equipmentEntityList.remove(equipmentEntityMap.get(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString()));
+            equipmentEntityMap.remove(equipmentManagerModel.getValueAt(equipmentManagementContentTable.getSelectedRow(), 1).toString());
         }
     }
 
@@ -252,50 +265,49 @@ public class EquipmentManagementForm {
      * 新增设备
      * */
     private void addEquipment() {
-        String[] str = {"一核", "二核", "三核"};
-        int groupId = 0;
-        String result = (String) JOptionPane.showInputDialog(null, "请选择设备属于哪一核", null, 1, null, str, str[0]);
-        if (result != null) {
-            if ("一核".equals(result)) {
-                groupId = 2;
-            } else if ("二核".equals(result)) {
-                groupId = 3;
-            } else {
-                groupId = 4;
-            }
-            EquipmentEntity equipmentEntity = new EquipmentEntity();
-            equipmentEntity.setEquipmentName("");
-            equipmentEntity.setEquipmentIp("");
-            equipmentEntity.setEquipmentSwitchIp("");
-            equipmentEntity.setEquipmentPermission(groupId);
-            Vector v = new Vector();
-            equipmentManagerModel.addRow(v);
-            Egci.session.insert("mapping.equipmentMapper.addEquipment", equipmentEntity);
-            Egci.session.commit();
-            refreshEquipmentList();
-        }
+        equipmentEntity = new EquipmentEntity();
+        DeviceFunction deviceFunction = new DeviceFunction(this, equipmentEntity);
+        deviceFunction.init();
+    }
+
+    /*
+     * 新增设备集合
+     * */
+    public void refreshEquipmentCollection() {
+        equipmentEntityList.add(equipmentEntity);
+        equipmentEntityMap.put(equipmentEntity.getEquipmentIp(), equipmentEntity);
     }
 
     /*
      * 重新加载设备列表
      * */
     private void refreshEquipmentList() {
-        importStaffButton.setEnabled(false);
-        faceModeButton.setEnabled(false);
-        cardAndFaceModeButton.setEnabled(false);
-        try {
-            equipmentEntityList.clear();
-            equipmentEntityMap.clear();
-        } catch (NullPointerException ignored) {
-        }
-        equipmentManagerModel.setRowCount(0);
-        SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
-        sendInfoSocketService.sendInfo("3#0");
-        equipmentEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentEntity.class);
-        equipmentTypeChangeCombo.setSelectedIndex(0);
-        for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-            equipmentEntityMap.put(equipmentEntity.getEquipmentIp(), equipmentEntity);
-        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                searchStatus.setText("正在查询中，请稍后...");
+                refreshEquipmentStatusButton.setEnabled(false);
+                importStaffButton.setEnabled(false);
+                faceModeButton.setEnabled(false);
+                cardAndFaceModeButton.setEnabled(false);
+                try {
+                    equipmentEntityList.clear();
+                    equipmentEntityMap.clear();
+                } catch (NullPointerException ignored) {
+                }
+                equipmentManagerModel.setRowCount(0);
+                SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+                sendInfoSocketService.sendInfo("3#0");
+                equipmentEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentEntity.class);
+                equipmentTypeChangeCombo.setSelectedIndex(0);
+                for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+                    equipmentEntityMap.put(equipmentEntity.getEquipmentIp(), equipmentEntity);
+                }
+                searchStatus.setText("");
+                refreshEquipmentStatusButton.setEnabled(true);
+            }
+        });
+        thread.start();
     }
 
     /*
@@ -316,7 +328,7 @@ public class EquipmentManagementForm {
                 break;
             case 1:
                 //初始化一体机设备管理表格
-                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "切换器IP", "人员数量", "当前模式", "是否在线"};
+                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "切换器IP", "人员数量", "一体机模式", "一体机是否在线", "切换器状态"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
                 equipmentManagerModel.setRowCount(0);
@@ -329,6 +341,7 @@ public class EquipmentManagementForm {
                         v.add(3, equipmentEntity.getCardNumber());
                         v.add(4, Tool.equipmentPassModeToName(equipmentEntity.getPassMode()));
                         v.add(5, Tool.isLogin(equipmentEntity.getIsLogin()));
+                        v.add(6, Tool.switchStatus(equipmentEntity.getEquipmentValidity()));
                         equipmentManagerModel.addRow(v);
                     }
                 }
@@ -350,6 +363,7 @@ public class EquipmentManagementForm {
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();
                         } catch (IndexOutOfBoundsException e1) {
+                            logger.error("更改一体机设备信息出错", e1);
                         }
                     }
                 });
@@ -388,7 +402,8 @@ public class EquipmentManagementForm {
                             }
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();
-                        } catch (IndexOutOfBoundsException e1) {
+                        } catch (Exception e1) {
+                            logger.error("更改采集设备信息出错", e);
                         }
                     }
                 });
@@ -426,7 +441,8 @@ public class EquipmentManagementForm {
                             }
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();
-                        } catch (IndexOutOfBoundsException e1) {
+                        } catch (Exception e1) {
+                            logger.error("更改抓拍机信息出错", e);
                         }
                     }
                 });

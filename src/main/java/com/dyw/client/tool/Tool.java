@@ -553,4 +553,31 @@ public class Tool {
             return "2030-12-31T23:59:59Z";
         }
     }
+
+    /*
+     * 切换器状态转换
+     * */
+    public static String switchStatus(int status) {
+        String info = "";
+        switch (status) {
+            case 0:
+                info = "离线";
+                break;
+            case 2:
+                info = "启用人脸识别-自动模式";
+                break;
+            case 3:
+                info = "停用人脸识别-自动模式";
+                break;
+            case 4:
+                info = "启用人脸识别-手动模式";
+                break;
+            case 5:
+                info = "停用人脸识别-手动模式";
+                break;
+            default:
+                break;
+        }
+        return info;
+    }
 }

@@ -24,9 +24,12 @@
         equipmentId=#{equipmentId};
     </update>
     <!--新增设备-->
-    <insert id="addEquipment" parameterType="com.dyw.client.entity.EquipmentEntity">
-        insert into EquipmentTable (Name,IP,StatusSwitchSocketIP,GroupId,SortId)
-        values(#{Name},#{IP},#{StatusSwitchSocketIP},#{GroupId},6);
+    <insert id="addEquipment" parameterType="com.dyw.client.entity.EquipmentEntity" flushCache="true"
+            useGeneratedKeys="true" keyProperty="equipmentId">
+        insert into EquipmentTable
+        (equipmentName,equipmentIp,equipmentType,equipmentPermission,equipmentSwitchIp,equipmentHostIp,equipmentChannel)
+        values
+        (#{equipmentName},#{equipmentIp},#{equipmentType},#{equipmentPermission},#{equipmentSwitchIp},#{equipmentHostIp},#{equipmentChannel});
     </insert>
     <!--删除设备-->
     <delete id="deleteEquipment" parameterType="Integer">
