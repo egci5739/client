@@ -564,7 +564,6 @@ public class IntelligentApplicationForm {
     private void getFDLib() {
         try {
             Egci.fdLibMaps.clear();
-
             fdLibEntityList.clear();
             fdLibEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/Intelligent/FDLib?format=json", null).getString("FDLib"), FDLibEntity.class);
             for (FDLibEntity fdLibEntity : fdLibEntityList) {
@@ -578,6 +577,9 @@ public class IntelligentApplicationForm {
                         break;
                     case "黑名单":
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
+                        break;
+                    case "video":
+                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
                         break;
                     default:
                         break;

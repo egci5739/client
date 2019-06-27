@@ -22,10 +22,9 @@
         staffName=#{staffName},staffCardId=#{staffCardId},staffCardNumber=#{staffCardNumber},staffBirthday=#{staffBirthday},staffGender=#{staffGender},
         staffCompany=#{staffCompany},staffImage=#{staffImage},staffValidity=1 WHERE staffId=#{staffId};
     </update>
-    <!--删除人员信息:将人员卡号在数据库中设为0-->
+    <!--删除人员信息-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        <!--DELETE FROM Staff WHERE CardNumber=#{CardNumber};-->
-        UPDATE StaffTable SET staffValidity=0 WHERE staffId=#{staffId};
+        delete from StaffTable WHERE staffId=#{staffId};
     </delete>
     <!--查询待拍照人员列表-->
     <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
@@ -34,17 +33,20 @@
     <!--依据卡号和姓名查询人员-->
     <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber};
+        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber} and
+        staffValidity=1;
     </select>
     <!--依据姓名查询人员-->
     <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffName LIKE #{staffName};
+        select * from StaffTable WHERE staffName LIKE #{staffName} and
+        staffValidity=1;
     </select>
     <!--依据卡号查询人员-->
     <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber};
+        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber} and
+        staffValidity=1;
     </select>
     <!--根据卡号精确查询待拍照人员表人员-->
     <select id="getWaitStaffWithCardAccurate" resultType="com.dyw.client.entity.StaffEntity">
@@ -64,12 +66,8 @@
     <!--依据卡号精确查询人员-->
     <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffCardNumber = #{staffCardNumber} and staffCardNumber !='0';
+        select * from StaffTable WHERE staffCardNumber = #{_parameter} and staffCardNumber !='0';
     </select>
-    <!--删除一个待拍照人员-->
-    <delete id="deleteTemporaryStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        delete from StaffTable where staffCardNumber = #{staffCardNumber};
-    </delete>
     <!--依据卡号和姓名查询待拍照人员-->
     <select id="getWaitStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">

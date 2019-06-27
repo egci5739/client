@@ -202,6 +202,9 @@ public class PersonManagementForm {
                     case "黑名单":
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
                         break;
+                    case "video":
+                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
+                        break;
                     default:
                         break;
                 }

@@ -36,7 +36,6 @@ public class RegisterForm {
     private byte[] staffPhoto;
     private byte[] takePhoto;
     private StaffOperationService staffOperationService;
-    private int addWaitStaffStatus = 0;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private DefaultTableModel waitStaffModel;
     //    private List<StaffEntity> waitStaffList = new ArrayList<>();
@@ -106,7 +105,6 @@ public class RegisterForm {
     private JLabel identityPhotoLabel;
     private JButton communicationStatusButton;
     private JScrollPane waitStaffScroll;
-    private JButton addWaitStaffButton;
     private JButton choseLocalPictureButton;
     private JButton takePhotoButton;
     private StaffEntity staffEntity;
@@ -169,6 +167,7 @@ public class RegisterForm {
                     if (resultWaitStaffList.get(waitStaffTable.getSelectedRow()) != null) {
                         fillStaffInfo(resultWaitStaffList.get(waitStaffTable.getSelectedRow()));
                         oldStaff = resultWaitStaffList.get(waitStaffTable.getSelectedRow());
+                        operationCode = 2;//将从待拍照人员表中添加的人定为修改
                     }
                 } catch (Exception e1) {
                 }
@@ -263,13 +262,6 @@ public class RegisterForm {
                 }
             }
         });
-        //点击新增待拍照人员
-        addWaitStaffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addWaitStaff();
-            }
-        });
         //选取本地照片
         choseLocalPictureButton.addActionListener(new ActionListener() {
             @Override
@@ -310,36 +302,6 @@ public class RegisterForm {
     }
 
     /*
-     * 新增待拍照人员
-     * */
-    private void addWaitStaff() {
-        if (addWaitStaffStatus == 0) {
-            inputEnable();
-            searchButton.setEnabled(false);
-            addButton.setEnabled(false);
-            addWaitStaffButton.setText("确认");
-            addWaitStaffStatus = 1;
-        } else {
-            if (JOptionPane.showConfirmDialog(null, "确定要保存吗？", "保存提示", 0) == 0) {
-                StaffEntity staffEntity = getStaffEntity();
-                if (staffEntity.getStaffName().equals("") || staffEntity.getStaffCardNumber().equals("")) {
-                    JOptionPane.showMessageDialog(null, "中文名或卡号缺失！", "错误 ", 0);
-                    return;
-                } else {
-                    if (staffOperationService.addWaitStaff(staffEntity)) {
-                        cancel();
-                        addWaitStaffButton.setText("新增人员");
-                        getWaitStaff();
-                        addWaitStaffStatus = 0;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "卡号已经存在！", "错误 ", 0);
-                    }
-                }
-            }
-        }
-    }
-
-    /*
      * 重新连接到服务程序
      * */
     public void reconnectToServer() {
@@ -370,9 +332,6 @@ public class RegisterForm {
         chineseNameText.setEnabled(true);
         passCardText.setEnabled(true);
         changePhotoButton.setEnabled(false);
-        addWaitStaffButton.setText("新增人员");
-        addWaitStaffStatus = 0;
-        addWaitStaffButton.setEnabled(true);
         getWaitStaff();
         waitStaffTable.getSelectionModel().clearSelection();
         waitStaffTable.setEnabled(false);
@@ -409,7 +368,7 @@ public class RegisterForm {
         //启用ping功能,判断连接状态
         PingTimer pingTimer = new PingTimer(this);
         pingTimer.open();
-        JFrame frame = new JFrame("RegisterForm");
+        JFrame frame = new JFrame("办证客户端");
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -531,7 +490,6 @@ public class RegisterForm {
         saveButton.setEnabled(true);
         addButton.setEnabled(false);
         changePhotoButton.setEnabled(true);
-        addWaitStaffButton.setEnabled(false);
         model.setRowCount(0);
         operationCode = 1;
     }
@@ -593,7 +551,6 @@ public class RegisterForm {
             vector.add(2, staffEntity.getStaffCardId());
             model.addRow(vector);
         }
-        addWaitStaffButton.setEnabled(false);
         //查询待拍照人员表结果
         resultWaitStaffList = staffOperationService.searchWaitStaff(chineseNameText.getText(), passCardText.getText());
         for (StaffEntity staffEntity : resultWaitStaffList) {
@@ -715,6 +672,9 @@ public class RegisterForm {
                         break;
                     case "黑名单":
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
+                        break;
+                    case "video":
+                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
                         break;
                     default:
                         break;

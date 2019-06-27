@@ -114,27 +114,8 @@ public class StaffOperationService {
         if (Egci.faceServerStatus == 1) {
             deleteFaceServerFaceInfo(staffEntity);
         }
-        staffEntity.setStaffCardNumber("0");
         Egci.session.delete("mapping.staffMapper.deleteStaff", staffEntity);
         Egci.session.commit();
-    }
-
-    /*
-     * 新增或更新待拍照人员表
-     * */
-    public Boolean addWaitStaff(StaffEntity staffEntity) {
-        Boolean status = false;
-        //判断是否卡号已经存在
-        List<StaffEntity> staffEntityStaff = Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getStaffCardNumber());
-        List<StaffEntity> staffEntityTemporary = Egci.session.selectList("mapping.staffMapper.getWaitStaffWithCardAccurate", staffEntity);
-        if (staffEntityStaff.size() > 0 || staffEntityTemporary.size() > 0) {
-            status = false;
-        } else {
-            Egci.session.insert("mapping.staffMapper.insertWaitStaff", staffEntity);
-            Egci.session.commit();
-            status = true;
-        }
-        return status;
     }
 
     /*

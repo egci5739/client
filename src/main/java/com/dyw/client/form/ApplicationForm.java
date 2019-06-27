@@ -31,6 +31,7 @@ public class ApplicationForm {
          * 9：initAlarmHistoryForm：布控报警历史
          * 10：initExportStaffForm：导出人员信息
          * 11：initFaultSummationForm：失败次数统计
+         * 12：initHistoryVideoForm：历史通行视频回放
          * */
         String[] functions = Egci.accountEntity.getAccountFunction().split(",");
         for (String function : functions) {
@@ -69,6 +70,9 @@ public class ApplicationForm {
                     break;
                 case 11:
                     initFaultSummationForm();
+                    break;
+                case 12:
+                    initHistoryVideoForm();
                     break;
                 default:
                     break;
@@ -209,6 +213,15 @@ public class ApplicationForm {
     private void initFaultSummationForm() {
         FaultSummationForm faultSummationForm = new FaultSummationForm();
         applicationTabbedPane.add("失败次数统计", faultSummationForm.getFaultSummation());
+    }
+
+    /*
+     * 历史通行视频回放
+     * init
+     * */
+    private void initHistoryVideoForm() {
+        HistoryVideoForm historyVideoForm = new HistoryVideoForm();
+        applicationTabbedPane.add("通行视频记录", historyVideoForm.getHistoryVideoForm());
     }
 
     public void init() {

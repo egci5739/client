@@ -3,6 +3,7 @@ package com.dyw.client.service;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.FaceCollectionEntity;
 import com.dyw.client.form.RegisterForm;
+import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
+                Tool.showMessage("与服务程序断开连接", "提示", 1);
                 Egci.workStatus = 1;
                 registerForm.changeCommunicationStatus(1);
                 break;

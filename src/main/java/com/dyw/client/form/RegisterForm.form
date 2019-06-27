@@ -80,15 +80,6 @@
                   <text value="重新加载"/>
                 </properties>
               </component>
-              <component id="1cd7e" class="javax.swing.JButton" binding="addWaitStaffButton">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value="新增人员"/>
-                </properties>
-              </component>
             </children>
           </grid>
         </children>
