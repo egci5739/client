@@ -19,7 +19,6 @@ public class SessionService {
         try {
             //mybatis的配置文件
 //            String resource = "config/conf.xml";
-//            String resource = System.getProperty("user.dir") + "\\config\\conf.xml";
 //            Reader reader = Resources.getResourceAsReader(resource);
             File file = new File(System.getProperty("user.dir") + "\\config\\conf.xml");
             FileInputStream fileInputStream = new FileInputStream(file);

@@ -42,7 +42,7 @@ public class DataAnalysisForm {
     private List<EquipmentEntity> equipmentEntityList;
 
     public DataAnalysisForm() {
-        equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipment");
+        equipmentEntityList = Egci.session.selectList("mapping.equipmentMapper.getAllEquipmentWithCondition");
         String[] columnDataAnalysisInfo = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "成功率", "失败率"};
         dataAnalysisModel = new DefaultTableModel() {
             @Override

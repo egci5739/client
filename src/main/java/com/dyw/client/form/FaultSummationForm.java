@@ -37,7 +37,7 @@ public class FaultSummationForm {
 
 
     public FaultSummationForm() {
-        faultSummationEntityList = Egci.session.selectList("mapping.passInfoMapper.getAllFaultSummation");
+        faultSummationEntityList = Egci.session.selectList("mapping.passRecordMapper.getAllFaultSummation");
         String[] columnFaultSummation = {"姓名", "卡号", "失败次数", "最后一次失败时间"};
         faultSummationModel = new DefaultTableModel() {
             @Override
@@ -74,7 +74,7 @@ public class FaultSummationForm {
      * */
     private void clearFaultSummation() {
         if (Tool.showConfirm("确认清空？", "提示")) {
-            Egci.session.delete("mapping.passInfoMapper.deleteAllFaultSummation");
+            Egci.session.delete("mapping.passRecordMapper.deleteAllFaultSummation");
             Egci.session.commit();
             search();
         }
@@ -87,7 +87,7 @@ public class FaultSummationForm {
         faultSummationTable.setRowSorter(null);
         faultSummationEntityList.clear();
         faultSummationModel.setRowCount(0);
-        faultSummationEntityList = Egci.session.selectList("mapping.passInfoMapper.getAllFaultSummation");
+        faultSummationEntityList = Egci.session.selectList("mapping.passRecordMapper.getAllFaultSummation");
         for (FaultSummationEntity faultSummationEntity : faultSummationEntityList) {
             Vector v = new Vector();
             v.add(0, faultSummationEntity.getName());

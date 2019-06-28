@@ -325,15 +325,14 @@ public class IntelligentApplicationForm {
                 try {
                     String timeInfo = whiteAlarmContentTable.getValueAt(menuStatus, 3).toString().substring(0, 19);
                     logger.info("抓拍时间:" + timeInfo);
-                    HCNetSDK.NET_DVR_TIME struStartTime = segmentationTime(0, timeInfo);//start
-                    HCNetSDK.NET_DVR_TIME struStopTime = segmentationTime(1, timeInfo);//end
+                    HCNetSDK.NET_DVR_TIME struStartTime = Tool.segmentationTime(0, timeInfo);//start
+                    HCNetSDK.NET_DVR_TIME struStopTime = Tool.segmentationTime(1, timeInfo);//end
                     PlaybackService playbackService = new PlaybackService();
                     playbackService.playOrPause(struStartTime, struStopTime, Egci.cameraMap.get(whiteAlarmContentTable.getValueAt(menuStatus, 4).toString()));
                 } catch (Exception e1) {
                     Tool.showMessage("查看录像出错", "提示", 0);
                     logger.error("查看录像出错", e1);
                 }
-
             }
         });
     }
@@ -579,7 +578,7 @@ public class IntelligentApplicationForm {
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
                         break;
                     case "video":
-                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
+                        Egci.fdLibIDForVideo = fdLibEntity.getFDID();
                         break;
                     default:
                         break;
@@ -635,46 +634,5 @@ public class IntelligentApplicationForm {
         tc.setWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMaxWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMinWidth(0);
-    }
-
-    /*
-     * 分割时间数据
-     * type:0-开始   1-结束
-     * */
-    private HCNetSDK.NET_DVR_TIME segmentationTime(int type, String timeInfo) {
-        logger.info("时间：" + timeInfo);
-        HCNetSDK.NET_DVR_TIME struNTPTime = new HCNetSDK.NET_DVR_TIME();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            if (type == 0) {
-                Date dateBefore = simpleDateFormat.parse(timeInfo);
-                long timestamp = dateBefore.getTime() - 10000;
-                Date dateAfter = new Date(timestamp);
-                timeInfo = simpleDateFormat.format(dateAfter);
-                //2019-05-22 04:47:54
-                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
-                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
-                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
-                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
-                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
-                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
-            } else {
-                Date dateBefore = simpleDateFormat.parse(timeInfo);
-                long timestamp = dateBefore.getTime() + 10000;
-                Date dateAfter = new Date(timestamp);
-                timeInfo = simpleDateFormat.format(dateAfter);
-                //2019-05-22 04:47:54
-                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
-                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
-                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
-                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
-                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
-                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
-            }
-            return struNTPTime;
-        } catch (Exception e) {
-            logger.error("获取播放时段出错", e);
-            return null;
-        }
     }
 }

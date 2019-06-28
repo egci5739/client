@@ -50,9 +50,9 @@ public class ApplicationForm {
                 case 4:
                     initAccountManagementForm();
                     break;
-                case 5:
-                    initDataAnalysisForm();
-                    break;
+//                case 5:
+//                    initDataAnalysisForm();
+//                    break;
                 case 6:
                     initEquipmentManagementForm();
                     break;
@@ -68,9 +68,9 @@ public class ApplicationForm {
                 case 10:
                     initExportStaffForm();
                     break;
-                case 11:
-                    initFaultSummationForm();
-                    break;
+//                case 11:
+//                    initFaultSummationForm();
+//                    break;
                 case 12:
                     initHistoryVideoForm();
                     break;
@@ -220,6 +220,9 @@ public class ApplicationForm {
      * init
      * */
     private void initHistoryVideoForm() {
+        if (Egci.faceServerStatus == 0) {
+            return;
+        }
         HistoryVideoForm historyVideoForm = new HistoryVideoForm();
         applicationTabbedPane.add("通行视频记录", historyVideoForm.getHistoryVideoForm());
     }

@@ -8,7 +8,7 @@ public class EquipmentEntity {
     private int equipmentPermission;
     private String equipmentSwitchIp;
     private String equipmentHostIp;
-    private String equipmentChannel;
+    private int equipmentChannel;
     private int equipmentValidity;
 
     //独有
@@ -73,11 +73,11 @@ public class EquipmentEntity {
         this.equipmentHostIp = equipmentHostIp;
     }
 
-    public String getEquipmentChannel() {
+    public int getEquipmentChannel() {
         return equipmentChannel;
     }
 
-    public void setEquipmentChannel(String equipmentChannel) {
+    public void setEquipmentChannel(int equipmentChannel) {
         this.equipmentChannel = equipmentChannel;
     }
 

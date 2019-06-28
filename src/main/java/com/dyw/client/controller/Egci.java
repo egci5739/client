@@ -3,6 +3,7 @@ package com.dyw.client.controller;
 import com.dyw.client.HCNetSDK;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
+import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.form.*;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.tool.Tool;
@@ -27,7 +28,7 @@ public class Egci {
     public static String fdLibIDForStranger;//给陌生人员用的ID
     public static String fdLibIDForStaff;//给电厂人员用的ID
     public static String fdLibIDForBlack;//给黑名单人员用的ID
-    public static String fdLibIDForVedio;//给历史视频回放用的ID
+    public static String fdLibIDForVideo;//给历史视频回放用的ID
     public static List<String> snapDeviceIpsOne = new ArrayList<>();//一核抓拍设备
     public static List<String> snapDeviceIpsTwo = new ArrayList<>();//二核抓拍设备
     public static List<String> snapDeviceIpsThree = new ArrayList<>();//三核抓拍设备
@@ -68,6 +69,15 @@ public class Egci {
             logger.error("读取配置信息出错", e);
             Tool.showMessage(e.getMessage(), "连接数据库出错", 0);
             return;
+        }
+        //初始化抓拍机map
+        try {
+            List<EquipmentEntity> cameraList = session.selectList("mapping.equipmentMapper.getALlCamera");
+            for (EquipmentEntity equipmentEntity : cameraList) {
+                cameraMap.put(equipmentEntity.getEquipmentName(), equipmentEntity.getEquipmentChannel());
+            }
+        } catch (Exception e) {
+            logger.error("初始化抓拍机map出错", e);
         }
         //创建登陆客户端
         loginForm = new LoginForm();

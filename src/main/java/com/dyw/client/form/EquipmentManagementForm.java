@@ -437,7 +437,7 @@ public class EquipmentManagementForm {
                             } else if (col == 1) {
                                 equipmentEntity.setEquipmentIp((String) equipmentManagerModel.getValueAt(row, col));
                             } else if (col == 2) {
-                                equipmentEntity.setEquipmentChannel((String) equipmentManagerModel.getValueAt(row, col));
+                                equipmentEntity.setEquipmentChannel((int) equipmentManagerModel.getValueAt(row, col));
                             }
                             Egci.session.update("mapping.equipmentMapper.updateEquipment", equipmentEntity);
                             Egci.session.commit();

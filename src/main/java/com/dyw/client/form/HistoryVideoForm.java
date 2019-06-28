@@ -2,11 +2,13 @@ package com.dyw.client.form;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dyw.client.HCNetSDK;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.TargetsEntity;
 import com.dyw.client.service.DateSelectorButtonService;
+import com.dyw.client.service.PlaybackService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -18,10 +20,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +57,11 @@ public class HistoryVideoForm {
     private JTextField similarityMaxText;
     private JTextField amountText;
     private JLabel amountLabel;
+
+    private JPopupMenu searchPopupMenu;
+    private int menuStatus = 0;
+    private JMenuItem videoMenuItem = new JMenuItem("查看录像");
+
 
     public HistoryVideoForm() {
         /*
@@ -144,6 +148,40 @@ public class HistoryVideoForm {
                 search();
             }
         });
+        /*
+         * 弹出右键菜单
+         * */
+        contentTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    //在table显示
+                    searchPopupMenu = new JPopupMenu();
+                    //表格 的rowAtPoint方法返回坐标所在的行号，参数为坐标类型，
+                    menuStatus = contentTable.rowAtPoint(e.getPoint());
+                    searchPopupMenu.add(videoMenuItem);
+                    searchPopupMenu.show(contentTable, e.getX(), e.getY());
+                }
+            }
+        });
+        /*
+         * 查看录像
+         * */
+        videoMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String timeInfo = contentTable.getValueAt(menuStatus, 1).toString().replace("T", " ").replace("Z", "");
+                    logger.info("抓拍时间:" + timeInfo);
+                    HCNetSDK.NET_DVR_TIME struStartTime = Tool.segmentationTime(0, timeInfo);//start
+                    HCNetSDK.NET_DVR_TIME struStopTime = Tool.segmentationTime(1, timeInfo);//end
+                    PlaybackService playbackService = new PlaybackService();
+                    playbackService.playOrPause(struStartTime, struStopTime, Egci.cameraMap.get(contentTable.getValueAt(menuStatus, 2).toString()));
+                } catch (Exception e1) {
+                    Tool.showMessage("查看录像出错", "提示", 0);
+                    logger.error("查看录像出错", e1);
+                }
+            }
+        });
     }
 
     /*
@@ -188,7 +226,7 @@ public class HistoryVideoForm {
             } else {//本地图片搜索
                 image = Tool.getPictureStream(imagePath.getText());
             }
-            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, Egci.fdLibIDForVedio, image, null);
+            org.json.JSONObject resultFaceUrlData = Tool.faceInfoOperation(1, Egci.fdLibIDForVideo, image, null);
             if (resultFaceUrlData.getInt("statusCode") == 1) {
                 /*
                  * 第二步：查询抓拍结果
@@ -241,7 +279,7 @@ public class HistoryVideoForm {
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
                         break;
                     case "video":
-                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
+                        Egci.fdLibIDForVideo = fdLibEntity.getFDID();
                         break;
                     default:
                         break;

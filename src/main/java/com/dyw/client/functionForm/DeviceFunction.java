@@ -124,7 +124,7 @@ public class DeviceFunction {
             equipmentEntity.setEquipmentPermission(equipmentPermissionCombo.getSelectedIndex());
             equipmentEntity.setEquipmentSwitchIp(equipmentSwitchIpText.getText());
             equipmentEntity.setEquipmentHostIp(equipmentHostIpText.getText());
-            equipmentEntity.setEquipmentChannel(equipmentChannelText.getText());
+            equipmentEntity.setEquipmentChannel(Integer.parseInt(equipmentChannelText.getText()));
             Egci.session.insert("mapping.equipmentMapper.addEquipment", equipmentEntity);
             Egci.session.commit();
             equipmentManagementForm.refreshEquipmentCollection();

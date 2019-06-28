@@ -4,6 +4,7 @@ import ISAPI.HttpsClientUtil;
 import ISAPI.JsonFormatTool;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.dyw.client.HCNetSDK;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.ConfigTableEntity;
@@ -21,6 +22,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -579,5 +581,46 @@ public class Tool {
                 break;
         }
         return info;
+    }
+
+    /*
+     * 分割时间数据
+     * type:0-开始   1-结束
+     * */
+    public static HCNetSDK.NET_DVR_TIME segmentationTime(int type, String timeInfo) {
+        logger.info("时间：" + timeInfo);
+        HCNetSDK.NET_DVR_TIME struNTPTime = new HCNetSDK.NET_DVR_TIME();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            if (type == 0) {
+                Date dateBefore = simpleDateFormat.parse(timeInfo);
+                long timestamp = dateBefore.getTime() - 10000;
+                Date dateAfter = new Date(timestamp);
+                timeInfo = simpleDateFormat.format(dateAfter);
+                //2019-05-22 04:47:54
+                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
+                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
+                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
+                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
+                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
+                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
+            } else {
+                Date dateBefore = simpleDateFormat.parse(timeInfo);
+                long timestamp = dateBefore.getTime() + 10000;
+                Date dateAfter = new Date(timestamp);
+                timeInfo = simpleDateFormat.format(dateAfter);
+                //2019-05-22 04:47:54
+                struNTPTime.dwYear = Integer.parseInt(timeInfo.substring(0, 4));
+                struNTPTime.dwMonth = Integer.parseInt(timeInfo.substring(5, 7));
+                struNTPTime.dwDay = Integer.parseInt(timeInfo.substring(8, 10));
+                struNTPTime.dwHour = Integer.parseInt(timeInfo.substring(11, 13));
+                struNTPTime.dwMinute = Integer.parseInt(timeInfo.substring(14, 16));
+                struNTPTime.dwSecond = Integer.parseInt(timeInfo.substring(17, 19));
+            }
+            return struNTPTime;
+        } catch (Exception e) {
+            logger.error("获取播放时段出错", e);
+            return null;
+        }
     }
 }

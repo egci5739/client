@@ -39,7 +39,7 @@ public class PlaybackService extends javax.swing.JDialog {
     public PlaybackService() {
         //登陆NVR
         loginService = new LoginService();
-        loginService.login(Egci.configEntity.getNvrServerIp(), (short) Egci.configEntity.getNvrServerPort(), "admin", "hik12345");
+        loginService.login(Egci.configEntity.getNvrServerIp(), Egci.configEntity.getNvrServerPort(), "admin", "hik12345");
         m_lUserID = loginService.getlUserID();
         //打开播放窗口
         playbackFunction = new PlaybackFunction();

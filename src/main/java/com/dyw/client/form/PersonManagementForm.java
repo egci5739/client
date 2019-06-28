@@ -203,7 +203,7 @@ public class PersonManagementForm {
                         Egci.fdLibIDForBlack = fdLibEntity.getFDID();
                         break;
                     case "video":
-                        Egci.fdLibIDForVedio = fdLibEntity.getFDID();
+                        Egci.fdLibIDForVideo = fdLibEntity.getFDID();
                         break;
                     default:
                         break;

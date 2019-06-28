@@ -36,8 +36,17 @@
             and passRecordEventTypeId=#{passRecordEventTypeId}
         </if>
     </select>
+    <!--更新事件说明-->
     <update id="updatePassRecordNote" parameterType="com.dyw.client.entity.PassRecordEntity">
         update PassRecordTable set passRecordNote=#{passRecordNote},passRecordNoteId=#{passRecordNoteId} where
         passRecordId = #{passRecordId}
     </update>
+    <!--查询全部统计失败统计信息-->
+    <select id="getAllFaultSummation" resultType="com.dyw.client.entity.FaultSummationEntity" flushCache="true">
+        select * from FaultSummation INNER JOIN Staff ON FaultSummation.cardNumber=Staff.CardNumber
+    </select>
+    <!--清空全部失败统计信息-->
+    <delete id="deleteAllFaultSummation">
+        delete from FaultSummation
+    </delete>
 </mapper>
