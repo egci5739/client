@@ -11,6 +11,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryPoolMXBean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +82,18 @@ public class Egci {
         } catch (Exception e) {
             logger.error("初始化抓拍机map出错", e);
         }
+        /*
+         * 查看系统资源状态
+         * */
+        logger.info("Runtime max: " + mb(Runtime.getRuntime().maxMemory()));
+        MemoryMXBean m = ManagementFactory.getMemoryMXBean();
+
+        logger.info("Non-heap: " + mb(m.getNonHeapMemoryUsage().getMax()));
+        logger.info("Heap: " + mb(m.getHeapMemoryUsage().getMax()));
+
+        for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
+            logger.info("Pool: " + mp.getName() + " (type " + mp.getType() + ")" + " = " + mb(mp.getUsage().getMax()));
+        }
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();
@@ -90,5 +105,9 @@ public class Egci {
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
         Egci.initClient();
+    }
+
+    static String mb(long s) {
+        return String.format("%d (%.2f M)", s, (double) s / (1024 * 1024));
     }
 }

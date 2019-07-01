@@ -37,7 +37,6 @@ public class DeviceFunction {
     private EquipmentEntity equipmentEntity;
     private Logger logger = LoggerFactory.getLogger(DeviceFunction.class);
 
-
     public DeviceFunction(EquipmentManagementForm equipmentManagementForm, EquipmentEntity equipmentEntity) {
         this.equipmentManagementForm = equipmentManagementForm;
         this.equipmentEntity = equipmentEntity;
@@ -117,6 +116,10 @@ public class DeviceFunction {
             Tool.showMessage("请正确选择设备权限", "提示", 0);
             return;
         }
+        if (equipmentPermissionCombo.getSelectedIndex() == 1 && equipmentSwitchIpText.getText().equals("")) {
+            Tool.showMessage("请正确填写切换器IP", "提示", 0);
+            return;
+        }
         try {
             equipmentEntity.setEquipmentType(equipmentTypeCombo.getSelectedIndex());
             equipmentEntity.setEquipmentName(equipmentNameText.getText());
@@ -124,7 +127,11 @@ public class DeviceFunction {
             equipmentEntity.setEquipmentPermission(equipmentPermissionCombo.getSelectedIndex());
             equipmentEntity.setEquipmentSwitchIp(equipmentSwitchIpText.getText());
             equipmentEntity.setEquipmentHostIp(equipmentHostIpText.getText());
-            equipmentEntity.setEquipmentChannel(Integer.parseInt(equipmentChannelText.getText()));
+            try {
+                equipmentEntity.setEquipmentChannel(Integer.parseInt(equipmentChannelText.getText()));
+            } catch (NumberFormatException e) {
+                equipmentEntity.setEquipmentChannel(0);
+            }
             Egci.session.insert("mapping.equipmentMapper.addEquipment", equipmentEntity);
             Egci.session.commit();
             equipmentManagementForm.refreshEquipmentCollection();
