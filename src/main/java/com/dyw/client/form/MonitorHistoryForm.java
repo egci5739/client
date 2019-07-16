@@ -18,10 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.event.*;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class MonitorHistoryForm {
     private Logger logger = LoggerFactory.getLogger(MonitorHistoryForm.class);
@@ -128,7 +125,7 @@ public class MonitorHistoryForm {
             }
         });
         //初始化历史查询结果表格
-        String[] columnHistoryInfo = {"时间", "姓名", "卡号", "事件", "分值", "设备", "底图", "抓拍"};
+        String[] columnHistoryInfo = {"时间", "姓名", "卡号", "事件", "说明", "分值", "设备", "底图", "抓拍"};
         resultModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -212,8 +209,11 @@ public class MonitorHistoryForm {
         condition.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
         condition.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
         resultModel.setRowCount(0);
+        logger.info("开始查询时间：" + new Date());
         passInfoHistoryList = Egci.session.selectList("mapping.passRecordMapper.getHistoryPassInfo", condition);
+        logger.info("结束查询时间：" + new Date());
         displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
+        logger.info("显示结束时间" + new Date());
     }
 
     /*
@@ -222,16 +222,21 @@ public class MonitorHistoryForm {
     private void displaySearchResult(List<PassRecordEntity> passInfoEntityList) {
         resultModel.setRowCount(0);
         for (PassRecordEntity passInfoEntity : passInfoEntityList) {
-            Vector v = new Vector();
-            v.add(0, passInfoEntity.getPassRecordPassTime());
-            v.add(1, passInfoEntity.getPassRecordName());
-            v.add(2, passInfoEntity.getPassRecordCardNumber());
-            v.add(3, Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()));
-            v.add(4, passInfoEntity.getPassRecordSimilarity());
-            v.add(5, passInfoEntity.getPassRecordEquipmentName());
-            v.add(6, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
-            v.add(7, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
-            resultModel.addRow(v);
+            try {
+                Vector v = new Vector();
+                v.add(0, passInfoEntity.getPassRecordPassTime());
+                v.add(1, passInfoEntity.getPassRecordName());
+                v.add(2, passInfoEntity.getPassRecordCardNumber());
+                v.add(3, Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()));
+                v.add(4, passInfoEntity.getPassRecordNote());
+                v.add(5, passInfoEntity.getPassRecordSimilarity());
+                v.add(6, passInfoEntity.getPassRecordEquipmentName());
+                v.add(7, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
+                v.add(8, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
+                resultModel.addRow(v);
+            } catch (Exception e) {
+                logger.error("显示查询结果出错", e);
+            }
         }
         passTotalNumberLabel.setText("共有： " + passInfoHistoryList.size() + " 条记录");
     }

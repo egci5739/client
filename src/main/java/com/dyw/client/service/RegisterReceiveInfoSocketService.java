@@ -55,9 +55,25 @@ public class RegisterReceiveInfoSocketService extends Thread {
                 info = br.readLine();
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
-                    FaceCollectionEntity collectionEntity = Egci.session.selectOne("mapping.staffMapper.getStaffCollectionInfo", Integer.parseInt(info));
-                    Egci.session.commit();
-                    registerForm.fillCollectionInfo(collectionEntity);
+                    if (info.equals("error")) {
+                        registerForm.changeCommunicationStatus(3);
+                        Egci.workStatus = 3;
+                        registerForm.reconnectToServer();
+                    } else {
+                        try {
+                            FaceCollectionEntity collectionEntity = Egci.session.selectOne("mapping.staffMapper.getStaffCollectionInfo", Integer.parseInt(info));
+                            Egci.session.commit();
+                            registerForm.fillCollectionInfo(collectionEntity);
+                        } catch (NumberFormatException e) {
+                            registerForm.changeCommunicationStatus(0);
+                            Egci.workStatus = 0;
+                            try {
+                                Thread.sleep(20000);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
@@ -71,8 +87,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
 
     @Override
     public void run() {
-        registerForm.changeCommunicationStatus(0);
-        Egci.workStatus = 0;
+
         receiveInfo();
     }
 }

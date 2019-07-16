@@ -11,10 +11,6 @@
             where equipmentPermission = #{_parameter} and equipmentType = 1;
         </if>
     </select>
-    <!--查询所有抓拍机信息-->
-    <select id="getALlCamera" resultType="com.dyw.client.entity.EquipmentEntity" flushCache="true">
-        select * from EquipmentTable where equipmentType = 3;
-    </select>
     <!--查询所有设备信息-->
     <select id="getAllEquipment" resultType="com.dyw.client.entity.EquipmentEntity">
         select * from EquipmentTable ORDER BY equipmentPermission;
@@ -39,8 +35,8 @@
     <delete id="deleteEquipment" parameterType="Integer">
         delete from EquipmentTable where equipmentId =#{equipmentId};
     </delete>
-    <!--收取抓拍机信息-->
-    <select id="getAllCamera" resultType="com.dyw.client.entity.EquipmentEntity">
+    <!--查询所有抓拍机信息-->
+    <select id="getALlCamera" resultType="com.dyw.client.entity.EquipmentEntity" flushCache="true">
         select * from EquipmentTable where equipmentType = 3;
     </select>
     <!--根据主机IP读取采集设备信息-->

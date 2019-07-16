@@ -18,7 +18,7 @@ public class PingTimer {
     public void open() {
         Timer timer = new Timer();
         PingTask pingTask = new PingTask(registerForm);
-        timer.schedule(pingTask, 1000, 20000);
-        logger.info("启用系统状态监测");
+        timer.schedule(pingTask, 180000, 10000);
+        logger.info("启用办证端状态监测");
     }
 }

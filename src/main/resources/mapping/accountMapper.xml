@@ -16,4 +16,8 @@
         insert into AccountTable (accountName,accountPass,accountFunction,accountPermission) values
         (#{accountName},#{accountPass},#{accountFunction},#{accountPermission});
     </insert>
+    <!--删除一个用户-->
+    <delete id="deleteAccount" parameterType="com.dyw.client.entity.AccountEntity">
+        delete from AccountTable where accountId = #{accountId};
+    </delete>
 </mapper>

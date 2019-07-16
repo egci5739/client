@@ -3,39 +3,36 @@ package com.dyw.client.service;
 import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 //import com.dyw.client.form.MonitorForm;
+import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.form.MonitorRealTimeForm;
-import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 
 public class MonitorReceiveInfoSocketService extends Thread {
     private Logger logger = LoggerFactory.getLogger(MonitorReceiveInfoSocketService.class);
     private OutputStream os;
     private Socket socket;
-    private MonitorRealTimeForm monitorRealTimeForm;
-    private EquipmentEntity equipmentEntity;
 
     /*
      * 构造函数
+     * MonitorRealTime
      * */
-    public MonitorReceiveInfoSocketService(MonitorRealTimeForm monitorRealTimeForm) {
+    public MonitorReceiveInfoSocketService() {
         try {
             socket = new Socket(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
-            this.monitorRealTimeForm = monitorRealTimeForm;
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
-            JOptionPane.showMessageDialog(null, "连接服务程序失败", "错误提示", 0);
-            return;
+//            JOptionPane.showMessageDialog(null, "连接服务程序失败", "错误提示", 0);
         }
     }
 
@@ -63,17 +60,22 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 if (info != null) {
                     logger.info("接收到的消息为" + info);
                     try {
-                        if (info.split("#")[0].equals("status")) {
-                            equipmentEntity = JSON.parseObject(info.split("#")[1], EquipmentEntity.class);
-                            if (equipmentEntity.getIsLogin() == 0) {
-                                Tool.showMessage("设备：" + equipmentEntity.getEquipmentName() + "离线", "提示", 1);
-                            } else {
-                                Tool.showMessage("设备：" + equipmentEntity.getEquipmentName() + "上线", "提示", 1);
-                            }
+                        if (info.equals("success")) {
+                            Egci.monitorWorkStatus = 1;
+                        } else if (info.split("#")[0].equals("status")) {
+//                            equipmentEntityList = JSON.parseArray(info.split("#")[1], EquipmentEntity.class);
+                            Egci.equipmentTreeForm.getEquipmentStatus();
+                        } else if (info.split("#")[0].equals("alarm")) {
+                            Egci.alarmForm.addAlarmInfo(JSON.parseObject(info.split("#")[1], AlarmEntity.class));
                         } else {
                             PassRecordEntity passInfoEntity = Egci.session.selectOne("mapping.passRecordMapper.getPassInfo", info);
                             if (passInfoEntity != null) {
-                                monitorRealTimeForm.addPassInfo(passInfoEntity);
+                                try {
+                                    Egci.monitorRealTimeForm.addPassInfo(passInfoEntity);
+                                } catch (Exception ignored) {
+
+                                }
+                                Egci.accessRecordForm.addPassInfo(passInfoEntity);
                             }
                         }
                     } catch (Exception e) {
@@ -82,9 +84,8 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
-                Tool.showMessage("与服务程序断开连接", "提示", 1);
-                Egci.workStatus = 1;
-//                monitorForm.changeCommunicationStatus(1);
+                Egci.monitorWorkStatus = 0;
+//                Tool.showMessage("正在重新连接服务器...", "提示", 1);
                 break;
             }
         }
@@ -92,8 +93,6 @@ public class MonitorReceiveInfoSocketService extends Thread {
 
     @Override
     public void run() {
-//        monitorForm.changeCommunicationStatus(0);
-        Egci.workStatus = 0;
         receiveInfo();
     }
 }

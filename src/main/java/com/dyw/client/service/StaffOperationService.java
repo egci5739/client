@@ -147,7 +147,7 @@ public class StaffOperationService {
                     if (resultData.getInt("statusCode") == 1) {
                         // Tool.showMessage("添加成功", "提示", 0);
                     } else {
-                        logger.info("更新脸谱服务器中的人员信息出错，错误码：" + resultData.getString("errorMsg"));
+                        logger.info("更新脸谱服务器中的人员信息出错，错误信息：" + resultData.getString("errorMsg"));
                     }
                 } catch (Exception e) {
                     logger.error("更新脸谱服务器中的人员信息出错,不提示错误信息");

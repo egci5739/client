@@ -22,7 +22,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.event.*;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -170,7 +173,7 @@ public class HistoryVideoForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String timeInfo = contentTable.getValueAt(menuStatus, 1).toString().replace("T", " ").replace("Z", "");
+                    String timeInfo = contentTable.getValueAt(menuStatus, 1).toString();
                     logger.info("抓拍时间:" + timeInfo);
                     HCNetSDK.NET_DVR_TIME struStartTime = Tool.segmentationTime(0, timeInfo);//start
                     HCNetSDK.NET_DVR_TIME struStopTime = Tool.segmentationTime(1, timeInfo);//end
@@ -240,6 +243,7 @@ public class HistoryVideoForm {
                 inboundData.put("similarityMin", Float.parseFloat(similarityMinText.getText()) / 100);//最小阈值
                 inboundData.put("similarityMax", Float.parseFloat(similarityMaxText.getText()) / 100);//最大阈值
                 inboundData.put("dataType", "URL");
+                inboundData.put("pictureMerge", false);//attention:一人多图是否合并
                 inboundData.put("modelMaxNum", Integer.parseInt(amountText.getText()));
                 inboundData.put("targetModelData", "");
                 inboundData.put("faceURL", resultFaceUrlData.getString("URL"));//图片url
@@ -299,7 +303,7 @@ public class HistoryVideoForm {
             for (TargetsEntity targetsEntity : targetsEntityList) {
                 Vector vector = new Vector();
                 vector.add(0, Base64.encodeBytes(Tool.getURLStream(targetsEntity.getSubpicUrl())));
-                vector.add(1, targetsEntity.getCaptureTime());
+                vector.add(1, changeISO8601ToTime(targetsEntity.getCaptureTime()));
                 vector.add(2, targetsEntity.getCaptureSite());
                 vector.add(3, targetsEntity.getSimilarity());
                 historyVideoModel.addRow(vector);
@@ -307,5 +311,24 @@ public class HistoryVideoForm {
         } catch (Exception e) {
             logger.error("显示结果出错", e);
         }
+    }
+
+    /*
+     *
+     * */
+    private String changeISO8601ToTime(String ISO8601) {
+        String timeInfo = "";
+        try {
+            timeInfo = ISO8601.replace("T", " ").replace("Z", "");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateBefore = simpleDateFormat.parse(timeInfo);
+            long timestamp = dateBefore.getTime() + 28800000;
+            Date dateAfter = new Date(timestamp);
+            timeInfo = simpleDateFormat.format(dateAfter);
+        } catch (Exception e) {
+            logger.error("时间转换出错", e);
+            timeInfo = "2030-04-10 12:24:17";
+        }
+        return timeInfo;
     }
 }

@@ -4,11 +4,11 @@
         "config/mybatis-3-mapper.dtd">
 <mapper namespace="mapping.passRecordMapper">
     <!--获取通行信息-->
-    <select id="getPassInfo" resultType="com.dyw.client.entity.PassRecordEntity">
+    <select id="getPassInfo" resultType="com.dyw.client.entity.PassRecordEntity" flushCache="true">
         select * from PassRecordTable where passRecordId=#{passRecordId};
     </select>
     <!--获取历史通行记录-->
-    <select id="getHistoryPassInfo" resultType="com.dyw.client.entity.PassRecordEntity">
+    <select id="getHistoryPassInfo" resultType="com.dyw.client.entity.PassRecordEntity" flushCache="true">
         select * from PassRecordTable where passRecordPassTime &gt; #{startDate} and passRecordPassTime &lt;
         #{endDate}
         <if test="passRecordEquipmentIp != null">
@@ -26,7 +26,7 @@
         ORDER BY passRecordPassTime;
     </select>
     <!--获取单台设备通行总数-->
-    <select id="getPassNumberCount" resultType="Integer">
+    <select id="getPassNumberCount" resultType="Integer" flushCache="true">
         select count(*) from PassRecordTable where passRecordEquipmentIp=#{passRecordEquipmentIp} and passRecordPassTime
         &gt; #{startDate} and
         passRecordPassTime

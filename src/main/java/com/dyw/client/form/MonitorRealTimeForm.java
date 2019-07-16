@@ -6,6 +6,7 @@ import com.dyw.client.entity.NoteEntity;
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.functionForm.NoteFunction;
 import com.dyw.client.service.MonitorReceiveInfoSocketService;
+import com.dyw.client.service.NetStateService;
 import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -60,16 +61,11 @@ public class MonitorRealTimeForm {
     private int passSuccessBottomStatus = 0;
     private int passFaultBottomStatus = 0;
 
-    List<NoteEntity> noteEntityList;
     private JPopupMenu searchPopupMenu;
     private int menuStatus = 0;
 
     public MonitorRealTimeForm() {
-        noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
-        //创建接收通行信息的socket对象
-        MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService(this);
-        monitorReceiveInfoSocketService.sendInfo(Tool.getAccessPermissionInfo(Egci.accountEntity.getAccountPermission()));
-        monitorReceiveInfoSocketService.start();
+        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
         //初始化通行结果表格
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息", "通行记录id"};
         passSuccessModel = new DefaultTableModel() {
@@ -222,7 +218,7 @@ public class MonitorRealTimeForm {
     }
 
     /*
-     * 根据卡号查询人员信息
+     * 更新失败失败
      * */
     private void addEvent(int noteId, String noteName, int passId) {
         PassRecordEntity passRecordEntity = new PassRecordEntity();

@@ -1,10 +1,19 @@
 package com.dyw.client.entity;
 
 public class AccountEntity {
+    private int accountId;
     private String accountName;
     private String accountPass;
     private String accountFunction;
     private int accountPermission;
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
 
     public String getAccountName() {
         return accountName;

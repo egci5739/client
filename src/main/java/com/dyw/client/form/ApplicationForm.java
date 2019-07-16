@@ -1,8 +1,21 @@
 package com.dyw.client.form;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
+import com.dyw.client.entity.protection.HttpHostNotificationEntity;
+import com.dyw.client.form.guard.AccessRecordForm;
+import com.dyw.client.form.guard.AlarmForm;
+import com.dyw.client.form.guard.EquipmentTreeForm;
+import com.dyw.client.service.MonitorReceiveInfoSocketService;
+import com.dyw.client.service.NetStateService;
+import com.dyw.client.timer.MonitorStatusTimer;
+import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.InetAddress;
+import java.util.List;
 
 public class ApplicationForm {
     private JFrame frame;
@@ -32,6 +45,9 @@ public class ApplicationForm {
          * 10：initExportStaffForm：导出人员信息
          * 11：initFaultSummationForm：失败次数统计
          * 12：initHistoryVideoForm：历史通行视频回放
+         * 13：initEquipmentTreeForm：设备状态树
+         * 14：initAccessRecordForm：实时通行-新
+         * 15：initAlarmForm：报警记录
          * */
         String[] functions = Egci.accountEntity.getAccountFunction().split(",");
         for (String function : functions) {
@@ -44,6 +60,7 @@ public class ApplicationForm {
                     break;
                 case 2:
                     initMonitorHistoryForm();
+                    break;
                 case 3:
                     initIntelligentApplicationForm();
                     break;
@@ -73,6 +90,15 @@ public class ApplicationForm {
 //                    break;
                 case 12:
                     initHistoryVideoForm();
+                    break;
+                case 13:
+                    initEquipmentTreeForm();
+                    break;
+                case 14:
+                    initAccessRecordForm();
+                    break;
+                case 15:
+                    initAlarmForm();
                     break;
                 default:
                     break;
@@ -145,8 +171,10 @@ public class ApplicationForm {
      * init
      * */
     private void initMonitorRealTimeForm() {
-        MonitorRealTimeForm monitorRealTimeForm = new MonitorRealTimeForm();
-        applicationTabbedPane.add("实时监控", monitorRealTimeForm.getMonitorRealTimePanel());
+        Egci.monitorRealTimeForm = new MonitorRealTimeForm();
+        MonitorStatusTimer monitorStatusTimer = new MonitorStatusTimer(Egci.monitorRealTimeForm);
+        monitorStatusTimer.open();
+        applicationTabbedPane.add("实时监控", Egci.monitorRealTimeForm.getMonitorRealTimePanel());
     }
 
     /*
@@ -227,10 +255,64 @@ public class ApplicationForm {
         applicationTabbedPane.add("通行视频记录", historyVideoForm.getHistoryVideoForm());
     }
 
+    /*
+     * 设备状态树
+     * init
+     * */
+    private void initEquipmentTreeForm() {
+        Egci.equipmentTreeForm = new EquipmentTreeForm();
+//        applicationTabbedPane.add("设备状态树", treeForm.getEquipmentTreeForm());
+        Egci.equipmentTreeForm.init();
+    }
+
+    /*
+     * 实时通行-新
+     * initAccessRecordForm
+     * */
+    private void initAccessRecordForm() {
+        Egci.accessRecordForm = new AccessRecordForm();
+        Egci.accessRecordForm.init();
+    }
+
+    /*
+     * 报警记录
+     * init
+     * */
+    private void initAlarmForm() {
+        Egci.alarmForm = new AlarmForm();
+        Egci.alarmForm.init();
+    }
+
     public void init() {
         frame = new JFrame("ApplicationForm");
         frame.setContentPane(this.applicationForm);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //自定义退出操作
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    Tool.showMessage("系统正在关闭中...", "系统正在关闭中..", 1);
+                    //第一步：获取全部报警主机信息，判断是否已存在
+                    String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
+                    String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
+                    List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
+                    for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
+                        if (httpHostNotificationEntity.getUrl().equals(url)) {
+                            Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
+                        }
+                    }
+                    System.exit(0);
+                } catch (Exception e1) {
+                    System.exit(0);
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+        });
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.getRootPane().setDefaultButton(monitorEnterButton);
@@ -238,6 +320,19 @@ public class ApplicationForm {
         try {
             monitorText.requestFocus();
         } catch (Exception ignored) {
+        }
+        try {
+            NetStateService netStateService = new NetStateService();
+            if (netStateService.ping(Egci.configEntity.getSocketIp())) {
+                //创建接收通行信息的socket对象
+                MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService();
+                monitorReceiveInfoSocketService.sendInfo(Tool.getAccessPermissionInfo(Egci.accountEntity.getAccountPermission()));
+                monitorReceiveInfoSocketService.start();
+            } else {
+                Egci.monitorWorkStatus = 0;
+            }
+        } catch (Exception e) {
+            Egci.monitorWorkStatus = 0;
         }
     }
 }

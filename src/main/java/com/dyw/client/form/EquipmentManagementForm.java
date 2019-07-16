@@ -299,6 +299,17 @@ public class EquipmentManagementForm {
                 SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
                 sendInfoSocketService.sendInfo("3#0");
                 equipmentEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentEntity.class);
+                for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+                    if (equipmentEntity.getEquipmentType() == 4) {
+                        for (EquipmentEntity equipmentEntity1 : equipmentEntityList) {
+                            if (equipmentEntity.getRelativeEquipmentId() == equipmentEntity1.getEquipmentId()) {
+                                equipmentEntity1.setEquipmentSwitchIp(equipmentEntity.getEquipmentIp());
+                                equipmentEntity1.setEquipmentValidity(equipmentEntity.getEquipmentValidity());
+                            }
+                        }
+                    }
+                }
+                logger.info("查询的状态信息：" + equipmentEntityList);//attention
                 equipmentTypeChangeCombo.setSelectedIndex(0);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     equipmentEntityMap.put(equipmentEntity.getEquipmentIp(), equipmentEntity);
@@ -328,7 +339,7 @@ public class EquipmentManagementForm {
                 break;
             case 1:
                 //初始化一体机设备管理表格
-                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "切换器IP", "人员数量", "一体机模式", "一体机是否在线", "切换器状态"};
+                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "切换器IP", "一体机是否在线", "切换器状态"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
                 equipmentManagerModel.setRowCount(0);
@@ -338,10 +349,10 @@ public class EquipmentManagementForm {
                         v.add(0, equipmentEntity.getEquipmentName());
                         v.add(1, equipmentEntity.getEquipmentIp());
                         v.add(2, equipmentEntity.getEquipmentSwitchIp());
-                        v.add(3, equipmentEntity.getCardNumber());
-                        v.add(4, Tool.equipmentPassModeToName(equipmentEntity.getPassMode()));
-                        v.add(5, Tool.isLogin(equipmentEntity.getIsLogin()));
-                        v.add(6, Tool.switchStatus(equipmentEntity.getEquipmentValidity()));
+//                        v.add(3, equipmentEntity.getCardNumber());
+//                        v.add(4, Tool.equipmentPassModeToName(equipmentEntity.getPassMode()));
+                        v.add(3, Tool.isLogin(equipmentEntity.getIsLogin()));
+                        v.add(4, Tool.switchStatus(equipmentEntity.getEquipmentValidity()));
                         equipmentManagerModel.addRow(v);
                     }
                 }
@@ -370,7 +381,7 @@ public class EquipmentManagementForm {
                 break;
             case 2:
                 //初始化采集设备管理表格
-                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "主机IP", "当前模式", "是否在线"};
+                columnEquipmentInfo = new String[]{"设备名称", "设备IP", "主机IP", "是否在线"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
                 equipmentManagerModel.setRowCount(0);
@@ -380,8 +391,8 @@ public class EquipmentManagementForm {
                         v.add(0, equipmentEntity.getEquipmentName());
                         v.add(1, equipmentEntity.getEquipmentIp());
                         v.add(2, equipmentEntity.getEquipmentHostIp());
-                        v.add(3, Tool.equipmentPassModeToName(equipmentEntity.getPassMode()));
-                        v.add(4, Tool.isLogin(equipmentEntity.getIsLogin()));
+//                        v.add(3, Tool.equipmentPassModeToName(equipmentEntity.getPassMode()));
+                        v.add(3, Tool.isLogin(equipmentEntity.getIsLogin()));
                         equipmentManagerModel.addRow(v);
                     }
                 }

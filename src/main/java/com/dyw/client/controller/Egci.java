@@ -5,6 +5,9 @@ import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.form.*;
+import com.dyw.client.form.guard.AccessRecordForm;
+import com.dyw.client.form.guard.AlarmForm;
+import com.dyw.client.form.guard.EquipmentTreeForm;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.tool.Tool;
 import org.apache.ibatis.session.SqlSession;
@@ -24,7 +27,8 @@ public class Egci {
     public static Map<String, String> functions = new HashMap<>();
     public static ConfigEntity configEntity;
     public static SqlSession session;
-    public static int workStatus;
+    public static int workStatus;//办证端状态符
+    public static int monitorWorkStatus;//监控端状态符
     public static AccountEntity accountEntity = new AccountEntity();
     private static LoginForm loginForm;
     public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
@@ -40,6 +44,11 @@ public class Egci {
     //初始化静态对象
     public static HCNetSDK hcNetSDK;
     public static Map<String, Integer> cameraMap = new HashMap<>();//抓拍机信息
+    //创建全局页面
+    public static EquipmentTreeForm equipmentTreeForm;//设备状态页面
+    public static MonitorRealTimeForm monitorRealTimeForm;//实时通行-旧
+    public static AccessRecordForm accessRecordForm;//实时通行-新
+    public static AlarmForm alarmForm;//报警记录
 
     /*
      * 初始化客户端程序

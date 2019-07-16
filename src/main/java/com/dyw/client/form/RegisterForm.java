@@ -307,10 +307,13 @@ public class RegisterForm {
     public void reconnectToServer() {
 //        if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
         try {
-            RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
-            registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
-            registerReceiveInfoSocketService.start();
-            useIdCardCheckBox.setSelected(true);
+            NetStateService netStateService = new NetStateService();
+            if (netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
+                RegisterReceiveInfoSocketService registerReceiveInfoSocketService = new RegisterReceiveInfoSocketService(this);
+                registerReceiveInfoSocketService.sendInfo("7#" + Egci.configEntity.getFaceCollectionIp());
+                registerReceiveInfoSocketService.start();
+                useIdCardCheckBox.setSelected(true);
+            }
         } catch (Exception e) {
 //            Tool.showMessage("重连失败，请确保服务程序运行正常", "提示", 0);
         }
@@ -518,7 +521,13 @@ public class RegisterForm {
                     }
                 } else {
                     if (Egci.session.selectList("mapping.staffMapper.getStaffWithCard", staffEntity.getStaffCardNumber()).size() > 0) {
-                        Tool.showMessage("卡号已存在", "提示", 0);
+//                        Tool.showMessage("卡号已存在", "提示", 0);
+                        if (Tool.showConfirm("卡号已存在，是否覆盖？", "提示")) {//attention
+                            //1.先删除要换成的卡号,比如旧卡号为：123，新卡号为：456，则先删除456
+                            staffOperationService.delete(staffEntity);
+                            staffOperationService.save(staffEntity, oldStaff);
+                            cancel();
+                        }
                     } else {
                         staffOperationService.save(staffEntity, oldStaff);
                         cancel();
@@ -559,7 +568,7 @@ public class RegisterForm {
             vector.add(1, staffEntity.getStaffCardNumber());
             waitStaffModel.addRow(vector);
         }
-        waitStaffTable.setEnabled(true);
+        waitStaffTable.setEnabled(false);
     }
 
     /*

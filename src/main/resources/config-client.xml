@@ -7,9 +7,8 @@
             <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-                <!--<property name="url" value="jdbc:sqlserver://192.168.40.10:1433;databaseName=EntranceGuard"/>-->
+                <!--<property name="url" value="jdbc:sqlserver://192.168.40.10:1433;databaseName=FaceRecognition"/>-->
                 <property name="url" value="jdbc:sqlserver://localhost:51178;databaseName=FaceRecognition"/>
-                <!--<property name="url" value="jdbc:sqlserver://192.168.1.152:1433;databaseName=EntranceGuard"/>-->
                 <property name="username" value="sa"/>
                 <property name="password" value="hik12345"/>
             </dataSource>
@@ -24,6 +23,7 @@
         <mapper resource="mapping/configMapper.xml"/>
         <mapper resource="mapping/passRecordMapper.xml"/>
         <mapper resource="mapping/staffMapper.xml"/>
+        <mapper resource="mapping/alarmMapper.xml"/>
     </mappers>
 
 </configuration>

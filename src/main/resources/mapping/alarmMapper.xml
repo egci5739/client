@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.alarmMapper">
+    <!--更新报警事件说明-->
+    <update id="updateAlarmNote" parameterType="com.dyw.client.entity.AlarmEntity">
+        update AlarmTable set alarmNote=#{alarmNote},alarmNoteId=#{alarmNoteId},operator=#{operator},alarmStatus=1 where
+        alarmId = #{alarmId}
+    </update>
+    <!--获取所有未处理报警-->
+    <select id="getUnsolvedAlarm" parameterType="com.dyw.client.entity.AlarmEntity"
+            resultType="com.dyw.client.entity.AlarmEntity" flushCache="true">
+        select * from AlarmTable where alarmPermission=#{alarmPermission} and alarmStatus=#{alarmStatus};
+    </select>
+</mapper>

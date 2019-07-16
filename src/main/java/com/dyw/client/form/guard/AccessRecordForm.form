@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.guard.AccessRecordForm">
+  <grid id="27dc6" binding="accessRecordForm" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="760" height="594"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="7305e" binding="accessRecordTitle" layout-manager="GridBagLayout">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="0.1"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="bdd9d" class="javax.swing.JLabel" binding="accessRecordTitleLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font size="20"/>
+              <text value="通行记录"/>
+            </properties>
+          </component>
+          <component id="a4187" class="javax.swing.JCheckBox" binding="accessRecordTitleCheckBox">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="20" bottom="0" right="20" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font size="20"/>
+              <selected value="true"/>
+              <text value="是否滚动"/>
+            </properties>
+          </component>
+          <component id="d0fb1" class="javax.swing.JButton" binding="accessRecordTitleButton">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font size="20"/>
+              <text value="清空页面"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="988b" binding="accessRecordContent" layout-manager="GridBagLayout">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="0.9"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <scrollpane id="56d8c" binding="accessRecordContentScroll">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="249f6" class="javax.swing.JTable" binding="accessRecordContentTable">
+                <constraints/>
+                <properties>
+                  <font size="16"/>
+                  <rowHeight value="30"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

@@ -181,6 +181,7 @@
             </constraints>
             <properties>
               <font size="20"/>
+              <preferredSize width="60" height="37"/>
               <text value="20"/>
             </properties>
           </component>
@@ -206,7 +207,7 @@
                 <constraints/>
                 <properties>
                   <font size="20"/>
-                  <rowHeight value="35"/>
+                  <rowHeight value="160"/>
                 </properties>
               </component>
             </children>

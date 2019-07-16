@@ -60,6 +60,9 @@ public class IntelligentApplicationForm {
     private JPanel livePreviewContentSixPanel;
     private JPanel livePreviewContentSevenPanel;
     private JPanel livePreviewContentEightPanel;
+    private JPanel livePreviewContentNinePanel;
+    private JPanel livePreviewContentTenPanel;
+
     private JPanel blackAlarmPanel;
     private JPanel blackAlarmTitlePanel;
     private JLabel blackAlarmTitleLabel;
@@ -85,8 +88,6 @@ public class IntelligentApplicationForm {
     private JScrollPane snapAlarmContentScroll;
     private JTable snapAlarmContentTable;
     private JButton playButton;
-    private JPanel livePreviewContentNinePanel;
-    private JPanel livePreviewContentTenPanel;
 
     private Logger logger = LoggerFactory.getLogger(IntelligentApplicationForm.class);
     private DefaultTableModel snapAlarmContentTableModel;
@@ -145,6 +146,8 @@ public class IntelligentApplicationForm {
         livePreviewContentPanelList.add(livePreviewContentSixPanel);
         livePreviewContentPanelList.add(livePreviewContentSevenPanel);
         livePreviewContentPanelList.add(livePreviewContentEightPanel);
+        livePreviewContentPanelList.add(livePreviewContentNinePanel);
+        livePreviewContentPanelList.add(livePreviewContentTenPanel);
         /*
          * 获取并设置抓拍机ip信息
          * */
@@ -342,13 +345,13 @@ public class IntelligentApplicationForm {
      * */
     private void addAlarmHost() {
         try {
-            //第一步：获取全部报警主机信息，判断是否已存在
+            //第一步：获取全部报警主机信息，判断是否已存在,如果存在就删除
             String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
             String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
             List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
             for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
                 if (httpHostNotificationEntity.getUrl().equals(url)) {
-                    return;
+                    Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
                 }
             }
             //新增报警主机信息
@@ -461,21 +464,20 @@ public class IntelligentApplicationForm {
         for (int i = 0; i < monitorPointEntityList.size(); i++) {
             if (Egci.snapDeviceIps.contains(monitorPointEntityList.get(i).getDeviceIP())) {
                 String streamURL = monitorPointEntityList.get(i).getStreamURL();
-                if (streamURL == null) {
-                    return;
+                if (streamURL != null) {
+                    EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+                    GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
+                    livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
+                    livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
+                    livePreviewContentPanelList.get(i).updateUI();
+                    //设置参数并播放
+                    EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+                    String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
+                    mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
+                    mediaPlayer.start();//停止了哈
+                    embeddedMediaPlayerList.add(mediaPlayer);
+                    embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
                 }
-                EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-                GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
-                livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
-                livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
-                livePreviewContentPanelList.get(i).updateUI();
-                //设置参数并播放
-                EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-                String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
-                mediaPlayer.playMedia(Tool.getRTSPAddress(streamURL), options); //播放rtsp流
-                mediaPlayer.start();//停止了哈
-                embeddedMediaPlayerList.add(mediaPlayer);
-                embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
             }
         }
     }

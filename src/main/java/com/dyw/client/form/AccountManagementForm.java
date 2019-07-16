@@ -48,6 +48,30 @@ public class AccountManagementForm {
                 addAccount();
             }
         });
+        /*
+         * 删除用户
+         * */
+        accountDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteAccount();
+            }
+        });
+    }
+
+    /**
+     * 删除用户信息
+     */
+    private void deleteAccount() {
+        if (accountManagementContentTable.getSelectedRow() < 0) {
+            Tool.showMessage("请先选择一个账户", "提示", 1);
+            return;
+        }
+        if (Tool.showConfirm("确认删除?", "提示")) {
+            Egci.session.delete("mapping.accountMapper.deleteAccount", accountEntityList.get(accountManagementContentTable.getSelectedRow()));
+            Egci.session.commit();
+            showAccountInfo();
+        }
     }
 
     /*
@@ -57,6 +81,7 @@ public class AccountManagementForm {
         AccountFunction accountFunction = new AccountFunction(this);
         accountFunction.init();
     }
+
 
     /*
      * 加载用户信息

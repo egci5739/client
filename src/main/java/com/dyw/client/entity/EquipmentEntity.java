@@ -15,6 +15,7 @@ public class EquipmentEntity {
     private int cardNumber;//卡数量
     private int isLogin;//是否在线
     private int passMode;//通行模式
+    private int relativeEquipmentId;
 
 
     public int getEquipmentId() {
@@ -111,5 +112,13 @@ public class EquipmentEntity {
 
     public void setPassMode(int passMode) {
         this.passMode = passMode;
+    }
+
+    public int getRelativeEquipmentId() {
+        return relativeEquipmentId;
+    }
+
+    public void setRelativeEquipmentId(int relativeEquipmentId) {
+        this.relativeEquipmentId = relativeEquipmentId;
     }
 }

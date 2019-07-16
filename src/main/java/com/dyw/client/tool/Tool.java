@@ -58,6 +58,9 @@ public class Tool {
             if (attrName.equals("ntpServerIp")) {
                 configEntity.setNtpServerIp(configTableEntity.getConfigValue());
             }
+            if (attrName.equals("socketIp")) {
+                configEntity.setSocketIp(configTableEntity.getConfigValue());
+            }
             if (attrName.equals("faceServerIp")) {
                 configEntity.setFaceServerIp(configTableEntity.getConfigValue());
             }
@@ -409,7 +412,13 @@ public class Tool {
      * 提示框
      * */
     public static void showMessage(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(null, message, title, messageType);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(null, message, title, messageType);
+            }
+        });
+        thread.start();
     }
 
     /*
@@ -622,5 +631,13 @@ public class Tool {
             logger.error("获取播放时段出错", e);
             return null;
         }
+    }
+
+    /*
+     * 删除指定的报警主机地址信息
+     * */
+    public static void deleteHttpHosts(String hostId) {
+        String instruction = "/ISAPI/Event/notification/httpHosts?format=json&ID=" + hostId;
+        sendInstructionAndReceiveStatus(4, instruction, null);
     }
 }

@@ -24,7 +24,7 @@
     </update>
     <!--删除人员信息-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
-        delete from StaffTable WHERE staffId=#{staffId};
+        delete from StaffTable WHERE staffCardNumber=#{staffCardNumber};
     </delete>
     <!--查询待拍照人员列表-->
     <select id="getTemporaryStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
@@ -61,7 +61,7 @@
     </insert>
     <!--获取全部人员信息-->
     <select id="getAllStaff" resultType="com.dyw.client.entity.StaffEntity" flushCache="true">
-        select * from StaffTable where staffCardNumber!='0';
+        select * from StaffTable where staffCardNumber!='0' and staffValidity=1;
     </select>
     <!--依据卡号精确查询人员-->
     <select id="getStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"

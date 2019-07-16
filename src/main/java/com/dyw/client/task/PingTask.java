@@ -34,11 +34,11 @@ public class PingTask extends TimerTask {
             } else if (!netStateService.ping(Egci.configEntity.getSocketIp())) {
                 registerForm.changeCommunicationStatus(2);
             } else if (Egci.workStatus == 1) {
-                registerForm.changeCommunicationStatus(5);
                 registerForm.changeCommunicationStatus(1);
                 registerForm.reconnectToServer();
             } else if (!netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
                 registerForm.changeCommunicationStatus(3);
+                registerForm.reconnectToServer();
             } else {
                 registerForm.changeCommunicationStatus(0);
             }
