@@ -60,14 +60,16 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <preferredSize width="450" height="2000"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="b549f" class="javax.swing.JTree" binding="equipmentTree">
                 <constraints/>
                 <properties>
                   <font size="24"/>
-                  <preferredSize width="500" height="1000"/>
+                  <preferredSize width="450" height="8000"/>
                 </properties>
               </component>
             </children>

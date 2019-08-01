@@ -2,6 +2,7 @@ package com.dyw.client.functionForm;
 
 import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.form.guard.AlarmForm;
+import com.dyw.client.service.BaseAlarmInterface;
 import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class AlarmFunction {
     private JButton confirmButton;
     private JFrame frame;
 
-    public AlarmFunction(AlarmForm alarmForm, AlarmEntity alarmEntity) {
+    public AlarmFunction(BaseAlarmInterface baseAlarmInterface, AlarmEntity alarmEntity) {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -23,7 +24,7 @@ public class AlarmFunction {
                     return;
                 }
                 alarmEntity.setAlarmNote(alarmArea.getText());
-                alarmForm.saveOtherEvent(alarmEntity);
+                baseAlarmInterface.saveOtherEvent(alarmEntity);
                 frame.dispose();
             }
         });

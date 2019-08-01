@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 import java.sql.Timestamp;
 import java.util.*;
@@ -54,6 +56,10 @@ public class MonitorHistoryForm {
     private JPanel passTotalNumberPanel;
     private JLabel passTotalNumberLabel;
     private JButton exportPassInfoButton;
+    private JLabel pageInfoLabel;//页数信息
+    private int totalPage;//总页数
+    private int currentPage = 1;//当前页
+    private RowSorter<TableModel> sorter;
 
     private String passCardSelectionDefaultHint = "请输入卡号";
     private String nameSelectionDefaultHint = "请输入姓名";
@@ -134,6 +140,8 @@ public class MonitorHistoryForm {
         };
         resultModel.setColumnIdentifiers(columnHistoryInfo);
         resultContentTable.setModel(resultModel);
+        sorter = new TableRowSorter<TableModel>(resultModel);
+        resultContentTable.setRowSorter(sorter);
         //表格中显示图片
         TableCellRenderer historyTableCellRenderer = new HistoryPhotoTableCellRenderer();
         resultContentTable.setDefaultRenderer(Object.class, historyTableCellRenderer);
@@ -149,6 +157,7 @@ public class MonitorHistoryForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
+                showPageInfo(1);
             }
         });
         //点击上一页
@@ -156,6 +165,7 @@ public class MonitorHistoryForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 displaySearchResult(pageSelectionService.previousPage(passInfoHistoryList));
+                showPageInfo(3);
             }
         });
         //点击下一页
@@ -163,6 +173,7 @@ public class MonitorHistoryForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 displaySearchResult(pageSelectionService.nextPage(passInfoHistoryList));
+                showPageInfo(2);
             }
         });
         //更改每页显示的页数
@@ -171,6 +182,7 @@ public class MonitorHistoryForm {
             public void actionPerformed(ActionEvent e) {
                 pageSelectionService.setPerPageNumber((Integer) perPageNumberSpinner.getValue());
                 displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
+                showPageInfo(1);
             }
         });
         resultContentTable.addContainerListener(new ContainerAdapter() {
@@ -214,6 +226,7 @@ public class MonitorHistoryForm {
         logger.info("结束查询时间：" + new Date());
         displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
         logger.info("显示结束时间" + new Date());
+        showPageInfo(1);
     }
 
     /*
@@ -263,5 +276,35 @@ public class MonitorHistoryForm {
         // TODO: place custom component creation code here
         startTimeSelectionButton = new DateSelectorButtonService();
         endTimeSelectionButton = new DateSelectorButtonService();
+    }
+
+    /*
+     * 计算并显示页数信息
+     * type:1-全新查询,首页；2-下一页；3-上一页
+     * */
+    private void showPageInfo(int type) {
+        totalPage = (int) Math.ceil(Float.parseFloat(String.valueOf(passInfoHistoryList.size())) / Float.parseFloat(String.valueOf(perPageNumberSpinner.getValue())));
+        switch (type) {
+            case 1:
+                currentPage = 1;
+                break;
+            case 2:
+                if (currentPage < totalPage) {
+                    currentPage += 1;
+                }
+                break;
+            case 3:
+                if (currentPage > 1) {
+                    currentPage -= 1;
+                }
+                break;
+            default:
+                break;
+        }
+        if (passInfoHistoryList.size() > 0) {
+            pageInfoLabel.setText("第 " + currentPage + " 页 共 " + totalPage + " 页");
+        } else {
+            pageInfoLabel.setText("");
+        }
     }
 }

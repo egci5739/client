@@ -46,10 +46,15 @@ public class AlarmHistoryForm {
     private JLabel snapStartTimeLabel;
     private JLabel snapEndTimeLabel;
     private JButton searchButton;
+    private JLabel totalNumberLabel;//总数量文本
+    private int totalNumber;//总数量
+    private JLabel pageInfoLabel;//页数信息文本
+    private int totalPage;//总页数
+    private int currentPage = 1;//当前页数
 
     private Logger logger = LoggerFactory.getLogger(AlarmHistoryForm.class);
     private DefaultTableModel alarmHistoryModel;
-    private int pageNum = 0;
+    private int pageNum = 0;//查询结果在结果列表中的起始位置
     private List<AlarmHistoryEntity> alarmHistoryEntityList = new ArrayList<>();
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
     private Map<Integer, String> conditionFdLibMap = new HashMap<>();
@@ -86,6 +91,7 @@ public class AlarmHistoryForm {
             public void actionPerformed(ActionEvent e) {
                 pageNum = 0;
                 search();
+                showPageInfo(1);
             }
         });
         /*
@@ -100,6 +106,7 @@ public class AlarmHistoryForm {
                 }
                 pageNum = pageNum - 30;
                 search();
+                showPageInfo(3);
             }
         });
         /*
@@ -110,6 +117,7 @@ public class AlarmHistoryForm {
             public void actionPerformed(ActionEvent e) {
                 pageNum = pageNum + 30;
                 search();
+                showPageInfo(2);
             }
         });
         //查询
@@ -122,6 +130,7 @@ public class AlarmHistoryForm {
                 }
                 pageNum = 0;
                 search();
+                showPageInfo(1);
             }
         });
         snapStartTimeButton.setText(Tool.getCurrentDate() + " 00:00:00");
@@ -138,7 +147,7 @@ public class AlarmHistoryForm {
         try {
             inboundData.put("searchResultPosition", pageNum);
             inboundData.put("maxResultNumber", Integer.parseInt(maxResultNumberText.getText()));
-            inboundData.put("maxResults", 30);
+            inboundData.put("maxResults", 30);//每次返回固定30个数量
             inboundData.put("FDID", conditionFdLibMap.get(fdLibSelectComboBox.getSelectedIndex()));
             inboundData.put("cameraID", "-1");
             inboundData.put("maxSimilarity", Float.parseFloat(maxSimilarityText.getText()));
@@ -148,6 +157,8 @@ public class AlarmHistoryForm {
             inboundData.put("snapEndTime", Tool.changeTimeToISO8601(snapEndTimeButton.getText()));
             JSONObject resultData = Tool.sendInstructionAndReceiveStatusAndData(3, instruction, inboundData);
             alarmHistoryEntityList = com.alibaba.fastjson.JSONObject.parseArray(resultData.getString("MatchList"), AlarmHistoryEntity.class);
+            totalNumber = resultData.getInt("totalMatches");//总数量
+            totalNumberLabel.setText("总数量： " + totalNumber);
             for (AlarmHistoryEntity alarmHistoryEntity : alarmHistoryEntityList) {
                 if (!alarmHistoryEntity.getHuman_data().get(0).getFace_data().get(0).getBl_picurl().equals("")) {
                     Vector vector = new Vector();
@@ -183,5 +194,35 @@ public class AlarmHistoryForm {
         // TODO: place custom component creation code here
         snapStartTimeButton = new DateSelectorButtonService();
         snapEndTimeButton = new DateSelectorButtonService();
+    }
+
+    /*
+     * 计算并显示页数信息
+     * type:1-全新查询,首页；2-下一页；3-上一页
+     * */
+    private void showPageInfo(int type) {
+        totalPage = (int) Math.ceil(Float.parseFloat(String.valueOf(totalNumber)) / 30);
+        switch (type) {
+            case 1:
+                currentPage = 1;
+                break;
+            case 2:
+                if (currentPage < totalPage) {
+                    currentPage += 1;
+                }
+                break;
+            case 3:
+                if (currentPage > 1) {
+                    currentPage -= 1;
+                }
+                break;
+            default:
+                break;
+        }
+        if (totalNumber > 0) {
+            pageInfoLabel.setText("第 " + currentPage + " 页 共 " + totalPage + " 页");
+        } else {
+            pageInfoLabel.setText("");
+        }
     }
 }

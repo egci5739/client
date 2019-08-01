@@ -6,6 +6,8 @@ import com.dyw.client.entity.NoteEntity;
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.functionForm.AlarmFunction;
 import com.dyw.client.functionForm.NoteFunction;
+import com.dyw.client.functionForm.UnsolvedAlarmFunction;
+import com.dyw.client.service.BaseAlarmInterface;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +15,13 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 import java.util.List;
 import java.util.Vector;
 
-public class AlarmForm {
+public class AlarmForm implements BaseAlarmInterface {
     private Logger logger = LoggerFactory.getLogger(AlarmForm.class);
 
     private JPanel alarmForm;
@@ -28,15 +32,17 @@ public class AlarmForm {
     private JLabel alarmTitleLabel;
     private JTable alarmContentTable;
     private JScrollPane alarmContentScroll;
-
+    private JButton unsolvedAlarmButton;
     private JFrame frame;
-
     private DefaultTableModel alarmModel;
     private int alarmBottomStatus = 0;
     private JScrollBar alarmScrollBar;//通行滚动条
     private int alarmRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
     private JPopupMenu popupMenu;
     private int menuStatus = 0;
+
+    private RowSorter<TableModel> sorter;
+
 
     public AlarmForm() {
         List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
@@ -50,6 +56,8 @@ public class AlarmForm {
         };
         alarmModel.setColumnIdentifiers(columnalarmInfo);
         alarmContentTable.setModel(alarmModel);
+        sorter = new TableRowSorter<TableModel>(alarmModel);
+        alarmContentTable.setRowSorter(sorter);
         alarmContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -106,18 +114,28 @@ public class AlarmForm {
                 }
             }
         });
-        try {
-            AlarmEntity alarmEntity = new AlarmEntity();
-            alarmEntity.setAlarmPermission(Egci.accountEntity.getAccountPermission());
-            alarmEntity.setAlarmStatus(0);
-            List<AlarmEntity> alarmEntityList = Egci.session.selectList("mapping.alarmMapper.getUnsolvedAlarm", alarmEntity);
-            for (AlarmEntity alarmEntity1 : alarmEntityList) {
-                addAlarmInfo(alarmEntity1);
-            }
-        } catch (Exception e) {
-            logger.error("查询未处理报警出错", e);
-        }
+//        try {
+//            AlarmEntity alarmEntity = new AlarmEntity();
+//            alarmEntity.setAlarmPermission(Egci.accountEntity.getAccountPermission());
+//            alarmEntity.setAlarmStatus(0);
+//            List<AlarmEntity> alarmEntityList = Egci.session.selectList("mapping.alarmMapper.getUnsolvedAlarm", alarmEntity);
+//            for (AlarmEntity alarmEntity1 : alarmEntityList) {
+//                addAlarmInfo(alarmEntity1);
+//            }
+//        } catch (Exception e) {
+//            logger.error("查询未处理报警出错", e);
+//        }
         hideColumn(alarmContentTable, 3);
+        /*
+         * 打开未处理报警窗口
+         * */
+        unsolvedAlarmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UnsolvedAlarmFunction unsolvedAlarmFunction = new UnsolvedAlarmFunction();
+                unsolvedAlarmFunction.init();
+            }
+        });
     }
 
     /*
@@ -171,6 +189,7 @@ public class AlarmForm {
     /*
      * 存储事件为 其他 的通行记录
      * */
+    @Override
     public void saveOtherEvent(AlarmEntity alarmEntity) {
         alarmEntity.setOperator(Egci.accountEntity.getAccountName());
         Egci.session.update("mapping.alarmMapper.updateAlarmNote", alarmEntity);

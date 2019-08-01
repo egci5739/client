@@ -3,6 +3,7 @@ package com.dyw.client.form.guard;
 import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.service.EquipmentTreeCellRenderer;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
@@ -31,8 +32,6 @@ public class EquipmentTreeForm {
     private JButton closeFaceButton;
     private JButton openFaceButton;
     private JFrame jFrame;
-
-    private List<EquipmentEntity> equipmentEntityList = new ArrayList<>();
 
     public EquipmentTreeForm() {
         /*
@@ -92,9 +91,15 @@ public class EquipmentTreeForm {
             DefaultTreeModel defaultTreeModel;
             defaultTreeModel = new DefaultTreeModel(root);
             equipmentTree.setModel(defaultTreeModel);
+            EquipmentTreeCellRenderer equipmentTreeCellRenderer = new EquipmentTreeCellRenderer();
+            equipmentTree.setCellRenderer(equipmentTreeCellRenderer);
             SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
             sendInfoSocketService.sendInfo("3#0");
-            equipmentEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentEntity.class);
+            String receiveInfo = sendInfoSocketService.receiveInfoOnce();
+            if (receiveInfo.equals("error")) {
+                Tool.showMessage("设备信息正在完善，请稍后重试", "设备状态", 1);
+            }
+            List<EquipmentEntity> equipmentEntityList = JSON.parseArray(receiveInfo, EquipmentEntity.class);
             for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                 if (equipmentEntity.getEquipmentType() == 4) {
                     for (EquipmentEntity equipmentEntity1 : equipmentEntityList) {
@@ -109,7 +114,7 @@ public class EquipmentTreeForm {
                 case 1:
                     DefaultMutableTreeNode one1 = new DefaultMutableTreeNode("一核");
                     for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-                        if (equipmentEntity.getEquipmentType() == 1) {
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 1) {
                             DefaultMutableTreeNode one2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
                             one2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
                             one2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
@@ -121,7 +126,7 @@ public class EquipmentTreeForm {
                 case 2:
                     DefaultMutableTreeNode two1 = new DefaultMutableTreeNode("二核");
                     for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-                        if (equipmentEntity.getEquipmentType() == 1) {
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 2) {
                             DefaultMutableTreeNode two2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
                             two2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
                             two2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
@@ -133,7 +138,7 @@ public class EquipmentTreeForm {
                 case 3:
                     DefaultMutableTreeNode three1 = new DefaultMutableTreeNode("三核");
                     for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-                        if (equipmentEntity.getEquipmentType() == 1) {
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 3) {
                             DefaultMutableTreeNode three2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
                             three2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
                             three2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
@@ -143,16 +148,48 @@ public class EquipmentTreeForm {
                     root.add(three1);
                     break;
                 default:
-                    DefaultMutableTreeNode zero1 = new DefaultMutableTreeNode("全厂");
+//                    DefaultMutableTreeNode zero1 = new DefaultMutableTreeNode("全厂");
+//                    for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+//                        if (equipmentEntity.getEquipmentType() == 1) {
+//                            DefaultMutableTreeNode zero2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
+//                            zero2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
+//                            zero2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
+//                            zero1.add(zero2);
+//                        }
+//                    }
+//                    root.add(zero1);
+                    DefaultMutableTreeNode one11 = new DefaultMutableTreeNode("一核");
                     for (EquipmentEntity equipmentEntity : equipmentEntityList) {
-                        if (equipmentEntity.getEquipmentType() == 1) {
-                            DefaultMutableTreeNode zero2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
-                            zero2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
-                            zero2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
-                            zero1.add(zero2);
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 1) {
+                            DefaultMutableTreeNode one2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
+                            one2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
+                            one2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
+                            one11.add(one2);
                         }
                     }
-                    root.add(zero1);
+                    root.add(one11);
+
+                    DefaultMutableTreeNode two11 = new DefaultMutableTreeNode("二核");
+                    for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 2) {
+                            DefaultMutableTreeNode two2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
+                            two2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
+                            two2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
+                            two11.add(two2);
+                        }
+                    }
+                    root.add(two11);
+
+                    DefaultMutableTreeNode three11 = new DefaultMutableTreeNode("三核");
+                    for (EquipmentEntity equipmentEntity : equipmentEntityList) {
+                        if (equipmentEntity.getEquipmentType() == 1 && equipmentEntity.getEquipmentPermission() == 3) {
+                            DefaultMutableTreeNode three2 = new DefaultMutableTreeNode(equipmentEntity.getEquipmentName());
+                            three2.add(new DefaultMutableTreeNode("门禁设备-" + equipmentEntity.getEquipmentIp() + "-" + Tool.isLogin(equipmentEntity.getIsLogin()), true));
+                            three2.add(new DefaultMutableTreeNode("切换器-" + equipmentEntity.getEquipmentSwitchIp() + "-" + Tool.switchStatus(equipmentEntity.getEquipmentValidity()), true));
+                            three11.add(three2);
+                        }
+                    }
+                    root.add(three11);
                     break;
             }
             expandAll(equipmentTree, new TreePath(root), true);

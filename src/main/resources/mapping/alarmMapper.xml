@@ -11,6 +11,10 @@
     <!--获取所有未处理报警-->
     <select id="getUnsolvedAlarm" parameterType="com.dyw.client.entity.AlarmEntity"
             resultType="com.dyw.client.entity.AlarmEntity" flushCache="true">
-        select * from AlarmTable where alarmPermission=#{alarmPermission} and alarmStatus=#{alarmStatus};
+        select * from AlarmTable where
+        alarmStatus=#{alarmStatus}
+        <if test="alarmPermission != 0">
+            and alarmPermission=#{alarmPermission}
+        </if>
     </select>
 </mapper>

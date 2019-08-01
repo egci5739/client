@@ -29,6 +29,7 @@ public class MonitorRealTimeForm {
         return monitorRealTimePanel;
     }
 
+    private JFrame frame;
     private JPanel monitorRealTimePanel;
     private JPanel monitorRealTime;
     private JPanel passSuccessPanel;
@@ -51,6 +52,8 @@ public class MonitorRealTimeForm {
     private JPanel passAlarmTitlePanel;
     private JLabel passAlarmTitleLabel;
     private JPanel passAlarmContentPanel;
+    private JScrollPane passAlarmContentScroll;
+    private JTable passAlarmContentTable;
 
     private DefaultTableModel passSuccessModel;
     private DefaultTableModel passFaultModel;
@@ -61,13 +64,18 @@ public class MonitorRealTimeForm {
     private int passSuccessBottomStatus = 0;
     private int passFaultBottomStatus = 0;
 
+    private DefaultTableModel passAlarmModel;
+
     private JPopupMenu searchPopupMenu;
     private int menuStatus = 0;
 
     public MonitorRealTimeForm() {
         List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
-        //初始化通行结果表格
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息", "通行记录id"};
+        TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
+        /*
+         * 比对成功
+         * */
         passSuccessModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -76,18 +84,8 @@ public class MonitorRealTimeForm {
         };
         passSuccessModel.setColumnIdentifiers(columnPassInfo);
         passSuccessContentTable.setModel(passSuccessModel);
-        passFaultModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        passFaultModel.setColumnIdentifiers(columnPassInfo);
-        passFaultContentTable.setModel(passFaultModel);
-        //表格中显示图片
-        TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
         passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
-        passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
+        passSuccessContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passSuccessContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -97,19 +95,7 @@ public class MonitorRealTimeForm {
                 }
             }
         });
-        passSuccessContentScroll.getVerticalScrollBar().setUnitIncrement(20);
-        passFaultContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && passFaultBottomStatus <= 3) {
-                    passFaultContentScroll.getVerticalScrollBar().setValue(passFaultContentScroll.getVerticalScrollBar().getModel().getMaximum() - passFaultContentScroll.getVerticalScrollBar().getModel().getExtent());
-                    passFaultBottomStatus++;
-                }
-            }
-        });
-        passFaultContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passSuccessScrollBar = passSuccessContentScroll.getVerticalScrollBar();
-        passFaultScrollBar = passFaultContentScroll.getVerticalScrollBar();
         //通行成功是否滚动
         passSuccessRollingCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -130,6 +116,29 @@ public class MonitorRealTimeForm {
                 passSuccessModel.setRowCount(0);
             }
         });
+        /*
+         * 比对失败
+         * */
+        passFaultModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        passFaultModel.setColumnIdentifiers(columnPassInfo);
+        passFaultContentTable.setModel(passFaultModel);
+        passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
+        passFaultContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+        passFaultContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK && passFaultBottomStatus <= 3) {
+                    passFaultContentScroll.getVerticalScrollBar().setValue(passFaultContentScroll.getVerticalScrollBar().getModel().getMaximum() - passFaultContentScroll.getVerticalScrollBar().getModel().getExtent());
+                    passFaultBottomStatus++;
+                }
+            }
+        });
+        passFaultScrollBar = passFaultContentScroll.getVerticalScrollBar();
         //通行失败是否滚动
         passFaultRollingCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -150,10 +159,31 @@ public class MonitorRealTimeForm {
                 passFaultModel.setRowCount(0);
             }
         });
+        //通行失败右键确认
+        passFaultContentTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    //表格 的rowAtPoint方法返回坐标所在的行号，参数为坐标类型，
+                    menuStatus = passFaultContentTable.rowAtPoint(e.getPoint());
+                    searchPopupMenu.show(passFaultContentTable, e.getX(), e.getY());
+                }
+            }
+        });
+        /*
+         * 通行报警
+         * */
+        passAlarmModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        String[] columnAlarmInfo = {"时间", "设备", "记录id"};
+        passAlarmModel.setColumnIdentifiers(columnAlarmInfo);
+        passAlarmContentTable.setModel(passAlarmModel);
         /*
          * 弹出右键菜单
          * */
-        //在table显示
         searchPopupMenu = new JPopupMenu();
         for (NoteEntity noteEntity : noteEntityList) {
             JMenuItem jMenuItem = new JMenuItem(noteEntity.getNoteName());
@@ -165,18 +195,10 @@ public class MonitorRealTimeForm {
             });
             searchPopupMenu.add(jMenuItem);
         }
-        passFaultContentTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    //表格 的rowAtPoint方法返回坐标所在的行号，参数为坐标类型，
-                    menuStatus = passFaultContentTable.rowAtPoint(e.getPoint());
-                    searchPopupMenu.show(passFaultContentTable, e.getX(), e.getY());
-                }
-            }
-        });
         //隐藏通行id项
         hideColumn(passSuccessContentTable, 3);
         hideColumn(passFaultContentTable, 3);
+        hideColumn(passAlarmContentTable, 2);
     }
 
     /*
@@ -185,24 +207,33 @@ public class MonitorRealTimeForm {
     public void addPassInfo(PassRecordEntity passInfoEntity) {
         try {
             Vector v = new Vector();
-            v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
-            v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
             if (passInfoEntity.getPassRecordPassResult() == 1) {
+                v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
+                v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
                 v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
+                v.add(3, passInfoEntity.getPassRecordId());
                 passSuccessModel.addRow(v);
                 if (passSuccessRollingStatus == 1) {
                     moveScrollBarToBottom(passSuccessScrollBar);
                     passSuccessBottomStatus = 0;
                 }
-            } else {
+            } else if (passInfoEntity.getPassRecordPassResult() == 0 || passInfoEntity.getPassRecordPassResult() == 2 || passInfoEntity.getPassRecordPassResult() == 3) {
+                v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
+                v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
                 v.add(2, Tool.displayPassFaultResult(passInfoEntity));
+                v.add(3, passInfoEntity.getPassRecordId());
                 passFaultModel.addRow(v);
                 if (passFaultRollingStatus == 1) {
                     moveScrollBarToBottom(passFaultScrollBar);
                     passFaultBottomStatus = 0;
                 }
+            } else if (passInfoEntity.getPassRecordPassResult() == 4) {
+                v.add(0, passInfoEntity.getPassRecordPassTime());
+                v.add(1, passInfoEntity.getPassRecordEquipmentName());
+                v.add(2, passInfoEntity.getPassRecordId());
+                passAlarmModel.addRow(v);
+                logger.info("活体报警");
             }
-            v.add(3, passInfoEntity.getPassRecordId());
         } catch (Exception e) {
             logger.error("新增通行记录出错", e);
         }
@@ -255,5 +286,13 @@ public class MonitorRealTimeForm {
         Egci.session.update("mapping.passRecordMapper.updatePassRecordNote", passRecordEntity);
         Egci.session.commit();
         passFaultModel.removeRow(menuStatus);
+    }
+
+    public void init() {
+        frame = new JFrame("实时通行");
+        frame.setContentPane(this.monitorRealTime);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

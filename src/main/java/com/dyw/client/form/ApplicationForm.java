@@ -142,7 +142,7 @@ public class ApplicationForm {
             return;
         }
         IntelligentApplicationForm intelligentApplicationForm = new IntelligentApplicationForm();
-        applicationTabbedPane.add("智能应用", intelligentApplicationForm.getIntelligentApplicationForm());
+        applicationTabbedPane.add("布控抓拍", intelligentApplicationForm.getIntelligentApplicationForm());
     }
 
     /*
@@ -174,7 +174,8 @@ public class ApplicationForm {
         Egci.monitorRealTimeForm = new MonitorRealTimeForm();
         MonitorStatusTimer monitorStatusTimer = new MonitorStatusTimer(Egci.monitorRealTimeForm);
         monitorStatusTimer.open();
-        applicationTabbedPane.add("实时监控", Egci.monitorRealTimeForm.getMonitorRealTimePanel());
+//        applicationTabbedPane.add("实时监控", Egci.monitorRealTimeForm.getMonitorRealTimePanel());
+        Egci.monitorRealTimeForm.init();
     }
 
     /*
@@ -284,7 +285,7 @@ public class ApplicationForm {
     }
 
     public void init() {
-        frame = new JFrame("ApplicationForm");
+        frame = new JFrame("门禁人脸识别系统");
         frame.setContentPane(this.applicationForm);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //自定义退出操作

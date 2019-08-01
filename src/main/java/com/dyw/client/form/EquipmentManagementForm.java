@@ -17,6 +17,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -45,6 +47,8 @@ public class EquipmentManagementForm {
     private JButton timeSynchronizationButton;
     private JComboBox equipmentTypeChangeCombo;//设备类型切换
     private JLabel searchStatus;//查询状态
+    private RowSorter<TableModel> sorter;
+
 
     private DefaultTableModel equipmentManagerModel = new DefaultTableModel();
     private DefaultTableCellRenderer equipmentInfoTableCellRenderer = new DefaultTableCellRenderer();
@@ -298,7 +302,13 @@ public class EquipmentManagementForm {
                 equipmentManagerModel.setRowCount(0);
                 SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
                 sendInfoSocketService.sendInfo("3#0");
-                equipmentEntityList = JSON.parseArray(sendInfoSocketService.receiveInfoOnce(), EquipmentEntity.class);
+                String receiveInfo = sendInfoSocketService.receiveInfoOnce();
+                if (receiveInfo.equals("error")) {
+                    Tool.showMessage("设备信息正在完善，请稍后重试", "设备状态", 1);
+                    searchStatus.setText("");
+                    refreshEquipmentStatusButton.setEnabled(true);
+                }
+                equipmentEntityList = JSON.parseArray(receiveInfo, EquipmentEntity.class);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     if (equipmentEntity.getEquipmentType() == 4) {
                         for (EquipmentEntity equipmentEntity1 : equipmentEntityList) {
@@ -342,6 +352,8 @@ public class EquipmentManagementForm {
                 columnEquipmentInfo = new String[]{"设备名称", "设备IP", "切换器IP", "一体机是否在线", "切换器状态"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
+                sorter = new TableRowSorter<TableModel>(equipmentManagerModel);
+                equipmentManagementContentTable.setRowSorter(sorter);
                 equipmentManagerModel.setRowCount(0);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     if (equipmentEntity.getEquipmentType() == 1) {
@@ -384,6 +396,8 @@ public class EquipmentManagementForm {
                 columnEquipmentInfo = new String[]{"设备名称", "设备IP", "主机IP", "是否在线"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
+                sorter = new TableRowSorter<TableModel>(equipmentManagerModel);
+                equipmentManagementContentTable.setRowSorter(sorter);
                 equipmentManagerModel.setRowCount(0);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     if (equipmentEntity.getEquipmentType() == 2) {
@@ -424,6 +438,8 @@ public class EquipmentManagementForm {
                 columnEquipmentInfo = new String[]{"设备名称", "设备IP", "视频流通道", "是否在线"};
                 equipmentManagerModel.setColumnIdentifiers(columnEquipmentInfo);
                 equipmentManagementContentTable.setModel(equipmentManagerModel);
+                sorter = new TableRowSorter<TableModel>(equipmentManagerModel);
+                equipmentManagementContentTable.setRowSorter(sorter);
                 equipmentManagerModel.setRowCount(0);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     if (equipmentEntity.getEquipmentType() == 3) {

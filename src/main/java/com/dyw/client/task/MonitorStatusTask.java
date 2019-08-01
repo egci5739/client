@@ -24,13 +24,13 @@ public class MonitorStatusTask extends TimerTask {
     public void run() {
         try {
             NetStateService netStateService = new NetStateService();
-            if (netStateService.ping(Egci.configEntity.getSocketIp()) && Egci.monitorWorkStatus == 0) {
+            if (netStateService.ping(Egci.configEntity.getSocketIp()) && Egci.monitorWorkStatus == 1) {
+            } else {
                 //创建接收通行信息的socket对象
                 MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService();
                 monitorReceiveInfoSocketService.sendInfo(Tool.getAccessPermissionInfo(Egci.accountEntity.getAccountPermission()));
                 monitorReceiveInfoSocketService.start();
-            } else {
-                Egci.monitorWorkStatus = 0;
+//                Egci.monitorWorkStatus = 0;
             }
         } catch (Exception e) {
             logger.error("重新连接到服务程序出错", e);

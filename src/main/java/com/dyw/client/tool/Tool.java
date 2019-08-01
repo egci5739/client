@@ -178,6 +178,10 @@ public class Tool {
                 break;
             case 112:
                 eventName = "比对失败";
+                break;
+            case 1280:
+                eventName = "活体检测失败";
+                break;
             default:
                 break;
         }
@@ -555,13 +559,20 @@ public class Tool {
      * 1970-01-01T08:00:00Z
      * */
     public static String changeTimeToISO8601(String string) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeInfo = "";
         try {
-            StringBuffer buffer = new StringBuffer(string);
+            Date dateBefore = simpleDateFormat.parse(string);
+            long timestamp = dateBefore.getTime() - 28800000;
+            Date dateAfter = new Date(timestamp);
+            timeInfo = simpleDateFormat.format(dateAfter);
+            StringBuffer buffer = new StringBuffer(timeInfo);
             buffer.replace(10, 11, "T");
             buffer.append("Z");
             return buffer.toString();
         } catch (Exception e) {
-            return "2030-12-31T23:59:59Z";
+            return "2030-12-31T23:59:59Z";//2019-07-25T00:00:00Z
+            //2004-05-03T17:30:08Z
         }
     }
 

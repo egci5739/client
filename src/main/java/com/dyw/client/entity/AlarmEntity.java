@@ -1,5 +1,7 @@
 package com.dyw.client.entity;
 
+import java.sql.Timestamp;
+
 public class AlarmEntity {
     private int alarmId;
     private String alarmName;
@@ -7,7 +9,7 @@ public class AlarmEntity {
     private int alarmNoteId;
     private String alarmNote;
     private String operator;
-    private String createTime;
+    private Timestamp createTime;
     private int alarmStatus;
     private int alarmPermission;
 
@@ -59,11 +61,11 @@ public class AlarmEntity {
         this.operator = operator;
     }
 
-    public String getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
