@@ -49,4 +49,10 @@
     <delete id="deleteAllFaultSummation">
         delete from FaultSummation
     </delete>
+    <!--获取胁迫历史-->
+    <select id="getStressInfo" resultType="com.dyw.client.entity.PassRecordEntity" flushCache="true">
+        select * from PassRecordTable where passRecordPassTime &gt; #{startDate} and passRecordPassTime &lt;
+        #{endDate} and passRecordPassResult = 4
+        ORDER BY passRecordPassTime;
+    </select>
 </mapper>

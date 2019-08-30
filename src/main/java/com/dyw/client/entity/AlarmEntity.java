@@ -8,10 +8,16 @@ public class AlarmEntity {
     private String alarmDetail;
     private int alarmNoteId;
     private String alarmNote;
+    private int alarmType;
+    private String alarmEquipmentName;
     private String operator;
     private Timestamp createTime;
     private int alarmStatus;
     private int alarmPermission;
+
+    //独有
+    private Timestamp startDate;
+    private Timestamp endDate;
 
     public int getAlarmId() {
         return alarmId;
@@ -83,5 +89,37 @@ public class AlarmEntity {
 
     public void setAlarmPermission(int alarmPermission) {
         this.alarmPermission = alarmPermission;
+    }
+
+    public int getAlarmType() {
+        return alarmType;
+    }
+
+    public void setAlarmType(int alarmType) {
+        this.alarmType = alarmType;
+    }
+
+    public String getAlarmEquipmentName() {
+        return alarmEquipmentName;
+    }
+
+    public void setAlarmEquipmentName(String alarmEquipmentName) {
+        this.alarmEquipmentName = alarmEquipmentName;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
     }
 }

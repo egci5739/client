@@ -1,8 +1,7 @@
 package com.dyw.client.functionForm;
 
 import com.dyw.client.entity.AlarmEntity;
-import com.dyw.client.form.guard.AlarmForm;
-import com.dyw.client.service.BaseAlarmInterface;
+import com.dyw.client.service.inter.BaseAlarmInterface;
 import com.dyw.client.tool.Tool;
 
 import javax.swing.*;

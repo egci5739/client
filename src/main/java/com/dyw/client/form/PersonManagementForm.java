@@ -8,6 +8,7 @@ import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.FaceInfoEntity;
 import com.dyw.client.functionForm.FaceBaseFunction;
 import com.dyw.client.functionForm.FaceInfoFunction;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.ImportPersonProgressService;
 import com.dyw.client.service.PersonPageSelectionService;
 import com.dyw.client.tool.Tool;
@@ -24,11 +25,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class PersonManagementForm {
-    public JPanel getPersonManagementForm() {
+public class PersonManagementForm extends BaseFormService {
+    @Override
+    public JPanel getPanel() {
         return personManagementForm;
     }
 
+    private JFrame frame;
     private JPanel personManagementForm;
     private JPanel personManagementPanel;
     private JPanel personManagementBasePanel;
@@ -419,5 +422,13 @@ public class PersonManagementForm {
         Thread thread = new ImportPersonProgressService(importPersonProgressBar, this, FDID, personManagementContentToolBarImportButton);
         thread.start();
         personManagementContentToolBarImportButton.setEnabled(false);
+    }
+
+    public void init() {
+        frame = new JFrame("布控名单管理");
+        frame.setContentPane(this.personManagementForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

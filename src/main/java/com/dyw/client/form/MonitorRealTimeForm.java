@@ -1,12 +1,13 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.entity.NoteEntity;
 import com.dyw.client.entity.PassRecordEntity;
+import com.dyw.client.functionForm.AlarmHistoryFunction;
 import com.dyw.client.functionForm.NoteFunction;
-import com.dyw.client.service.MonitorReceiveInfoSocketService;
-import com.dyw.client.service.NetStateService;
+import com.dyw.client.service.BaseFormService;
+import com.dyw.client.service.PassAlarmContentTableCellRenderer;
 import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -18,14 +19,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class MonitorRealTimeForm {
+public class MonitorRealTimeForm extends BaseFormService {
     private Logger logger = LoggerFactory.getLogger(MonitorRealTimeForm.class);
 
-    public JPanel getMonitorRealTimePanel() {
+    @Override
+    public JPanel getPanel() {
         return monitorRealTimePanel;
     }
 
@@ -54,6 +55,7 @@ public class MonitorRealTimeForm {
     private JPanel passAlarmContentPanel;
     private JScrollPane passAlarmContentScroll;
     private JTable passAlarmContentTable;
+    private JButton alarmHistoryButton;
 
     private DefaultTableModel passSuccessModel;
     private DefaultTableModel passFaultModel;
@@ -66,11 +68,13 @@ public class MonitorRealTimeForm {
 
     private DefaultTableModel passAlarmModel;
 
-    private JPopupMenu searchPopupMenu;
+    private JPopupMenu searchPopupMenu;//通行失败
+    private JPopupMenu alarmPopupMenu;//胁迫报警
     private int menuStatus = 0;
 
     public MonitorRealTimeForm() {
-        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
+        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.noteMapper.getManualNote");
+
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息", "通行记录id"};
         TableCellRenderer passTableCellRenderer = new PassPhotoTableCellRenderer();
         /*
@@ -85,7 +89,7 @@ public class MonitorRealTimeForm {
         passSuccessModel.setColumnIdentifiers(columnPassInfo);
         passSuccessContentTable.setModel(passSuccessModel);
         passSuccessContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
-        passSuccessContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        passSuccessContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passSuccessContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -128,7 +132,7 @@ public class MonitorRealTimeForm {
         passFaultModel.setColumnIdentifiers(columnPassInfo);
         passFaultContentTable.setModel(passFaultModel);
         passFaultContentTable.setDefaultRenderer(Object.class, passTableCellRenderer);
-        passFaultContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        passFaultContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         passFaultContentScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -178,27 +182,110 @@ public class MonitorRealTimeForm {
                 return false;
             }
         };
-        String[] columnAlarmInfo = {"时间", "设备", "记录id"};
+//        String[] columnAlarmInfo = {"时间", "设备", "记录id"};
+        String[] columnAlarmInfo = {"类型", "设备", "时间", "记录id", "事件类型"};
+        TableCellRenderer alarmCellRenderer = new PassAlarmContentTableCellRenderer();
+        passAlarmContentTable.setDefaultRenderer(Object.class, alarmCellRenderer);
         passAlarmModel.setColumnIdentifiers(columnAlarmInfo);
         passAlarmContentTable.setModel(passAlarmModel);
+        passAlarmContentTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    //表格 的rowAtPoint方法返回坐标所在的行号，参数为坐标类型，
+                    menuStatus = passAlarmContentTable.rowAtPoint(e.getPoint());
+                    alarmPopupMenu.show(passAlarmContentTable, e.getX(), e.getY());
+                }
+            }
+        });
         /*
          * 弹出右键菜单
+         * 报警事件
+         * */
+        alarmPopupMenu = new JPopupMenu();
+        for (NoteEntity noteEntity1 : noteEntityList) {
+            if (noteEntity1.getNoteRank() == 1 && noteEntity1.getNoteType() != 2) {
+                JMenu multilevelMenu = new JMenu(noteEntity1.getNoteName());
+                for (NoteEntity noteEntity2 : noteEntityList) {
+                    if (noteEntity2.getRelativeId() == noteEntity1.getNoteId()) {
+                        JMenuItem jMenuItem = new JMenuItem(noteEntity2.getNoteName());
+                        jMenuItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                updateAlarmEvent(jMenuItem.getText(), (int) passAlarmContentTable.getValueAt(menuStatus, 3));
+//                                viewStressEvent((int) passAlarmContentTable.getValueAt(menuStatus, 3));
+                            }
+                        });
+                        multilevelMenu.add(jMenuItem);
+                    }
+                }
+                alarmPopupMenu.add(multilevelMenu);
+            }
+        }
+
+        /*
+         * 弹出右键菜单
+         * 通行失败
          * */
         searchPopupMenu = new JPopupMenu();
         for (NoteEntity noteEntity : noteEntityList) {
-            JMenuItem jMenuItem = new JMenuItem(noteEntity.getNoteName());
-            jMenuItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    addEvent(searchPopupMenu.getComponentIndex(jMenuItem), jMenuItem.getText(), (int) passFaultContentTable.getValueAt(menuStatus, 3));
-                }
-            });
-            searchPopupMenu.add(jMenuItem);
+            if (noteEntity.getNoteType() == 2) {
+                JMenuItem jMenuItem = new JMenuItem(noteEntity.getNoteName());
+                jMenuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addEvent(searchPopupMenu.getComponentIndex(jMenuItem), jMenuItem.getText(), (int) passFaultContentTable.getValueAt(menuStatus, 3));
+                    }
+                });
+                searchPopupMenu.add(jMenuItem);
+            }
         }
+
         //隐藏通行id项
         hideColumn(passSuccessContentTable, 3);
         hideColumn(passFaultContentTable, 3);
-        hideColumn(passAlarmContentTable, 2);
+        hideColumn(passAlarmContentTable, 3);
+        hideColumn(passAlarmContentTable, 4);
+        /*
+         * 报警历史查询
+         * */
+        alarmHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AlarmHistoryFunction alarmHistoryFunction = new AlarmHistoryFunction();
+                alarmHistoryFunction.init();
+            }
+        });
+    }
+
+    /*
+     * 更新报警事件
+     * */
+    private void updateAlarmEvent(String noteName, int passId) {
+        if (noteName.equals("最近通行信息")) {
+            viewStressEvent(passId);
+        } else if (noteName.equals("自定义")) {
+            AlarmEntity alarmEntity = new AlarmEntity();
+            alarmEntity.setAlarmId(passId);
+            NoteFunction noteFunction = new NoteFunction(this, alarmEntity);
+            noteFunction.init();
+        } else {
+            AlarmEntity alarmEntity = new AlarmEntity();
+            alarmEntity.setAlarmNote(noteName);
+            alarmEntity.setAlarmId(passId);
+            alarmEntity.setOperator(Egci.accountEntity.getAccountName());
+            Egci.session.update("mapping.alarmMapper.updateAlarmNote", alarmEntity);
+            Egci.session.commit();
+            passAlarmModel.removeRow(menuStatus);
+        }
+    }
+
+    /*
+     * 胁迫时间点通行信息查询
+     * */
+    private void viewStressEvent(int valueAt) {
+        AlarmEntity alarmEntity = Egci.session.selectOne("mapping.alarmMapper.getSingleAlarmInfo", valueAt);
+        Egci.monitorHistoryForm.stressAlarmSearchHistory(alarmEntity);
     }
 
     /*
@@ -212,30 +299,50 @@ public class MonitorRealTimeForm {
                 v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
                 v.add(2, Tool.displayPassSuccessResult(passInfoEntity));
                 v.add(3, passInfoEntity.getPassRecordId());
+                if (passSuccessModel.getRowCount() > Egci.configEntity.getDisplayMonitorRowCount()) {
+                    passSuccessModel.removeRow(0);
+                }
                 passSuccessModel.addRow(v);
                 if (passSuccessRollingStatus == 1) {
                     moveScrollBarToBottom(passSuccessScrollBar);
                     passSuccessBottomStatus = 0;
                 }
+                passSuccessContentTable.repaint();//attention
             } else if (passInfoEntity.getPassRecordPassResult() == 0 || passInfoEntity.getPassRecordPassResult() == 2 || passInfoEntity.getPassRecordPassResult() == 3) {
                 v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
                 v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
                 v.add(2, Tool.displayPassFaultResult(passInfoEntity));
                 v.add(3, passInfoEntity.getPassRecordId());
+                if (passFaultModel.getRowCount() > Egci.configEntity.getDisplayMonitorRowCount()) {
+                    passFaultModel.removeRow(0);
+                }
                 passFaultModel.addRow(v);
                 if (passFaultRollingStatus == 1) {
                     moveScrollBarToBottom(passFaultScrollBar);
                     passFaultBottomStatus = 0;
                 }
-            } else if (passInfoEntity.getPassRecordPassResult() == 4) {
-                v.add(0, passInfoEntity.getPassRecordPassTime());
-                v.add(1, passInfoEntity.getPassRecordEquipmentName());
-                v.add(2, passInfoEntity.getPassRecordId());
-                passAlarmModel.addRow(v);
-                logger.info("活体报警");
+                passFaultContentTable.repaint();//attention
             }
         } catch (Exception e) {
             logger.error("新增通行记录出错", e);
+        }
+    }
+
+    /*
+     * 新增报警信息
+     * */
+    @Override
+    public void addAlarmInfo(AlarmEntity alarmEntity) {
+        try {
+            Vector v = new Vector();
+            v.add(0, alarmEntity.getAlarmName());
+            v.add(1, alarmEntity.getAlarmEquipmentName());
+            v.add(2, Tool.getCurrentTime());
+            v.add(3, alarmEntity.getAlarmId());
+            passAlarmModel.addRow(v);
+            logger.info("报警信息");
+        } catch (Exception e) {
+            logger.error("新增报警信息出错", e);
         }
     }
 
@@ -249,7 +356,7 @@ public class MonitorRealTimeForm {
     }
 
     /*
-     * 更新失败失败
+     * 更新通行失败
      * */
     private void addEvent(int noteId, String noteName, int passId) {
         PassRecordEntity passRecordEntity = new PassRecordEntity();
@@ -264,6 +371,17 @@ public class MonitorRealTimeForm {
             Egci.session.commit();
             passFaultModel.removeRow(menuStatus);
         }
+    }
+
+    /*
+     * 存储事件为 其他 的报警记录
+     * */
+    @Override
+    public void saveOtherEvent(AlarmEntity alarmEntity) {
+        alarmEntity.setOperator(Egci.accountEntity.getAccountName());
+        Egci.session.update("mapping.alarmMapper.updateAlarmNote", alarmEntity);
+        Egci.session.commit();
+        passAlarmModel.removeRow(menuStatus);
     }
 
     /*
@@ -288,11 +406,4 @@ public class MonitorRealTimeForm {
         passFaultModel.removeRow(menuStatus);
     }
 
-    public void init() {
-        frame = new JFrame("实时通行");
-        frame.setContentPane(this.monitorRealTime);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
 }

@@ -5,7 +5,7 @@
 <mapper namespace="mapping.alarmMapper">
     <!--更新报警事件说明-->
     <update id="updateAlarmNote" parameterType="com.dyw.client.entity.AlarmEntity">
-        update AlarmTable set alarmNote=#{alarmNote},alarmNoteId=#{alarmNoteId},operator=#{operator},alarmStatus=1 where
+        update AlarmTable set alarmNote=#{alarmNote},operator=#{operator},alarmStatus=1 where
         alarmId = #{alarmId}
     </update>
     <!--获取所有未处理报警-->
@@ -16,5 +16,15 @@
         <if test="alarmPermission != 0">
             and alarmPermission=#{alarmPermission}
         </if>
+    </select>
+    <!--获取单条报警信息-->
+    <select id="getSingleAlarmInfo" parameterType="Integer" resultType="com.dyw.client.entity.AlarmEntity"
+            flushCache="true">
+        select * from AlarmTable where alarmId = #{_parameter};
+    </select>
+    <!--获取报警记录-->
+    <select id="getAlarmHistory" parameterType="com.dyw.client.entity.AlarmEntity"
+            resultType="com.dyw.client.entity.AlarmEntity" flushCache="true">
+        select * from AlarmTable where createTime &gt; #{startDate} and createTime &lt; #{endDate} ;
     </select>
 </mapper>

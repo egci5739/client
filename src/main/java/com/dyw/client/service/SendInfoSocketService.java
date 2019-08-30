@@ -49,7 +49,7 @@ public class SendInfoSocketService {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             info = br.readLine();
             if (info != null) {
-                logger.info("接收到的消息为" + info);
+//                logger.info("接收到的消息为" + info);
                 return info;
             } else {
                 return "0";

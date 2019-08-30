@@ -7,6 +7,7 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.entity.protection.TargetsEntity;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.DateSelectorButtonService;
 import com.dyw.client.service.PlaybackService;
 import com.dyw.client.service.SnapAlarmTableCellRenderer;
@@ -29,16 +30,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class HistoryVideoForm {
+public class HistoryVideoForm extends BaseFormService {
     private Logger logger = LoggerFactory.getLogger(HistoryVideoForm.class);
     private DefaultTableModel historyVideoModel = new DefaultTableModel();
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
 
-
-    public JPanel getHistoryVideoForm() {
+    @Override
+    public JPanel getPanel() {
         return historyVideoForm;
     }
 
+    private JFrame frame;
     private JPanel historyVideoForm;
     private JPanel historyVideoToolbarPanel;
     private JPanel historyVideoContentPanel;
@@ -330,5 +332,13 @@ public class HistoryVideoForm {
             timeInfo = "2030-04-10 12:24:17";
         }
         return timeInfo;
+    }
+
+    public void init() {
+        frame = new JFrame("通行视频记录");
+        frame.setContentPane(this.historyVideoForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

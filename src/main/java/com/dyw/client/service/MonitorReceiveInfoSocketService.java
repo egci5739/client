@@ -58,15 +58,20 @@ public class MonitorReceiveInfoSocketService extends Thread {
                 String info;
                 info = br.readLine();
                 if (info != null) {
-                    logger.info("接收到的消息为" + info);
+//                    logger.info("接收到的消息为" + info);
                     try {
                         if (info.equals("success")) {
                             Egci.monitorWorkStatus = 1;
+                            Egci.equipmentTreeForm.changeStatus(1);
                         } else if (info.split("#")[0].equals("status")) {
 //                            equipmentEntityList = JSON.parseArray(info.split("#")[1], EquipmentEntity.class);
                             Egci.equipmentTreeForm.getEquipmentStatus();
                         } else if (info.split("#")[0].equals("alarm")) {
-                            Egci.alarmForm.addAlarmInfo(JSON.parseObject(info.split("#")[1], AlarmEntity.class));
+//                            Egci.alarmForm.addAlarmInfo(JSON.parseObject(info.split("#")[1], AlarmEntity.class));
+                            Egci.monitorRealTimeForm.addAlarmInfo(JSON.parseObject(info.split("#")[1], AlarmEntity.class));
+
+                        } else if (info.split("#")[0].equals("stress")) {
+                            Egci.monitorRealTimeForm.addAlarmInfo(JSON.parseObject(info.split("#")[1], AlarmEntity.class));
                         } else {
                             PassRecordEntity passInfoEntity = Egci.session.selectOne("mapping.passRecordMapper.getPassInfo", info);
                             if (passInfoEntity != null) {
@@ -85,6 +90,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
                 Egci.monitorWorkStatus = 0;
+                Egci.equipmentTreeForm.changeStatus(0);
 //                Tool.showMessage("正在重新连接服务器...", "提示", 1);
                 break;
             }

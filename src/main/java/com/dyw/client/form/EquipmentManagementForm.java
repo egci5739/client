@@ -5,6 +5,7 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.entity.EquipmentStatusEntity;
 import com.dyw.client.functionForm.DeviceFunction;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
@@ -25,11 +26,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.*;
 
-public class EquipmentManagementForm {
+public class EquipmentManagementForm extends BaseFormService {
     public JPanel getEquipmentManagementForm() {
         return equipmentManagementForm;
     }
 
+    private JFrame frame;
     private Logger logger = LoggerFactory.getLogger(EquipmentManagementForm.class);
     private JPanel equipmentManagementForm;
     private JPanel equipmentManagementPanel;
@@ -56,6 +58,11 @@ public class EquipmentManagementForm {
     private List<EquipmentEntity> equipmentEntityList = new ArrayList<>();
     private Map<String, EquipmentEntity> equipmentEntityMap = new HashMap<>();
     private EquipmentEntity equipmentEntity;//用在新增设备中使用
+
+    @Override
+    public JPanel getPanel() {
+        return equipmentManagementForm;
+    }
 
     public EquipmentManagementForm() {
         /*
@@ -319,7 +326,7 @@ public class EquipmentManagementForm {
                         }
                     }
                 }
-                logger.info("查询的状态信息：" + equipmentEntityList);//attention
+//                logger.info("查询的状态信息：" + equipmentEntityList);//attention
                 equipmentTypeChangeCombo.setSelectedIndex(0);
                 for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                     equipmentEntityMap.put(equipmentEntity.getEquipmentIp(), equipmentEntity);
@@ -477,5 +484,13 @@ public class EquipmentManagementForm {
             default:
                 break;
         }
+    }
+
+    public void init() {
+        frame = new JFrame("设备管理");
+        frame.setContentPane(this.equipmentManagementForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

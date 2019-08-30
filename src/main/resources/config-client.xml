@@ -25,6 +25,7 @@
         <mapper resource="mapping/passRecordMapper.xml"/>
         <mapper resource="mapping/staffMapper.xml"/>
         <mapper resource="mapping/alarmMapper.xml"/>
+        <mapper resource="mapping/noteMapper.xml"/>
     </mappers>
 
 </configuration>

@@ -19,6 +19,10 @@ public class ConfigEntity {
     //nvr服务器IP和端口
     private String nvrServerIp;
     private short nvrServerPort;
+    //监控页面显示的最大条数
+    private int displayMonitorRowCount;
+    //布控页面显示的最大条数
+    private int displayProtectionRowCount;
 
     //独有的
     private String faceCollectionIp;//采集设备IP
@@ -117,5 +121,21 @@ public class ConfigEntity {
 
     public void setFaceCollectionIp(String faceCollectionIp) {
         this.faceCollectionIp = faceCollectionIp;
+    }
+
+    public int getDisplayMonitorRowCount() {
+        return displayMonitorRowCount;
+    }
+
+    public void setDisplayMonitorRowCount(int displayMonitorRowCount) {
+        this.displayMonitorRowCount = displayMonitorRowCount;
+    }
+
+    public int getDisplayProtectionRowCount() {
+        return displayProtectionRowCount;
+    }
+
+    public void setDisplayProtectionRowCount(int displayProtectionRowCount) {
+        this.displayProtectionRowCount = displayProtectionRowCount;
     }
 }

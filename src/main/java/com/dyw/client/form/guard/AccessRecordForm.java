@@ -2,6 +2,7 @@ package com.dyw.client.form.guard;
 
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.functionForm.PassInfoFunction;
+import com.dyw.client.service.BaseFormService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -9,7 +10,7 @@ import javax.swing.table.TableColumn;
 import java.awt.event.*;
 import java.util.Vector;
 
-public class AccessRecordForm {
+public class AccessRecordForm extends BaseFormService {
     private JFrame frame;
     private JPanel accessRecordForm;
     private JPanel accessRecordTitle;
@@ -28,6 +29,11 @@ public class AccessRecordForm {
     private int menuStatus = 0;
     private JPopupMenu popupMenu;
 
+
+    @Override
+    public JPanel getPanel() {
+        return accessRecordForm;
+    }
 
     public AccessRecordForm() {
         //初始化通行结果表格
@@ -49,7 +55,7 @@ public class AccessRecordForm {
                 }
             }
         });
-        accessRecordContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        accessRecordContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         accessRecordScrollBar = accessRecordContentScroll.getVerticalScrollBar();
         //是否滚动
         accessRecordTitleCheckBox.addItemListener(new ItemListener() {
@@ -105,6 +111,9 @@ public class AccessRecordForm {
         v.add(2, passInfoEntity.getPassRecordEquipmentName());
         v.add(3, passInfoEntity.getPassRecordName() + "#" + passInfoEntity.getPassRecordCardNumber());
         v.add(4, passInfoEntity.getPassRecordId());
+        if (accessRecordModel.getRowCount() > 1000) {
+            accessRecordModel.removeRow(0);
+        }
         accessRecordModel.addRow(v);
         if (accessRecordRollingStatus == 1) {
             moveScrollBarToBottom(accessRecordScrollBar);

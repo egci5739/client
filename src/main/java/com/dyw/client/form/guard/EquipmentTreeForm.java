@@ -3,6 +3,7 @@ package com.dyw.client.form.guard;
 import com.alibaba.fastjson.JSON;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.EquipmentEntity;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.EquipmentTreeCellRenderer;
 import com.dyw.client.service.SendInfoSocketService;
 import com.dyw.client.tool.Tool;
@@ -11,16 +12,18 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.tree.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class EquipmentTreeForm {
+public class EquipmentTreeForm extends BaseFormService {
     private Logger logger = LoggerFactory.getLogger(EquipmentTreeForm.class);
 
-    public JPanel getEquipmentTreeForm() {
+    @Override
+    public JPanel getPanel() {
         return equipmentTreeForm;
     }
 
@@ -31,6 +34,7 @@ public class EquipmentTreeForm {
     private JButton refreshButton;
     private JButton closeFaceButton;
     private JButton openFaceButton;
+    private JLabel statusLabel;
     private JFrame jFrame;
 
     public EquipmentTreeForm() {
@@ -58,6 +62,8 @@ public class EquipmentTreeForm {
                     Tool.showMessage("请先选择切换器", "提示", 1);
                 } else if (note.toString().split("-")[2].equals("离线")) {
                     Tool.showMessage("切换器已离线", "提示", 1);
+                } else if (note.toString().split("-")[3].contains("手动")) {
+                    Tool.showMessage("当前为手动模式，请在切换上进行操作", "提示", 1);
                 } else {
                     closeFace(note.toString().split("-")[1]);
                 }
@@ -74,6 +80,8 @@ public class EquipmentTreeForm {
                     Tool.showMessage("请先选择切换器", "提示", 1);
                 } else if (note.toString().split("-")[2].equals("离线")) {
                     Tool.showMessage("切换器已离线", "提示", 1);
+                } else if (note.toString().split("-")[3].contains("手动")) {
+                    Tool.showMessage("当前为手动模式，请在切换上进行操作", "提示", 1);
                 } else {
                     runFace(note.toString().split("-")[1]);
                 }
@@ -242,5 +250,25 @@ public class EquipmentTreeForm {
         SendInfoSocketService sendInfoSocketService = new SendInfoSocketService(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
         sendInfoSocketService.sendInfo("5#" + ip + "#1");
         sendInfoSocketService.receiveInfoOnce();
+    }
+
+    /*
+     * 改变监控状态
+     * 0-网络异常；1-正常；2-服务器断开
+     * */
+    @Override
+    public void changeStatus(int status) {
+        switch (status) {
+            case 0:
+                statusLabel.setText("通信异常");
+                statusLabel.setForeground(Color.red);
+                break;
+            case 1:
+                statusLabel.setText("通信正常");
+                statusLabel.setForeground(Color.green);
+                break;
+            default:
+                break;
+        }
     }
 }

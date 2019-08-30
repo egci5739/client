@@ -276,6 +276,8 @@ public class RegisterForm {
                 takePhoto();
             }
         });
+        IdPhoto.addMouseListener(new MouseAdapter() {
+        });
     }
 
     /*
@@ -375,6 +377,7 @@ public class RegisterForm {
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setVisible(true);
     }
 
     /*

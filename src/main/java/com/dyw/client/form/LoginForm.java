@@ -77,8 +77,10 @@ public class LoginForm {
         if (loginFaceServer().equals("error")) {
             JOptionPane.showMessageDialog(null, "登陆脸谱服务器失败", "提示", JOptionPane.INFORMATION_MESSAGE);
         }
-        ApplicationForm applicationForm = new ApplicationForm();
-        applicationForm.init();
+//        ApplicationForm applicationForm = new ApplicationForm();
+//        applicationForm.init();
+        ModuleListForm moduleListForm = new ModuleListForm();
+        moduleListForm.init();
         frame.dispose();
     }
 

@@ -3,7 +3,7 @@ package com.dyw.client.functionForm;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.entity.NoteEntity;
-import com.dyw.client.service.BaseAlarmInterface;
+import com.dyw.client.service.inter.BaseAlarmInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class UnsolvedAlarmFunction implements BaseAlarmInterface {
 
 
     public UnsolvedAlarmFunction() {
-        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
+        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.noteMapper.getManualNote");
         //初始化报警结果表格
         String[] columnalarmInfo = {"报警名称", "报警详情", "报警时间", "报警id"};
         unsolvedAlarmModel = new DefaultTableModel() {
@@ -44,7 +44,7 @@ public class UnsolvedAlarmFunction implements BaseAlarmInterface {
         unsolvedAlarmContentTable.setModel(unsolvedAlarmModel);
         sorter = new TableRowSorter<TableModel>(unsolvedAlarmModel);
         unsolvedAlarmContentTable.setRowSorter(sorter);
-        unsolvedAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        unsolvedAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         /*
          * 弹出右键菜单
          * */

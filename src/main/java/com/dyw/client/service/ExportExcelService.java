@@ -1,6 +1,7 @@
 package com.dyw.client.service;
 
 import com.dyw.client.controller.Egci;
+import com.dyw.client.entity.DataAnalysisEntity;
 import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.entity.StaffEntity;
 import com.dyw.client.tool.Tool;
@@ -121,6 +122,56 @@ public class ExportExcelService {
                 row.createCell(3).setCellValue(passInfoEntity.getPassRecordEventTypeId());
                 row.createCell(4).setCellValue(passInfoEntity.getPassRecordSimilarity());
                 row.createCell(5).setCellValue(passInfoEntity.getPassRecordEquipmentName());
+                i++;
+            }
+            File file = new File(basePath + exportFileName);
+            //文件输出流
+            FileOutputStream outStream = null;
+            outStream = new FileOutputStream(file);
+            workBook.write(outStream);
+            outStream.flush();
+            outStream.close();
+            Tool.showMessage("导出文件成功！文件导出路径：--" + basePath + exportFileName, "提示", 1);
+        } catch (Exception e) {
+            Tool.showMessage("导出文件失败", "提示", 0);
+            logger.error("导出文件失败", e);
+        }
+    }
+
+    /*
+     * 导出数据统计
+     * */
+    public void exportDataInfo(List<DataAnalysisEntity> dataAnalysisEntityList) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
+            String now = dateFormat.format(new Date());
+            //导出文件路径
+            String basePath = System.getProperty("user.dir") + "\\passInfo\\";
+            //文件名
+            String exportFileName = "通行统计信息" + now + ".xlsx";
+            String[] cellTitle = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "成功率(%)", "失败率(%)"};
+            // 声明一个工作薄
+            XSSFWorkbook workBook = null;
+            workBook = new XSSFWorkbook();
+            // 生成一个表格
+            XSSFSheet sheet = workBook.createSheet();
+            workBook.setSheetName(0, "通行统计信息");
+            // 创建表格标题行 第一行
+            XSSFRow titleRow = sheet.createRow(0);
+            for (int i = 0; i < cellTitle.length; i++) {
+                titleRow.createCell(i).setCellValue(cellTitle[i]);
+            }
+            //插入需导出的数据
+            int i = 0;
+            for (DataAnalysisEntity dataAnalysisEntity : dataAnalysisEntityList) {
+                XSSFRow row = sheet.createRow(i + 1);
+                row.createCell(0).setCellValue(dataAnalysisEntity.getEquipmentName());
+                row.createCell(1).setCellValue(dataAnalysisEntity.getTotalNumber());
+                row.createCell(2).setCellValue(dataAnalysisEntity.getSuccessNumber());
+                row.createCell(3).setCellValue(dataAnalysisEntity.getFaultNumber());
+                row.createCell(4).setCellValue(dataAnalysisEntity.getNoCardNumber());
+                row.createCell(5).setCellValue(dataAnalysisEntity.getSuccessRate());
+                row.createCell(6).setCellValue(dataAnalysisEntity.getFaultRate());
                 i++;
             }
             File file = new File(basePath + exportFileName);

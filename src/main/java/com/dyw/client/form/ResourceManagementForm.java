@@ -6,6 +6,7 @@ import com.dyw.client.entity.protection.CtrlCenterEntity;
 import com.dyw.client.entity.protection.MonitorPointEntity;
 import com.dyw.client.entity.protection.RegionEntity;
 import com.dyw.client.functionForm.EquipmentFunction;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.tool.Tool;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +19,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class ResourceManagementForm {
-    public JPanel getResourceManagementForm() {
+public class ResourceManagementForm extends BaseFormService {
+    @Override
+    public JPanel getPanel() {
         return resourceManagementForm;
     }
 
+    private JFrame frame;
     private JPanel resourceManagementForm;
     private JPanel resourceManagementPanel;
     private JPanel resourceManagementTitlePanel;
@@ -194,5 +197,13 @@ public class ResourceManagementForm {
             default:
                 break;
         }
+    }
+
+    public void init() {
+        frame = new JFrame("布控设备管理");
+        frame.setContentPane(this.resourceManagementForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

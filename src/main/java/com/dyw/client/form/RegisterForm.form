@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.RegisterForm">
   <grid id="27dc6" binding="registerForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1101" height="606"/>
+      <xy x="20" y="20" width="1111" height="606"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -76,7 +76,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font/>
+                  <font size="18"/>
                   <text value="重新加载"/>
                 </properties>
               </component>
@@ -454,7 +454,7 @@
                 </constraints>
                 <properties>
                   <font size="36"/>
-                  <text value="身份证信息"/>
+                  <text value="采集信息"/>
                 </properties>
               </component>
             </children>
@@ -489,7 +489,7 @@
               <component id="4e8d3" class="javax.swing.JButton" binding="changePhotoButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <font/>
@@ -498,8 +498,8 @@
               </component>
               <component id="8e352" class="javax.swing.JButton" binding="takePhotoButton">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="5" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <text value="打开摄像头"/>

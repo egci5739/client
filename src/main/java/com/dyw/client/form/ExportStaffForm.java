@@ -1,5 +1,6 @@
 package com.dyw.client.form;
 
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.ExportExcelService;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
@@ -9,17 +10,18 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ExportStaffForm {
+public class ExportStaffForm extends BaseFormService {
     private Logger logger = LoggerFactory.getLogger(ExportStaffForm.class);
 
-    public JPanel getExportStaffForm() {
-        return exportStaffForm;
-    }
-
-    private JPanel exportStaffForm;
-    private JLabel exportStaffNumberLabel;
     private JTextField exportStaffNumberText;
     private JButton exportStaffNumberButton;
+    private JLabel exportStaffNumberLabel;
+    public JPanel exportStaffForm;
+
+    @Override
+    public JPanel getPanel() {
+        return exportStaffForm;
+    }
 
     public ExportStaffForm() {
         exportStaffNumberButton.addActionListener(new ActionListener() {

@@ -5,9 +5,7 @@ import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.EquipmentEntity;
 import com.dyw.client.form.*;
-import com.dyw.client.form.guard.AccessRecordForm;
-import com.dyw.client.form.guard.AlarmForm;
-import com.dyw.client.form.guard.EquipmentTreeForm;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.SessionService;
 import com.dyw.client.tool.Tool;
 import org.apache.ibatis.session.SqlSession;
@@ -17,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryPoolMXBean;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,11 +43,14 @@ public class Egci {
     //初始化静态对象
     public static HCNetSDK hcNetSDK;
     public static Map<String, Integer> cameraMap = new HashMap<>();//抓拍机信息
-    //创建全局页面
-    public static EquipmentTreeForm equipmentTreeForm;//设备状态页面
-    public static MonitorRealTimeForm monitorRealTimeForm;//实时通行-旧
-    public static AccessRecordForm accessRecordForm;//实时通行-新
-    public static AlarmForm alarmForm;//报警记录
+    //创建全局页面-需要实时更新
+    public static BaseFormService equipmentTreeForm;//设备状态树页面
+    public static BaseFormService monitorRealTimeForm;//实时通行-旧
+    public static BaseFormService accessRecordForm;//实时通行-新
+    public static BaseFormService alarmForm;//报警记录
+    public static BaseFormService monitorHistoryForm;//历史通行记录
+
+    public static int menuHeight;//菜单高度
 
     /*
      * 初始化客户端程序
@@ -103,6 +105,12 @@ public class Egci {
         for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
             logger.info("Pool: " + mp.getName() + " (type " + mp.getType() + ")" + " = " + mb(mp.getUsage().getMax()));
         }
+        //获取系统默认编码
+        logger.info("系统默认编码：" + System.getProperty("file.encoding")); //查询结果GBK
+        //系统默认字符编码
+        logger.info("系统默认字符编码：" + Charset.defaultCharset()); //查询结果GBK
+        //操作系统用户使用的语言
+        logger.info("系统默认语言：" + System.getProperty("user.language")); //查询结果zh
         //创建登陆客户端
         loginForm = new LoginForm();
         loginForm.init();

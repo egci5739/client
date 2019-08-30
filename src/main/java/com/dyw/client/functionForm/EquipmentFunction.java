@@ -107,7 +107,6 @@ public class EquipmentFunction {
                     } else {
                         Tool.showMessage("添加设备失败，错误信息" + resultDataEquipment.getString("errorMsg"), "提示", 0);
                     }
-                    System.out.println(inboundDataOut);
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }

@@ -45,6 +45,16 @@
               <text value="启用人脸识别"/>
             </properties>
           </component>
+          <component id="e0cbb" class="javax.swing.JLabel" binding="statusLabel">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="20" bottom="0" right="20" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font size="16"/>
+              <text value="状态"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="7683c" binding="equipmentTreeContentPanel" layout-manager="GridBagLayout">

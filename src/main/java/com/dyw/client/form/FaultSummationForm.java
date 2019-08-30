@@ -24,6 +24,7 @@ public class FaultSummationForm {
         return faultSummation;
     }
 
+    private JFrame frame;
     private JPanel faultSummation;
     private JScrollPane faultSummationScroll;
     private JTable faultSummationTable;
@@ -99,4 +100,11 @@ public class FaultSummationForm {
         faultSummationTable.setRowSorter(sorter);
     }
 
+    public void init() {
+        frame = new JFrame("失败次数统计");
+        frame.setContentPane(this.faultSummation);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }

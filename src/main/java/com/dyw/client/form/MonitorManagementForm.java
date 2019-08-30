@@ -3,6 +3,7 @@ package com.dyw.client.form;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.MonitorFunction;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.tool.Tool;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -16,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class MonitorManagementForm {
-    public JPanel getMonitorManagementForm() {
+public class MonitorManagementForm extends BaseFormService {
+    @Override
+    public JPanel getPanel() {
         return monitorManagementForm;
     }
 
+    private JFrame frame;
     private JPanel monitorManagementForm;
     private JPanel monitorManagementPanel;
     private JPanel monitorManagementTolBarPanel;
@@ -165,5 +168,13 @@ public class MonitorManagementForm {
         } catch (JSONException e) {
             logger.error("获取监控点出错", e);
         }
+    }
+
+    public void init() {
+        frame = new JFrame("布控管理");
+        frame.setContentPane(this.monitorManagementForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

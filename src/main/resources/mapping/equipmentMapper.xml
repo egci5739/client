@@ -6,9 +6,9 @@
     <!--根据条件查询所有设备（一体机）-->
     <select id="getAllEquipmentWithCondition" parameterType="Integer"
             resultType="com.dyw.client.entity.EquipmentEntity">
-        select * from EquipmentTable
+        select * from EquipmentTable where equipmentType = 1
         <if test="_parameter != 0">
-            where equipmentPermission = #{_parameter} and equipmentType = 1;
+            and equipmentPermission = #{_parameter}
         </if>
     </select>
     <!--查询所有设备信息-->

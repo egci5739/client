@@ -1,13 +1,8 @@
 package com.dyw.client.form;
 
 import com.dyw.client.controller.Egci;
-import com.dyw.client.entity.EquipmentEntity;
-import com.dyw.client.entity.EventEntity;
-import com.dyw.client.entity.PassRecordEntity;
-import com.dyw.client.service.DateSelectorButtonService;
-import com.dyw.client.service.ExportExcelService;
-import com.dyw.client.service.HistoryPhotoTableCellRenderer;
-import com.dyw.client.service.PageSelectionService;
+import com.dyw.client.entity.*;
+import com.dyw.client.service.*;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
 import org.slf4j.Logger;
@@ -20,15 +15,19 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class MonitorHistoryForm {
+public class MonitorHistoryForm extends BaseFormService {
     private Logger logger = LoggerFactory.getLogger(MonitorHistoryForm.class);
 
-    public JPanel getMonitorHistoryForm() {
+    @Override
+    public JPanel getPanel() {
         return monitorHistoryForm;
     }
 
+    private JFrame frame;
     private JPanel monitorHistoryForm;
     private JPanel monitorHistory;
     private JPanel conditionSelectionPanel;
@@ -86,14 +85,17 @@ public class MonitorHistoryForm {
             i++;
         }
         //初始化事件选择下拉框
-        eventSelectionCombo.addItem("--全部事件--");
-        conditionEventMap.put(0, 0);
-        eventSelectionCombo.addItem("人证比对通过");
-        conditionEventMap.put(1, 105);
-        eventSelectionCombo.addItem("人证比对失败");
-        conditionEventMap.put(2, 112);
-        eventSelectionCombo.addItem("无此卡号");
-        conditionEventMap.put(3, 9);
+        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.noteMapper.getAutomaticNote");
+        for (int j = 0; j < noteEntityList.size(); j++) {
+            eventSelectionCombo.addItem(noteEntityList.get(j).getNoteName());
+            conditionEventMap.put(j, noteEntityList.get(j).getNoteCode());
+        }
+//        eventSelectionCombo.addItem("人证比对通过");
+//        conditionEventMap.put(1, 105);
+//        eventSelectionCombo.addItem("人证比对失败");
+//        conditionEventMap.put(2, 112);
+//        eventSelectionCombo.addItem("无此卡号");
+//        conditionEventMap.put(3, 9);
         //输入卡号框选中/未选中时
         passCardSelectionText.setText(passCardSelectionDefaultHint);
         passCardSelectionText.addFocusListener(new FocusAdapter() {
@@ -189,7 +191,6 @@ public class MonitorHistoryForm {
         });
         resultContentTable.addComponentListener(new ComponentAdapter() {
         });
-
         startTimeSelectionButton.setText(Tool.getCurrentDate() + " 00:00:00");
         endTimeSelectionButton.setText(Tool.getCurrentDate() + " 23:59:59");
         //导出通行记录
@@ -205,10 +206,10 @@ public class MonitorHistoryForm {
      * 查询历史记录
      * */
     private void search() {
-//        if (equipmentSelectionCombo.getSelectedIndex() == 0 && passCardSelectionText.getText().equals("请输入卡号") && nameSelectionText.getText().equals("请输入姓名")) {
-//            Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
-//            return;
-//        }
+        if (equipmentSelectionCombo.getSelectedIndex() == 0 && passCardSelectionText.getText().equals("请输入卡号") && nameSelectionText.getText().equals("请输入姓名")) {
+            Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
+            return;
+        }
         PassRecordEntity condition = new PassRecordEntity();
         condition.setPassRecordEquipmentIp(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
         condition.setPassRecordEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
@@ -221,11 +222,8 @@ public class MonitorHistoryForm {
         condition.setStartDate(new Timestamp(startTimeSelectionButton.getDate().getTime()));
         condition.setEndDate(new Timestamp(endTimeSelectionButton.getDate().getTime()));
         resultModel.setRowCount(0);
-        logger.info("开始查询时间：" + new Date());
         passInfoHistoryList = Egci.session.selectList("mapping.passRecordMapper.getHistoryPassInfo", condition);
-        logger.info("结束查询时间：" + new Date());
         displaySearchResult(pageSelectionService.firstPage(passInfoHistoryList));
-        logger.info("显示结束时间" + new Date());
         showPageInfo(1);
     }
 
@@ -306,5 +304,33 @@ public class MonitorHistoryForm {
         } else {
             pageInfoLabel.setText("");
         }
+    }
+
+    public void init() {
+        frame = new JFrame("历史记录查询");
+        frame.setContentPane(this.monitorHistoryForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    /*
+     * 胁迫记录历史查询
+     * */
+    @Override
+    public void stressAlarmSearchHistory(AlarmEntity alarmEntity) {
+        this.open();
+        equipmentSelectionCombo.setSelectedItem(alarmEntity.getAlarmEquipmentName());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dateBefore = null;
+        try {
+            dateBefore = simpleDateFormat.parse(alarmEntity.getCreateTime().toString().substring(0, 19));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long timestamp = dateBefore.getTime();
+        startTimeSelectionButton.setDate(new Date(timestamp - 20000));
+        endTimeSelectionButton.setDate(new Date(timestamp + 20000));
+        search();
     }
 }

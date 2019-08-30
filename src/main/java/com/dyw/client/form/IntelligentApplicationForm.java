@@ -6,10 +6,7 @@ import com.dyw.client.controller.Egci;
 import com.dyw.client.controller.JDialogPlayBackByTime;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.SearchByPicForm;
-import com.dyw.client.service.AlarmTableCellRenderer;
-import com.dyw.client.service.MyHttpHandlerService;
-import com.dyw.client.service.PlaybackService;
-import com.dyw.client.service.SnapAlarmTableCellRenderer;
+import com.dyw.client.service.*;
 import com.dyw.client.tool.Tool;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -41,11 +38,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
-public class IntelligentApplicationForm {
+public class IntelligentApplicationForm extends BaseFormService {
     public JPanel getIntelligentApplicationForm() {
         return intelligentApplicationForm;
     }
 
+    private JFrame frame;
     private JPanel intelligentApplicationForm;
     private JPanel intelligentApplicationPanel;
     private JPanel livePreviewPanel;
@@ -138,21 +136,34 @@ public class IntelligentApplicationForm {
             logger.error("获取控制中心和区域出错", e);
         }
         livePreviewContentPanelList = new ArrayList<>();
-        livePreviewContentPanelList.add(livePreviewContentOnePanel);
-        livePreviewContentPanelList.add(livePreviewContentTwoPanel);
-        livePreviewContentPanelList.add(livePreviewContentThreePanel);
-        livePreviewContentPanelList.add(livePreviewContentFourPanel);
-        livePreviewContentPanelList.add(livePreviewContentFivePanel);
-        livePreviewContentPanelList.add(livePreviewContentSixPanel);
-        livePreviewContentPanelList.add(livePreviewContentSevenPanel);
-        livePreviewContentPanelList.add(livePreviewContentEightPanel);
-        livePreviewContentPanelList.add(livePreviewContentNinePanel);
-        livePreviewContentPanelList.add(livePreviewContentTenPanel);
+        if (Egci.accountEntity.getAccountPermission() == 0) {
+            livePreviewContentPanelList.add(livePreviewContentOnePanel);
+            livePreviewContentPanelList.add(livePreviewContentTwoPanel);
+            livePreviewContentPanelList.add(livePreviewContentThreePanel);
+            livePreviewContentPanelList.add(livePreviewContentFourPanel);
+            livePreviewContentPanelList.add(livePreviewContentFivePanel);
+            livePreviewContentPanelList.add(livePreviewContentSixPanel);
+            livePreviewContentPanelList.add(livePreviewContentSevenPanel);
+            livePreviewContentPanelList.add(livePreviewContentEightPanel);
+            livePreviewContentPanelList.add(livePreviewContentNinePanel);
+            livePreviewContentPanelList.add(livePreviewContentTenPanel);
+        } else if (Egci.accountEntity.getAccountPermission() == 2) {
+            livePreviewContentPanelList.add(livePreviewContentOnePanel);
+            livePreviewContentPanelList.add(livePreviewContentTwoPanel);
+            livePreviewContentPanelList.add(livePreviewContentThreePanel);
+            livePreviewContentPanelList.add(livePreviewContentFourPanel);
+        } else {
+            livePreviewContentPanelList.add(livePreviewContentOnePanel);
+            livePreviewContentPanelList.add(livePreviewContentTwoPanel);
+            livePreviewContentPanelList.add(livePreviewContentThreePanel);
+        }
         /*
          * 获取并设置抓拍机ip信息
          * */
         getSnapDeviceIpsList();
-        //黑名单报警
+        /*
+         * 黑名单报警
+         * */
         snapAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -173,7 +184,7 @@ public class IntelligentApplicationForm {
                 }
             }
         });
-        snapAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        snapAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         snapAlarmScrollBar = snapAlarmContentScroll.getVerticalScrollBar();
         snapAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -193,7 +204,9 @@ public class IntelligentApplicationForm {
                 snapAlarmContentTableModel.setRowCount(0);
             }
         });
-        //白名单报警
+        /*
+         * 白名单报警
+         * */
         blackAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -214,7 +227,7 @@ public class IntelligentApplicationForm {
                 }
             }
         });
-        blackAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        blackAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         blackAlarmScrollBar = blackAlarmContentScroll.getVerticalScrollBar();
         blackAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -234,14 +247,16 @@ public class IntelligentApplicationForm {
                 blackAlarmContentTableModel.setRowCount(0);
             }
         });
-        //陌生人
+        /*
+         * 陌生人
+         * */
         whiteAlarmContentTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        String[] columnWhiteAlarmInfo = {"抓拍图", "时间", "图片URL", "单独时间", "抓拍机名称"};
+        String[] columnWhiteAlarmInfo = {"抓拍图", "报警信息", "图片URL", "单独时间", "抓拍机名称"};
         whiteAlarmContentTableModel.setColumnIdentifiers(columnWhiteAlarmInfo);
         whiteAlarmContentTable.setModel(whiteAlarmContentTableModel);
         TableCellRenderer whiteAlarmCellRenderer = new SnapAlarmTableCellRenderer();
@@ -258,7 +273,7 @@ public class IntelligentApplicationForm {
                 }
             }
         });
-        whiteAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        whiteAlarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         whiteAlarmScrollBar = whiteAlarmContentScroll.getVerticalScrollBar();
         whiteAlarmRollingCheckBOx.addItemListener(new ItemListener() {
             @Override
@@ -354,6 +369,7 @@ public class IntelligentApplicationForm {
                     Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
                 }
             }
+            Thread.sleep(1000);
             //新增报警主机信息
             String instruction = "/ISAPI/Event/notification/httpHosts?format=json";
             org.json.JSONObject inboundDataIn = new org.json.JSONObject();
@@ -369,9 +385,9 @@ public class IntelligentApplicationForm {
             if (resultData.getInt("statusCode") == 1) {
 //                Tool.showMessage("添加报警主机成功", "提示", 0);
             } else {
-                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 0);
+                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 1);
             }
-        } catch (JSONException | UnknownHostException e) {
+        } catch (JSONException | UnknownHostException | InterruptedException e) {
             logger.error("添加报警主机出错", e);
         }
     }
@@ -402,35 +418,46 @@ public class IntelligentApplicationForm {
                 Vector vectorThree = new Vector();
                 vectorThree.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
                 vectorThree.add(1, "<html><body>抓拍时间：" +
-                        alarmResultEntity.getTargetAttrs().getFaceTime() +
+                        alarmResultEntity.getTargetAttrs().getFaceTime().substring(0, alarmResultEntity.getTargetAttrs().getFaceTime().length() - 4) +
                         "<br>抓拍机：" +
                         alarmResultEntity.getTargetAttrs().getDeviceName() +
                         "</body></html>");
                 vectorThree.add(2, alarmResultEntity.getImage());
                 vectorThree.add(3, alarmResultEntity.getTargetAttrs().getFaceTime());
                 vectorThree.add(4, alarmResultEntity.getTargetAttrs().getDeviceName());
+                if (whiteAlarmContentTableModel.getRowCount() > Egci.configEntity.getDisplayProtectionRowCount()) {
+                    whiteAlarmContentTableModel.removeRow(0);
+                }
                 whiteAlarmContentTableModel.addRow(vectorThree);
                 if (whiteAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(whiteAlarmScrollBar);
                     whiteAlarmBottomStatus = 0;
                 }
+                whiteAlarmContentTable.repaint();//attention
             } else if (Egci.fdLibIDForStaff.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
                 //白名单报警
                 Vector vectorTwo = new Vector();
                 vectorTwo.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
                 vectorTwo.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
                 vectorTwo.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                if (blackAlarmContentTableModel.getRowCount() > Egci.configEntity.getDisplayProtectionRowCount()) {
+                    blackAlarmContentTableModel.removeRow(0);
+                }
                 blackAlarmContentTableModel.addRow(vectorTwo);
                 if (blackAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(blackAlarmScrollBar);
                     blackAlarmBottomStatus = 0;
                 }
+                blackAlarmContentTable.repaint();//attention
             } else if (Egci.fdLibIDForBlack.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
                 //黑名单报警
                 Vector vectorOne = new Vector();
                 vectorOne.add(0, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getImage())));
                 vectorOne.add(1, Base64.encodeBytes(Tool.getURLStream(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getHuman_data().get(0).getFace_picurl())));
                 vectorOne.add(2, Tool.displayAlarmResult(alarmResultEntity.getTargetAttrs().getFaceTime(), alarmResultEntity.getTargetAttrs().getDeviceName(), alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0), Egci.fdLibMaps));
+                if (snapAlarmContentTableModel.getRowCount() > Egci.configEntity.getDisplayProtectionRowCount()) {
+                    snapAlarmContentTableModel.removeRow(0);
+                }
                 snapAlarmContentTableModel.addRow(vectorOne);
                 if (snapAlarmRollingStatus == 1) {
                     moveScrollBarToBottom(snapAlarmScrollBar);
@@ -461,15 +488,16 @@ public class IntelligentApplicationForm {
         //加载vlc播放器相关库
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "vlc"); // vlc : libvlc.dll,libvlccore.dll和plugins目录的路径,这里我直接放到了项目根目录下
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-        for (int i = 0; i < monitorPointEntityList.size(); i++) {
-            if (Egci.snapDeviceIps.contains(monitorPointEntityList.get(i).getDeviceIP())) {
-                String streamURL = monitorPointEntityList.get(i).getStreamURL();
+        int j = 0;
+        for (MonitorPointEntity aMonitorPointEntityList : monitorPointEntityList) {//attention:本来是 monitorPointEntityList
+            if (Egci.snapDeviceIps.contains(aMonitorPointEntityList.getDeviceIP())) {
+                String streamURL = aMonitorPointEntityList.getStreamURL();
                 if (streamURL != null) {
                     EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
                     GridLayout gridBagLayout = new GridLayout(1, 1, 2, 2);
-                    livePreviewContentPanelList.get(i).setLayout(gridBagLayout);
-                    livePreviewContentPanelList.get(i).add(mediaPlayerComponent);
-                    livePreviewContentPanelList.get(i).updateUI();
+                    livePreviewContentPanelList.get(j).setLayout(gridBagLayout);
+                    livePreviewContentPanelList.get(j).add(mediaPlayerComponent);
+                    livePreviewContentPanelList.get(j).updateUI();
                     //设置参数并播放
                     EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
                     String[] options = {"rtsp-tcp", "network-caching=300"}; //配置参数 rtsp-tcp作用: 使用 RTP over RTSP (TCP) (默认关闭),network-caching=300:网络缓存300ms,设置越大延迟越大,太小视频卡顿,300较为合适
@@ -477,6 +505,7 @@ public class IntelligentApplicationForm {
                     mediaPlayer.start();//停止了哈
                     embeddedMediaPlayerList.add(mediaPlayer);
                     embeddedMediaPlayerComponentList.add(mediaPlayerComponent);
+                    j++;
                 }
             }
         }
@@ -636,5 +665,18 @@ public class IntelligentApplicationForm {
         tc.setWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMaxWidth(0);
         table.getTableHeader().getColumnModel().getColumn(index).setMinWidth(0);
+    }
+
+    public void init() {
+        frame = new JFrame("布控抓拍");
+        frame.setContentPane(this.intelligentApplicationForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return intelligentApplicationForm;
     }
 }

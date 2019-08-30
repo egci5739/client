@@ -73,6 +73,12 @@ public class Tool {
             if (attrName.equals("nvrServerPort")) {
                 configEntity.setNvrServerPort(Short.parseShort(configTableEntity.getConfigValue()));
             }
+            if (attrName.equals("displayMonitorRowCount")) {
+                configEntity.setDisplayMonitorRowCount(Integer.parseInt(configTableEntity.getConfigValue()));
+            }
+            if (attrName.equals("displayProtectionRowCount")) {
+                configEntity.setDisplayProtectionRowCount(Integer.parseInt(configTableEntity.getConfigValue()));
+            }
         }
         return configEntity;
     }
@@ -128,6 +134,8 @@ public class Tool {
                 passInfoEntity.getPassRecordPassTime().toString().substring(0, 19) +
                 "<br>设备：" +
                 passInfoEntity.getPassRecordEquipmentName() +
+                "<br>分值：" +
+                passInfoEntity.getPassRecordSimilarity() +
                 "</body></html>";
     }
 
@@ -143,6 +151,8 @@ public class Tool {
                 passInfoEntity.getPassRecordPassTime().toString().substring(0, 19) +
                 "<br>设备：" +
                 passInfoEntity.getPassRecordEquipmentName() +
+                "<br>分值：" +
+                passInfoEntity.getPassRecordSimilarity() +
                 "<br>原因：" +
                 Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()) +
                 "</body></html>";
@@ -153,10 +163,10 @@ public class Tool {
      * */
     public static String displayAlarmResult(String time, String deviceName, CandidateEntity candidateEntity, Map<String, String> fdLibMaps) {
         return "<html><body>时间：" +
-                time +
-                "<br>姓名:" +
-                candidateEntity.getReserve_field().getName() +
-                "<br>分值:" +
+                time.substring(0, time.length() - 4) +
+                "<br>姓名&卡号：" +
+                candidateEntity.getReserve_field().getName().substring(0, candidateEntity.getReserve_field().getName().lastIndexOf("_")) +
+                "<br>分值：" +
                 candidateEntity.getSimilarity() +
 //                "<br>名单库：    " +
 //                fdLibMaps.get(candidateEntity.getBlacklist_id()) +

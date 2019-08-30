@@ -5,6 +5,7 @@ import com.dyw.client.entity.protection.AlarmHistoryEntity;
 import com.dyw.client.entity.protection.FDLibEntity;
 import com.dyw.client.service.AlarmHistoryTableCellRenderer;
 import com.dyw.client.service.AlarmTableCellRenderer;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.DateSelectorButtonService;
 import com.dyw.client.tool.Tool;
 import net.iharder.Base64;
@@ -20,11 +21,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class AlarmHistoryForm {
-    public JPanel getAlarmHistoryForm() {
+public class AlarmHistoryForm extends BaseFormService {
+    @Override
+    public JPanel getPanel() {
         return alarmHistoryForm;
     }
 
+    private JFrame frame;
     private JPanel alarmHistoryForm;
     private JPanel alarmHistoryToolBarPanel;
     private JPanel alarmHistoryContentPanel;
@@ -224,5 +227,13 @@ public class AlarmHistoryForm {
         } else {
             pageInfoLabel.setText("");
         }
+    }
+
+    public void init() {
+        frame = new JFrame("报警历史");
+        frame.setContentPane(this.alarmHistoryForm);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

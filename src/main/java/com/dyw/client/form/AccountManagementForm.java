@@ -3,21 +3,20 @@ package com.dyw.client.form;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.functionForm.AccountFunction;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
-public class AccountManagementForm {
-    public JPanel getAccountManagementForm() {
-        return accountManagementForm;
-    }
-
+public class AccountManagementForm extends BaseFormService {
+    private JFrame frame;
     private JPanel accountManagementForm;
     private JPanel accountManagementPanel;
     private JPanel accountManagementToolBarPanel;
@@ -97,5 +96,10 @@ public class AccountManagementForm {
             v.add(3, Tool.accountPermissionIdToName(accountEntity.getAccountPermission()));
             accountManagementModel.addRow(v);
         }
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return accountManagementForm;
     }
 }

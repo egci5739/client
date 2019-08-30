@@ -2,6 +2,7 @@ package com.dyw.client.task;
 
 import com.dyw.client.controller.Egci;
 import com.dyw.client.form.MonitorRealTimeForm;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.service.NetStateService;
 import com.dyw.client.tool.Tool;
@@ -13,9 +14,9 @@ import java.util.TimerTask;
 public class MonitorStatusTask extends TimerTask {
     private Logger logger = LoggerFactory.getLogger(MonitorStatusTask.class);
     private NetStateService netStateService;
-    private MonitorRealTimeForm monitorRealTimeForm;
+    private BaseFormService monitorRealTimeForm;
 
-    public MonitorStatusTask(MonitorRealTimeForm monitorRealTimeForm) {
+    public MonitorStatusTask(BaseFormService monitorRealTimeForm) {
         netStateService = new NetStateService();
         this.monitorRealTimeForm = monitorRealTimeForm;
     }
@@ -25,6 +26,7 @@ public class MonitorStatusTask extends TimerTask {
         try {
             NetStateService netStateService = new NetStateService();
             if (netStateService.ping(Egci.configEntity.getSocketIp()) && Egci.monitorWorkStatus == 1) {
+                Egci.equipmentTreeForm.changeStatus(1);
             } else {
                 //创建接收通行信息的socket对象
                 MonitorReceiveInfoSocketService monitorReceiveInfoSocketService = new MonitorReceiveInfoSocketService();

@@ -3,11 +3,10 @@ package com.dyw.client.form.guard;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.entity.NoteEntity;
-import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.functionForm.AlarmFunction;
-import com.dyw.client.functionForm.NoteFunction;
 import com.dyw.client.functionForm.UnsolvedAlarmFunction;
-import com.dyw.client.service.BaseAlarmInterface;
+import com.dyw.client.service.inter.BaseAlarmInterface;
+import com.dyw.client.service.BaseFormService;
 import com.dyw.client.tool.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.Vector;
 
-public class AlarmForm implements BaseAlarmInterface {
+public class AlarmForm extends BaseFormService implements BaseAlarmInterface {
     private Logger logger = LoggerFactory.getLogger(AlarmForm.class);
 
     private JPanel alarmForm;
@@ -43,9 +42,13 @@ public class AlarmForm implements BaseAlarmInterface {
 
     private RowSorter<TableModel> sorter;
 
+    @Override
+    public JPanel getPanel() {
+        return alarmForm;
+    }
 
     public AlarmForm() {
-        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.configMapper.getNote");
+        List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.noteMapper.getManualNote");
         //初始化报警结果表格
         String[] columnalarmInfo = {"报警名称", "报警详情", "报警时间", "报警id"};
         alarmModel = new DefaultTableModel() {
@@ -67,7 +70,7 @@ public class AlarmForm implements BaseAlarmInterface {
                 }
             }
         });
-        alarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
+//        alarmContentScroll.getVerticalScrollBar().setUnitIncrement(20);
         alarmScrollBar = alarmContentScroll.getVerticalScrollBar();
         //是否滚动
         alarmTitleCheckBox.addItemListener(new ItemListener() {
@@ -141,6 +144,7 @@ public class AlarmForm implements BaseAlarmInterface {
     /*
      * 新增报警记录
      * */
+    @Override
     public void addAlarmInfo(AlarmEntity alarmEntity) {
         try {
             Vector v = new Vector();
@@ -148,6 +152,9 @@ public class AlarmForm implements BaseAlarmInterface {
             v.add(1, alarmEntity.getAlarmDetail());
             v.add(2, Tool.getCurrentTime());
             v.add(3, alarmEntity.getAlarmId());
+            if (alarmModel.getRowCount() > 1000) {
+                alarmModel.removeRow(0);
+            }
             alarmModel.addRow(v);
             if (alarmRollingStatus == 1) {
                 moveScrollBarToBottom(alarmScrollBar);

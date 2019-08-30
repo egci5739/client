@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "config/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.noteMapper">
+    <!--获取自动事件-->
+    <select id="getAutomaticNote" resultType="com.dyw.client.entity.NoteEntity">
+        select * from NoteTable where noteType = 1 order by noteCode asc;
+    </select>
+    <!--获取手动事件-->
+    <select id="getManualNote" resultType="com.dyw.client.entity.NoteEntity">
+        select * from NoteTable where noteType != 1 order by noteCode asc;
+    </select>
+
+</mapper>
