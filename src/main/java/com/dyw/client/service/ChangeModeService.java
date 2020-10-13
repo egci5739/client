@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-import com.dyw.client.controller.Egci;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class ChangeModeService {
-    private Logger logger = LoggerFactory.getLogger(ChangeModeService.class);
+    private final Logger logger = LoggerFactory.getLogger(ChangeModeService.class);
     private OutputStream os;
     private Socket socket;
 

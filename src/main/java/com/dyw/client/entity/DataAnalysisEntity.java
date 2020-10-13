@@ -6,8 +6,11 @@ public class DataAnalysisEntity {
     private int successNumber;
     private int faultNumber;
     private int noCardNumber;
+    private int notLiveNumber;
     private String successRate;
     private String faultRate;
+    private String notLiveRate;
+    private String noCardRate;
 
     public String getEquipmentName() {
         return equipmentName;
@@ -63,5 +66,29 @@ public class DataAnalysisEntity {
 
     public void setFaultRate(String faultRate) {
         this.faultRate = faultRate;
+    }
+
+    public int getNotLiveNumber() {
+        return notLiveNumber;
+    }
+
+    public void setNotLiveNumber(int notLiveNumber) {
+        this.notLiveNumber = notLiveNumber;
+    }
+
+    public String getNotLiveRate() {
+        return notLiveRate;
+    }
+
+    public void setNotLiveRate(String notLiveRate) {
+        this.notLiveRate = notLiveRate;
+    }
+
+    public String getNoCardRate() {
+        return noCardRate;
+    }
+
+    public void setNoCardRate(String noCardRate) {
+        this.noCardRate = noCardRate;
     }
 }

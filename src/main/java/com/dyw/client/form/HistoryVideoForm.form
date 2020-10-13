@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dyw.client.form.HistoryVideoForm">
   <grid id="27dc6" binding="historyVideoForm" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1665" height="809"/>
+      <xy x="20" y="20" width="1951" height="809"/>
     </constraints>
     <properties/>
     <border type="none"/>

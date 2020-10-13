@@ -7,6 +7,7 @@ import com.dyw.client.entity.PassRecordEntity;
 import com.dyw.client.functionForm.AlarmHistoryFunction;
 import com.dyw.client.functionForm.NoteFunction;
 import com.dyw.client.service.BaseFormService;
+import com.dyw.client.service.LiveTestService;
 import com.dyw.client.service.PassAlarmContentTableCellRenderer;
 import com.dyw.client.service.PassPhotoTableCellRenderer;
 import com.dyw.client.tool.Tool;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class MonitorRealTimeForm extends BaseFormService {
-    private Logger logger = LoggerFactory.getLogger(MonitorRealTimeForm.class);
+    private final Logger logger = LoggerFactory.getLogger(MonitorRealTimeForm.class);
 
     @Override
     public JPanel getPanel() {
@@ -57,22 +58,26 @@ public class MonitorRealTimeForm extends BaseFormService {
     private JTable passAlarmContentTable;
     private JButton alarmHistoryButton;
 
-    private DefaultTableModel passSuccessModel;
-    private DefaultTableModel passFaultModel;
-    private JScrollBar passSuccessScrollBar;//通行成功滚动条
+    private final DefaultTableModel passSuccessModel;
+    private final DefaultTableModel passFaultModel;
+    private final JScrollBar passSuccessScrollBar;//通行成功滚动条
     private int passSuccessRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
-    private JScrollBar passFaultScrollBar;//通行成功滚动条
+    private final JScrollBar passFaultScrollBar;//通行成功滚动条
     private int passFaultRollingStatus = 1;//通行成功页面滚动状态:0：禁止；1：滚动
     private int passSuccessBottomStatus = 0;
     private int passFaultBottomStatus = 0;
 
-    private DefaultTableModel passAlarmModel;
+    private final DefaultTableModel passAlarmModel;
 
-    private JPopupMenu searchPopupMenu;//通行失败
-    private JPopupMenu alarmPopupMenu;//胁迫报警
+    private final JPopupMenu searchPopupMenu;//通行失败
+    private final JPopupMenu alarmPopupMenu;//胁迫报警
     private int menuStatus = 0;
 
+    private final LiveTestService liveTestService;//活体测试
+
     public MonitorRealTimeForm() {
+        liveTestService = new LiveTestService();//活体测试
+
         List<NoteEntity> noteEntityList = Egci.session.selectList("mapping.noteMapper.getManualNote");
 
         String[] columnPassInfo = {"人员底图", "抓拍图片", "比对信息", "通行记录id"};
@@ -229,12 +234,12 @@ public class MonitorRealTimeForm extends BaseFormService {
          * */
         searchPopupMenu = new JPopupMenu();
         for (NoteEntity noteEntity : noteEntityList) {
-            if (noteEntity.getNoteType() == 2) {
+            if (noteEntity.getRelativeId() == 7) {
                 JMenuItem jMenuItem = new JMenuItem(noteEntity.getNoteName());
                 jMenuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        addEvent(searchPopupMenu.getComponentIndex(jMenuItem), jMenuItem.getText(), (int) passFaultContentTable.getValueAt(menuStatus, 3));
+                        addEvent(searchPopupMenu.getComponentIndex(jMenuItem) + 1, jMenuItem.getText(), (int) passFaultContentTable.getValueAt(menuStatus, 3));
                     }
                 });
                 searchPopupMenu.add(jMenuItem);
@@ -308,7 +313,17 @@ public class MonitorRealTimeForm extends BaseFormService {
                     passSuccessBottomStatus = 0;
                 }
                 passSuccessContentTable.repaint();//attention
+//                logger.info("是否活体：" + liveTestService.judge(passInfoEntity.getPassRecordCaptureImage()));
             } else if (passInfoEntity.getPassRecordPassResult() == 0 || passInfoEntity.getPassRecordPassResult() == 2 || passInfoEntity.getPassRecordPassResult() == 3) {
+                //0：卡号不存在
+                //1：比对通过
+                //2：比对失败
+                //3：活体检测失败
+                if (liveTestService.judge(passInfoEntity.getPassRecordCaptureImage()) == 0) {
+                    passInfoEntity.setPassRecordPassResult(3);
+                } else {
+                    passInfoEntity.setPassRecordPassResult(2);
+                }
                 v.add(0, Base64.encodeBytes(passInfoEntity.getPassRecordStaffImage()));
                 v.add(1, Base64.encodeBytes(passInfoEntity.getPassRecordCaptureImage()));
                 v.add(2, Tool.displayPassFaultResult(passInfoEntity));
@@ -405,5 +420,4 @@ public class MonitorRealTimeForm extends BaseFormService {
         Egci.session.commit();
         passFaultModel.removeRow(menuStatus);
     }
-
 }

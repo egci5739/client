@@ -1,21 +1,16 @@
 package com.dyw.client.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AlarmEntity;
 import com.dyw.client.entity.PassRecordEntity;
-import com.dyw.client.entity.protection.HttpHostNotificationEntity;
+import com.dyw.client.entity.protection.AlarmResultEntity;
 import com.dyw.client.service.inter.BaseAlarmInterface;
 import com.dyw.client.service.inter.BaseMonitorInterface;
 import com.dyw.client.service.inter.BaseStatusInterface;
-import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.dnd.MouseDragGestureRecognizer;
 import java.awt.event.*;
-import java.net.InetAddress;
-import java.util.List;
 
 public abstract class BaseFormService implements BaseAlarmInterface, BaseMonitorInterface, BaseStatusInterface {
     private JFrame baseFrame;
@@ -66,6 +61,29 @@ public abstract class BaseFormService implements BaseAlarmInterface, BaseMonitor
                 }
             }
         });
+        //监听窗口变化
+        baseFrame.addWindowStateListener(new WindowStateListener() {
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                if (e.getOldState() != e.getNewState()) {
+                    switch (e.getNewState()) {
+                        case Frame.MAXIMIZED_BOTH:
+                            baseFrame.setBounds((int) baseFrame.getBounds().getX(), (int) baseFrame.getBounds().getY(), (int) baseFrame.getBounds().getWidth(), (int) (baseFrame.getBounds().getHeight() - Egci.menuHeight));
+                            // 最大化
+                            break;
+                        case Frame.ICONIFIED:
+                            // 最小化
+                            break;
+                        case Frame.NORMAL:
+                            baseFrame.setBounds((int) baseFrame.getBounds().getX(), (int) baseFrame.getBounds().getY(), (int) baseFrame.getBounds().getWidth(), (int) (baseFrame.getBounds().getHeight() - Egci.menuHeight));
+                            // 恢复
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
         baseFrame.pack();
 //        baseFrame.setVisible(true);
     }
@@ -87,7 +105,6 @@ public abstract class BaseFormService implements BaseAlarmInterface, BaseMonitor
 
     @Override
     public void getEquipmentStatus() {
-
     }
 
     /*
@@ -103,5 +120,11 @@ public abstract class BaseFormService implements BaseAlarmInterface, BaseMonitor
      * 改变状态
      * */
     public void changeStatus(int status) {
+    }
+
+    /*
+     * 显示布控报警信息
+     * */
+    public void showAlarmInfo(AlarmResultEntity alarmResultEntity) {
     }
 }

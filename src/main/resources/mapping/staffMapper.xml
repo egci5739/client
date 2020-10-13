@@ -14,13 +14,13 @@
         INSERT INTO
         StaffTable
         (staffName,staffCardId,staffCardNumber,staffBirthday,staffGender,staffCompany,staffImage,staffValidity) values
-        (#{staffName},#{staffCardId},#{staffCardNumber},#{staffBirthday},#{staffGender},#{staffCompany},#{staffImage},1);
+        (#{staffName},#{staffCardId},#{staffCardNumber},#{staffBirthday},#{staffGender},#{staffCompany},#{staffImage},#{staffValidity});
     </insert>
     <!--修改人员信息-->
     <update id="updateStaff" parameterType="com.dyw.client.entity.StaffEntity">
         UPDATE StaffTable SET
         staffName=#{staffName},staffCardId=#{staffCardId},staffCardNumber=#{staffCardNumber},staffBirthday=#{staffBirthday},staffGender=#{staffGender},
-        staffCompany=#{staffCompany},staffImage=#{staffImage},staffValidity=1 WHERE staffId=#{staffId};
+        staffCompany=#{staffCompany},staffImage=#{staffImage},staffValidity=#{staffValidity} WHERE staffId=#{staffId};
     </update>
     <!--删除人员信息-->
     <delete id="deleteStaff" parameterType="com.dyw.client.entity.StaffEntity">
@@ -33,20 +33,17 @@
     <!--依据卡号和姓名查询人员-->
     <select id="getResultStaffWithCardAndName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber} and
-        staffValidity=1;
+        select * from StaffTable WHERE staffName LIKE #{staffName} OR staffCardNumber LIKE #{staffCardNumber}
     </select>
     <!--依据姓名查询人员-->
     <select id="getResultStaffWithName" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffName LIKE #{staffName} and
-        staffValidity=1;
+        select * from StaffTable WHERE staffName LIKE #{staffName}
     </select>
     <!--依据卡号查询人员-->
     <select id="getResultStaffWithCard" parameterType="String" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber} and
-        staffValidity=1;
+        select * from StaffTable WHERE staffCardNumber LIKE #{staffCardNumber}
     </select>
     <!--根据卡号精确查询待拍照人员表人员-->
     <select id="getWaitStaffWithCardAccurate" resultType="com.dyw.client.entity.StaffEntity">
@@ -87,6 +84,6 @@
     <!--依据查询数量查询人员信息-->
     <select id="getStaffByNumber" parameterType="Integer" resultType="com.dyw.client.entity.StaffEntity"
             flushCache="true">
-        select top ${_parameter} * from StaffTable where staffCardNumber!='0';
+        select top ${_parameter} * from StaffTable where staffCardNumber!='0' and staffValidity='1';
     </select>
 </mapper>

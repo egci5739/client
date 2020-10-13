@@ -9,7 +9,10 @@ import com.dyw.client.form.guard.EquipmentTreeForm;
 import com.dyw.client.service.BaseFormService;
 import com.dyw.client.service.MonitorReceiveInfoSocketService;
 import com.dyw.client.service.NetStateService;
+import com.dyw.client.service.ProtectionReceiveInfoSocketService;
 import com.dyw.client.timer.MonitorStatusTimer;
+import com.dyw.client.timer.ProtectionStatusTimer;
+import com.dyw.client.timer.SystemResetTimer;
 import com.dyw.client.tool.Tool;
 
 import javax.swing.*;
@@ -29,7 +32,7 @@ public class ModuleListForm implements ActionListener {
     private JButton monitorEnterButton;
     private JTextField monitorText;
     private String[] functions;
-    private Map<String, BaseFormService> functionMap = new HashMap<>();
+    private final Map<String, BaseFormService> functionMap = new HashMap<>();
 
 
     /*
@@ -68,6 +71,9 @@ public class ModuleListForm implements ActionListener {
                     registerForm.init();
                     monitorEnterButton = registerForm.getSearchButton();
                     monitorText = registerForm.getChineseNameText();
+                    //重置系统，只有办证端有
+                    SystemResetTimer systemResetTimer = new SystemResetTimer();
+                    systemResetTimer.open();
 //                    frame.dispose();
                     break;
                 case 1:
@@ -93,9 +99,11 @@ public class ModuleListForm implements ActionListener {
                     if (Egci.faceServerStatus == 0) {
                         continue;
                     }
-                    BaseFormService intelligentApplicationForm = new IntelligentApplicationForm();
-                    intelligentApplicationForm.init("布防监控", intelligentApplicationForm.getPanel());
-                    functionMap.put("布防监控", intelligentApplicationForm);
+                    Egci.intelligentApplicationForm = new IntelligentApplicationForm();
+                    Egci.intelligentApplicationForm.init("布防监控", Egci.intelligentApplicationForm.getPanel());
+                    ProtectionStatusTimer protectionStatusTimer = new ProtectionStatusTimer();
+                    protectionStatusTimer.open();
+                    functionMap.put("布防监控", Egci.intelligentApplicationForm);
                     JButton intelligentApplicationButton = new JButton("布防监控");
                     intelligentApplicationButton.addActionListener(this);
                     moduleListContentPanel.add(intelligentApplicationButton);
@@ -175,9 +183,9 @@ public class ModuleListForm implements ActionListener {
                         continue;
                     }
                     BaseFormService historyVideoForm = new HistoryVideoForm();
-                    historyVideoForm.init("历史通行视频", historyVideoForm.getPanel());
-                    functionMap.put("历史通行视频", historyVideoForm);
-                    JButton historyVideoButton = new JButton("历史通行视频");
+                    historyVideoForm.init("布控检索", historyVideoForm.getPanel());
+                    functionMap.put("布控检索", historyVideoForm);
+                    JButton historyVideoButton = new JButton("布控检索");
                     historyVideoButton.addActionListener(this);
                     moduleListContentPanel.add(historyVideoButton);
                     break;
@@ -225,33 +233,33 @@ public class ModuleListForm implements ActionListener {
     public void init() {
         frame = new JFrame("门禁人脸识别系统");
         frame.setContentPane(this.moduleListForm);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //自定义退出操作
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    Tool.showMessage("系统正在关闭中...", "系统正在关闭中..", 1);
-                    //第一步：获取全部报警主机信息，判断是否已存在
-                    String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
-                    String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
-                    List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
-                    for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
-                        if (httpHostNotificationEntity.getUrl().equals(url)) {
-                            Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
-                        }
-                    }
-                    System.exit(0);
-                } catch (Exception e1) {
-                    System.exit(0);
-                }
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-        });
+//        frame.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                try {
+//                    Tool.showMessage("系统正在关闭中...", "系统正在关闭中..", 1);
+//                    //第一步：获取全部报警主机信息，判断是否已存在
+//                    String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
+//                    String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
+//                    List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
+//                    for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
+//                        if (httpHostNotificationEntity.getUrl().equals(url)) {
+//                            Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
+//                        }
+//                    }
+//                    System.exit(0);
+//                } catch (Exception e1) {
+//                    System.exit(0);
+//                }
+//            }
+//
+//            @Override
+//            public void windowClosed(WindowEvent e) {
+//
+//            }
+//        });
         try {
             monitorText.requestFocus();
         } catch (Exception ignored) {
@@ -265,7 +273,7 @@ public class ModuleListForm implements ActionListener {
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);//禁止改变大小
-
+        //监控
         try {
             NetStateService netStateService = new NetStateService();
             if (netStateService.ping(Egci.configEntity.getSocketIp())) {
@@ -282,6 +290,24 @@ public class ModuleListForm implements ActionListener {
             }
         } catch (Exception e) {
             Egci.monitorWorkStatus = 0;
+        }
+        //布控
+        try {
+            NetStateService netStateService = new NetStateService();
+            if (netStateService.ping(Egci.configEntity.getSocketIp())) {
+                //创建接收通行信息的socket对象
+                if (functions.length != 1 || !Arrays.asList(functions).contains("0")) {
+                    ProtectionReceiveInfoSocketService protectionReceiveInfoSocketService = new ProtectionReceiveInfoSocketService();
+                    protectionReceiveInfoSocketService.sendInfo(Tool.getAccessPermissionInfo(Egci.accountEntity.getAccountPermission()));
+                    protectionReceiveInfoSocketService.start();
+                } else {
+                    frame.dispose();
+                }
+            } else {
+                Egci.protectionWorkStatus = 0;
+            }
+        } catch (Exception e) {
+            Egci.protectionWorkStatus = 0;
         }
         assistButton.setVisible(false);//隐藏用来辅助的按钮
         Egci.menuHeight = frame.getBounds().height;

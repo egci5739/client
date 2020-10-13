@@ -29,7 +29,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="36"/>
+                  <font name="Microsoft YaHei" size="28"/>
                   <text value="待拍照人员"/>
                 </properties>
               </component>
@@ -54,32 +54,12 @@
                   <component id="513e4" class="javax.swing.JTable" binding="waitStaffTable">
                     <constraints/>
                     <properties>
-                      <font size="20"/>
+                      <font name="Microsoft YaHei" size="20"/>
                       <rowHeight value="30"/>
                     </properties>
                   </component>
                 </children>
               </scrollpane>
-            </children>
-          </grid>
-          <grid id="8f032" binding="waitStaffButtonPanel" layout-manager="GridBagLayout">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.1"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="be47" class="javax.swing.JButton" binding="refreshButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <font size="18"/>
-                  <text value="重新加载"/>
-                </properties>
-              </component>
             </children>
           </grid>
         </children>
@@ -106,7 +86,7 @@
                   <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
                 <properties>
-                  <font size="36"/>
+                  <font name="Microsoft YaHei" size="28"/>
                   <text value="人员信息"/>
                 </properties>
               </component>
@@ -126,7 +106,7 @@
                   <gridbag weightx="0.1" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="中文名称"/>
                 </properties>
               </component>
@@ -138,7 +118,7 @@
                   <gridbag weightx="0.3" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -148,7 +128,7 @@
                   <gridbag weightx="0.1" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="英文名称"/>
                 </properties>
               </component>
@@ -160,7 +140,7 @@
                   <gridbag weightx="0.3" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="24646" class="javax.swing.JLabel" binding="passCardLabel">
@@ -169,7 +149,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="通行卡号"/>
                 </properties>
               </component>
@@ -181,7 +161,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="5f564" class="javax.swing.JLabel" binding="IdNumberLabel">
@@ -190,7 +170,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="证件号码"/>
                 </properties>
               </component>
@@ -202,7 +182,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="97e4a" class="javax.swing.JLabel" binding="birthdayLabel">
@@ -211,7 +191,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="出生日期"/>
                 </properties>
               </component>
@@ -223,7 +203,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="6694d" class="javax.swing.JLabel" binding="sexLabel">
@@ -232,8 +212,8 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
-                  <text value="性别"/>
+                  <font name="Microsoft YaHei" size="24"/>
+                  <text value="性  别"/>
                 </properties>
               </component>
               <component id="8a131" class="javax.swing.JLabel" binding="companyLabel">
@@ -242,7 +222,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="所属公司"/>
                 </properties>
               </component>
@@ -254,7 +234,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="b82f7" class="javax.swing.JTextField" binding="companyText">
@@ -265,7 +245,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
               <component id="2e9a4" class="javax.swing.JLabel" binding="IdPhotoLabel">
@@ -274,7 +254,8 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <enabled value="true"/>
+                  <font name="Microsoft YaHei" size="24"/>
                   <text value="证件照片"/>
                 </properties>
               </component>
@@ -304,8 +285,27 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="16"/>
+                  <font name="Microsoft YaHei" size="16"/>
                   <text value="选取本地照片"/>
+                </properties>
+              </component>
+              <component id="59325" class="javax.swing.JLabel" binding="staffValidityLable">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipady="25"/>
+                </constraints>
+                <properties>
+                  <font name="Microsoft YaHei" size="24"/>
+                  <text value="状  态"/>
+                </properties>
+              </component>
+              <component id="ddf23" class="javax.swing.JComboBox" binding="validityComboBox">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font name="Microsoft YaHei" size="20"/>
                 </properties>
               </component>
             </children>
@@ -324,7 +324,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="搜索"/>
                 </properties>
               </component>
@@ -334,7 +334,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="添加"/>
                 </properties>
               </component>
@@ -344,7 +344,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="修改"/>
                 </properties>
               </component>
@@ -354,7 +354,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="删除"/>
                 </properties>
               </component>
@@ -364,7 +364,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="存盘"/>
                 </properties>
               </component>
@@ -374,7 +374,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <text value="取消"/>
                 </properties>
               </component>
@@ -384,7 +384,7 @@
                   <gridbag top="0" left="30" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="18"/>
+                  <font name="Microsoft YaHei" size="18"/>
                   <selected value="true"/>
                   <text value="是否刷身份证"/>
                 </properties>
@@ -396,7 +396,7 @@
                 </constraints>
                 <properties>
                   <enabled value="false"/>
-                  <font size="16"/>
+                  <font name="Microsoft YaHei" size="16"/>
                   <text value="通信状态"/>
                 </properties>
               </component>
@@ -421,7 +421,7 @@
                   <component id="dab1a" class="javax.swing.JTable" binding="resultTable">
                     <constraints/>
                     <properties>
-                      <font size="20"/>
+                      <font name="Microsoft YaHei" size="20"/>
                       <rowHeight value="30"/>
                     </properties>
                   </component>
@@ -453,7 +453,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="36"/>
+                  <font name="Microsoft YaHei" size="28"/>
                   <text value="采集信息"/>
                 </properties>
               </component>
@@ -492,7 +492,7 @@
                   <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font/>
+                  <font name="Microsoft YaHei"/>
                   <text value="替换旧照片"/>
                 </properties>
               </component>
@@ -502,6 +502,7 @@
                   <gridbag top="0" left="5" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
+                  <font name="Microsoft YaHei"/>
                   <text value="打开摄像头"/>
                 </properties>
               </component>
@@ -542,7 +543,7 @@
                   <gridbag weightx="0.1" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="相似度："/>
                 </properties>
               </component>
@@ -552,7 +553,7 @@
                   <gridbag weightx="0.9" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -562,7 +563,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="姓名："/>
                 </properties>
               </component>
@@ -572,7 +573,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="身份证号："/>
                 </properties>
               </component>
@@ -582,7 +583,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="民族："/>
                 </properties>
               </component>
@@ -592,7 +593,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="性别："/>
                 </properties>
               </component>
@@ -602,7 +603,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="出生日期："/>
                 </properties>
               </component>
@@ -612,7 +613,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="有效期："/>
                 </properties>
               </component>
@@ -622,7 +623,7 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value="签发机关："/>
                 </properties>
               </component>
@@ -632,7 +633,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -642,7 +643,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -652,7 +653,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -662,7 +663,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -672,7 +673,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -682,7 +683,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -692,7 +693,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font name="Microsoft YaHei" size="20"/>
                   <text value=""/>
                 </properties>
               </component>

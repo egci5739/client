@@ -23,9 +23,13 @@ public class ConfigEntity {
     private int displayMonitorRowCount;
     //布控页面显示的最大条数
     private int displayProtectionRowCount;
-
+    //socket连接布控端口
+    private short socketProtectionPort;
     //独有的
     private String faceCollectionIp;//采集设备IP
+    private int synchronizationHour;//几点同步
+    private int synchronizationMinute;//几分同步
+    private int synchronizationSecond;//几秒同步
 
     public short getDevicePort() {
         return devicePort;
@@ -137,5 +141,37 @@ public class ConfigEntity {
 
     public void setDisplayProtectionRowCount(int displayProtectionRowCount) {
         this.displayProtectionRowCount = displayProtectionRowCount;
+    }
+
+    public short getSocketProtectionPort() {
+        return socketProtectionPort;
+    }
+
+    public void setSocketProtectionPort(short socketProtectionPort) {
+        this.socketProtectionPort = socketProtectionPort;
+    }
+
+    public int getSynchronizationHour() {
+        return synchronizationHour;
+    }
+
+    public void setSynchronizationHour(int synchronizationHour) {
+        this.synchronizationHour = synchronizationHour;
+    }
+
+    public int getSynchronizationMinute() {
+        return synchronizationMinute;
+    }
+
+    public void setSynchronizationMinute(int synchronizationMinute) {
+        this.synchronizationMinute = synchronizationMinute;
+    }
+
+    public int getSynchronizationSecond() {
+        return synchronizationSecond;
+    }
+
+    public void setSynchronizationSecond(int synchronizationSecond) {
+        this.synchronizationSecond = synchronizationSecond;
     }
 }

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.TimerTask;
 
 public class PingTask extends TimerTask {
-    private Logger logger = LoggerFactory.getLogger(PingTask.class);
-    private NetStateService netStateService;
-    private RegisterForm registerForm;
+    private final Logger logger = LoggerFactory.getLogger(PingTask.class);
+    private final NetStateService netStateService;
+    private final RegisterForm registerForm;
 
     public PingTask(RegisterForm registerForm) {
         netStateService = new NetStateService();
@@ -29,16 +29,20 @@ public class PingTask extends TimerTask {
     @Override
     public void run() {
         try {
-            if (!netStateService.ping(Egci.configEntity.getSocketIp()) && !netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
+            if (!netStateService.ping(Egci.configEntity.getSocketIp()) && !netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {//与服务器和采集设备断开
                 registerForm.changeCommunicationStatus(4);
-            } else if (!netStateService.ping(Egci.configEntity.getSocketIp())) {
+            } else if (!netStateService.ping(Egci.configEntity.getSocketIp())) {//与服务器网络断开
                 registerForm.changeCommunicationStatus(2);
-            } else if (Egci.workStatus == 1) {
+            } else if (Egci.workStatus == 1) {//与服务程序断开
                 registerForm.changeCommunicationStatus(1);
-                registerForm.reconnectToServer();
-            } else if (!netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
+                if (netStateService.ping(Egci.configEntity.getSocketIp())) {
+                    registerForm.reconnectToServer();
+                }
+            } else if (!netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {//与采集设备断开
                 registerForm.changeCommunicationStatus(3);
-                registerForm.reconnectToServer();
+                if (netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
+                    registerForm.reconnectToServer();
+                }
             } else {
                 registerForm.changeCommunicationStatus(0);
             }

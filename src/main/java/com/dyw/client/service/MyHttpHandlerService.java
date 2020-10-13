@@ -15,14 +15,15 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyHttpHandlerService implements HttpHandler {
-    private Logger logger = LoggerFactory.getLogger(MyHttpHandlerService.class);
-    private IntelligentApplicationForm intelligentApplicationForm;
+    private final Logger logger = LoggerFactory.getLogger(MyHttpHandlerService.class);
+    private final IntelligentApplicationForm intelligentApplicationForm;
     private List<AlarmResultEntity> alarmResultEntityList = new ArrayList<>();
-    private List<CaptureLibResultEntity> captureLibResultEntityList = new ArrayList<>();
+    private final List<CaptureLibResultEntity> captureLibResultEntityList = new ArrayList<>();
 
     public MyHttpHandlerService(IntelligentApplicationForm intelligentApplicationForm) {
         this.intelligentApplicationForm = intelligentApplicationForm;
@@ -31,7 +32,7 @@ public class MyHttpHandlerService implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String requestMethod = httpExchange.getRequestMethod();
         if (requestMethod.equalsIgnoreCase("POST")) {
-            InputStreamReader ISR = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            InputStreamReader ISR = new InputStreamReader(httpExchange.getRequestBody(), StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(ISR);
             String strout = "";
             String temp = "";
@@ -54,7 +55,7 @@ public class MyHttpHandlerService implements HttpHandler {
                     case "alarmResult":
                         alarmResultEntityList = JSONObject.parseArray(resultData.getString("alarmResult"), AlarmResultEntity.class);
                         if (Egci.snapDeviceIps.contains(alarmResultEntityList.get(0).getTargetAttrs().getDeviceIP())) {
-                            intelligentApplicationForm.showAlarmInfo(null, alarmResultEntityList.get(0));
+                            intelligentApplicationForm.showAlarmInfo(alarmResultEntityList.get(0));
                         }
                         break;
                     default:

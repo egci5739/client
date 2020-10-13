@@ -4,9 +4,12 @@ import com.dyw.client.HCNetSDK;
 import com.dyw.client.entity.AccountEntity;
 import com.dyw.client.entity.ConfigEntity;
 import com.dyw.client.entity.EquipmentEntity;
-import com.dyw.client.form.*;
+import com.dyw.client.form.LoginForm;
 import com.dyw.client.service.BaseFormService;
+import com.dyw.client.service.ImportService;
+import com.dyw.client.service.LiveTestService;
 import com.dyw.client.service.SessionService;
+import com.dyw.client.timer.SystemResetTimer;
 import com.dyw.client.tool.Tool;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -22,12 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Egci {
-    private static Logger logger = LoggerFactory.getLogger(Egci.class);
+    private static final Logger logger = LoggerFactory.getLogger(Egci.class);
     public static Map<String, String> functions = new HashMap<>();
     public static ConfigEntity configEntity;
     public static SqlSession session;
     public static int workStatus;//办证端状态符
     public static int monitorWorkStatus;//监控端状态符
+    public static int protectionWorkStatus;//布控端状态符
     public static AccountEntity accountEntity = new AccountEntity();
     private static LoginForm loginForm;
     public static Map<String, String> fdLibMaps = new HashMap<>();//布控人脸库
@@ -49,6 +53,7 @@ public class Egci {
     public static BaseFormService accessRecordForm;//实时通行-新
     public static BaseFormService alarmForm;//报警记录
     public static BaseFormService monitorHistoryForm;//历史通行记录
+    public static BaseFormService intelligentApplicationForm;//布防监控
 
     public static int menuHeight;//菜单高度
 

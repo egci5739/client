@@ -82,7 +82,7 @@
                         <constraints/>
                         <properties>
                           <autoCreateRowSorter value="true"/>
-                          <font size="16" style="1"/>
+                          <font/>
                           <rowHeight value="160"/>
                         </properties>
                       </component>
@@ -160,7 +160,7 @@
                       <component id="9dedc" class="javax.swing.JTable" binding="passFaultContentTable">
                         <constraints/>
                         <properties>
-                          <font size="16" style="1"/>
+                          <font/>
                           <rowHeight value="160"/>
                         </properties>
                       </component>
@@ -226,7 +226,7 @@
                       <component id="bf312" class="javax.swing.JTable" binding="passAlarmContentTable">
                         <constraints/>
                         <properties>
-                          <font size="16"/>
+                          <font/>
                           <rowHeight value="30"/>
                         </properties>
                       </component>

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ExportExcelService {
-    private Logger logger = LoggerFactory.getLogger(ExportExcelService.class);
+    private final Logger logger = LoggerFactory.getLogger(ExportExcelService.class);
 
     public void export(int number) {
         try {
@@ -76,15 +76,20 @@ public class ExportExcelService {
     /*
      * 图片存入本地
      * */
-    private static Boolean savePhoto(byte[] bytes, String fileName) {
+    private Boolean savePhoto(byte[] bytes, String fileName) {
         try {
-            OutputStream os = new FileOutputStream(System.getProperty("user.dir") + "\\staffInfo\\" + fileName + ".jpg");
-            os.write(bytes, 0, bytes.length);
-            os.flush();
-            os.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (bytes.length == 0) {
+                return false;
+            } else {
+                OutputStream os = new FileOutputStream(System.getProperty("user.dir") + "\\staffInfo\\" + fileName + ".jpg");
+                os.write(bytes, 0, bytes.length);
+                os.flush();
+                os.close();
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("存入本地出错", e);
+//            e.printStackTrace();
             return false;
         }
     }
@@ -119,7 +124,7 @@ public class ExportExcelService {
                 row.createCell(0).setCellValue(passInfoEntity.getPassRecordPassTime().toString());
                 row.createCell(1).setCellValue(passInfoEntity.getPassRecordName());
                 row.createCell(2).setCellValue(passInfoEntity.getPassRecordCardNumber());
-                row.createCell(3).setCellValue(passInfoEntity.getPassRecordEventTypeId());
+                row.createCell(3).setCellValue(Tool.eventIdToEventName(passInfoEntity.getPassRecordPassResult()));
                 row.createCell(4).setCellValue(passInfoEntity.getPassRecordSimilarity());
                 row.createCell(5).setCellValue(passInfoEntity.getPassRecordEquipmentName());
                 i++;
@@ -149,7 +154,9 @@ public class ExportExcelService {
             String basePath = System.getProperty("user.dir") + "\\passInfo\\";
             //文件名
             String exportFileName = "通行统计信息" + now + ".xlsx";
-            String[] cellTitle = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "成功率(%)", "失败率(%)"};
+//            String[] cellTitle = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "成功率(%)", "失败率(%)"};
+            String[] cellTitle = {"设备名称", "比对总数", "比对通过", "比对失败", "卡号不存在", "活体检测失败", "比对成功率(%)", "比对失败率(%)", "活体检测失败率(%)"};
+
             // 声明一个工作薄
             XSSFWorkbook workBook = null;
             workBook = new XSSFWorkbook();
@@ -170,8 +177,10 @@ public class ExportExcelService {
                 row.createCell(2).setCellValue(dataAnalysisEntity.getSuccessNumber());
                 row.createCell(3).setCellValue(dataAnalysisEntity.getFaultNumber());
                 row.createCell(4).setCellValue(dataAnalysisEntity.getNoCardNumber());
-                row.createCell(5).setCellValue(dataAnalysisEntity.getSuccessRate());
-                row.createCell(6).setCellValue(dataAnalysisEntity.getFaultRate());
+                row.createCell(5).setCellValue(dataAnalysisEntity.getNotLiveNumber());
+                row.createCell(6).setCellValue(dataAnalysisEntity.getSuccessRate());
+                row.createCell(7).setCellValue(dataAnalysisEntity.getFaultRate());
+                row.createCell(8).setCellValue(dataAnalysisEntity.getNotLiveRate());
                 i++;
             }
             File file = new File(basePath + exportFileName);

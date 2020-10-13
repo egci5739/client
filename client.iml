@@ -18,6 +18,7 @@
     <orderEntry type="library" name="commons-codec-1.9" level="project" />
     <orderEntry type="library" name="jna" level="project" />
     <orderEntry type="library" name="jna-utils" level="project" />
+    <orderEntry type="library" name="gnujaxp-1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
@@ -76,5 +77,10 @@
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.04" level="project" />
+    <orderEntry type="library" name="Maven: org.jfree:jfreechart:1.0.19" level="project" />
+    <orderEntry type="library" name="Maven: org.jfree:jcommon:1.0.23" level="project" />
+    <orderEntry type="library" name="arcsoft-sdk-face-3.1.1.0" level="project" />
+    <orderEntry type="library" name="arcsoft-sdk-face-3.1.1.0 (2)" level="project" />
+    <orderEntry type="library" name="aip-java-sdk-4.15.1" level="project" />
   </component>
 </module>

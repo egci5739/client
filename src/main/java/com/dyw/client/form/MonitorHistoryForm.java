@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MonitorHistoryForm extends BaseFormService {
-    private Logger logger = LoggerFactory.getLogger(MonitorHistoryForm.class);
+    private final Logger logger = LoggerFactory.getLogger(MonitorHistoryForm.class);
 
     @Override
     public JPanel getPanel() {
@@ -58,15 +58,15 @@ public class MonitorHistoryForm extends BaseFormService {
     private JLabel pageInfoLabel;//页数信息
     private int totalPage;//总页数
     private int currentPage = 1;//当前页
-    private RowSorter<TableModel> sorter;
+    private final RowSorter<TableModel> sorter;
 
-    private String passCardSelectionDefaultHint = "请输入卡号";
-    private String nameSelectionDefaultHint = "请输入姓名";
-    private Map<Integer, String> conditionEquipmentMap;
-    private Map<Integer, Integer> conditionEventMap;
-    private DefaultTableModel resultModel;
+    private final String passCardSelectionDefaultHint = "请输入卡号";
+    private final String nameSelectionDefaultHint = "请输入姓名";
+    private final Map<Integer, String> conditionEquipmentMap;
+    private final Map<Integer, Integer> conditionEventMap;
+    private final DefaultTableModel resultModel;
     private List<PassRecordEntity> passInfoHistoryList;
-    private PageSelectionService pageSelectionService;
+    private final PageSelectionService pageSelectionService;
 
     public MonitorHistoryForm() {
         conditionEquipmentMap = new HashMap<>();
@@ -206,13 +206,13 @@ public class MonitorHistoryForm extends BaseFormService {
      * 查询历史记录
      * */
     private void search() {
-        if (equipmentSelectionCombo.getSelectedIndex() == 0 && passCardSelectionText.getText().equals("请输入卡号") && nameSelectionText.getText().equals("请输入姓名")) {
-            Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
-            return;
-        }
+//        if (equipmentSelectionCombo.getSelectedIndex() == 0 && passCardSelectionText.getText().equals("请输入卡号") && nameSelectionText.getText().equals("请输入姓名")) {
+//            Tool.showMessage("请先选择一台设备或输入卡号、姓名后查询", "提示", 0);
+//            return;
+//        }
         PassRecordEntity condition = new PassRecordEntity();
         condition.setPassRecordEquipmentIp(conditionEquipmentMap.get(equipmentSelectionCombo.getSelectedIndex()));
-        condition.setPassRecordEventTypeId(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
+        condition.setPassRecordPassResult(conditionEventMap.get(eventSelectionCombo.getSelectedIndex()).intValue());
         if (!passCardSelectionText.getText().equals(passCardSelectionDefaultHint)) {
             condition.setPassRecordCardNumber(passCardSelectionText.getText());
         }
@@ -238,7 +238,7 @@ public class MonitorHistoryForm extends BaseFormService {
                 v.add(0, passInfoEntity.getPassRecordPassTime());
                 v.add(1, passInfoEntity.getPassRecordName());
                 v.add(2, passInfoEntity.getPassRecordCardNumber());
-                v.add(3, Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()));
+                v.add(3, Tool.eventIdToEventName(passInfoEntity.getPassRecordPassResult()));
                 v.add(4, passInfoEntity.getPassRecordNote());
                 v.add(5, passInfoEntity.getPassRecordSimilarity());
                 v.add(6, passInfoEntity.getPassRecordEquipmentName());

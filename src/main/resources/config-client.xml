@@ -7,10 +7,10 @@
             <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-                <!--<property name="url" value="jdbc:sqlserver://192.168.40.10:1433;databaseName=FaceRecognition"/>-->
+                <!--                <property name="url" value="jdbc:sqlserver://192.168.40.10:1433;databaseName=FaceRecognition"/>-->
                 <property name="url" value="jdbc:sqlserver://localhost:51178;databaseName=FaceRecognition"/>
                 <property name="username" value="sa"/>
-                <!--<property name="username" value="dyw"/>-->
+                <!--                <property name="username" value="dyw"/>-->
                 <property name="password" value="hik12345"/>
             </dataSource>
         </environment>

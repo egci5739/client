@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class RegisterReceiveInfoSocketService extends Thread {
-    private Logger logger = LoggerFactory.getLogger(RegisterReceiveInfoSocketService.class);
+    private final Logger logger = LoggerFactory.getLogger(RegisterReceiveInfoSocketService.class);
     private OutputStream os;
     private Socket socket;
     private RegisterForm registerForm;
@@ -58,7 +58,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
                     if (info.equals("error")) {
                         registerForm.changeCommunicationStatus(3);
                         Egci.workStatus = 3;
-                        registerForm.reconnectToServer();
+//                        registerForm.reconnectToServer();//attention
                     } else {
                         try {
                             FaceCollectionEntity collectionEntity = Egci.session.selectOne("mapping.staffMapper.getStaffCollectionInfo", Integer.parseInt(info));
@@ -77,7 +77,7 @@ public class RegisterReceiveInfoSocketService extends Thread {
                 }
             } catch (IOException e) {
                 logger.error("服务端关闭连接", e);
-                Tool.showMessage("与服务程序断开连接", "提示", 1);
+//                Tool.showMessage("与服务程序断开连接", "提示", 1);
                 Egci.workStatus = 1;
                 registerForm.changeCommunicationStatus(1);
                 break;
@@ -87,7 +87,6 @@ public class RegisterReceiveInfoSocketService extends Thread {
 
     @Override
     public void run() {
-
         receiveInfo();
     }
 }

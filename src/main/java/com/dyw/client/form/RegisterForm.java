@@ -28,21 +28,22 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class RegisterForm {
-    private Logger logger = LoggerFactory.getLogger(RegisterForm.class);
+    private final Logger logger = LoggerFactory.getLogger(RegisterForm.class);
     private List<String> cardNumbers;
     private Map<String, StaffEntity> waitStaffMap;
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
     private StaffEntity oldStaff = new StaffEntity();
     private byte[] staffPhoto;
     private byte[] takePhoto;
-    private StaffOperationService staffOperationService;
+    private final StaffOperationService staffOperationService;
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
-    private DefaultTableModel waitStaffModel;
+    private final DefaultTableModel waitStaffModel;
     //    private List<StaffEntity> waitStaffList = new ArrayList<>();
-    private List<StaffEntity> resultStaffList = new ArrayList<>();
+    private List<StaffEntity> resultStaffList = new ArrayList<>();//搜索结果框
     private List<StaffEntity> resultWaitStaffList = new ArrayList<>();
-    private static String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
+    private static final String cardNumberPattern = "^[1-9]\\d*$";//卡号正则表达式
     private int operationCode;//操作码：1：新增；2：修改
+
 
     public JPanel getRegisterForm() {
         return registerForm;
@@ -85,8 +86,6 @@ public class RegisterForm {
     private JPanel waitStaffTitlePanel;
     private JPanel waitStaffListPanel;
     private JTable waitStaffTable;//待拍照人员列表
-    private JPanel waitStaffButtonPanel;
-    private JButton refreshButton;
     private JPanel identityTitlePanel;
     private JPanel takePhotoPanel;
     private JPanel changePhotoButtonPanel;
@@ -107,9 +106,18 @@ public class RegisterForm {
     private JScrollPane waitStaffScroll;
     private JButton choseLocalPictureButton;
     private JButton takePhotoButton;
+    private JLabel staffValidityLable;
+    private JComboBox validityComboBox;
     private StaffEntity staffEntity;
 
+    private final LiveTestService liveTestService;//测试活体
+    private final BodySegService bodySegService;//测试抠图
+
     public RegisterForm() {
+        liveTestService = new LiveTestService();
+        bodySegService = new BodySegService();
+
+
         //获取人脸库
         if (Egci.faceServerStatus == 1) {
             getFDLib();
@@ -118,6 +126,9 @@ public class RegisterForm {
         sexSelectionCombo.addItem("未知");
         sexSelectionCombo.addItem("男");
         sexSelectionCombo.addItem("女");
+        //初始化状态选择框
+        validityComboBox.addItem("无效");
+        validityComboBox.addItem("有效");
         //获取采集设备的ip
         try {
             EquipmentEntity equipmentEntity = Egci.session.selectOne("mapping.equipmentMapper.getFaceCollectionWithHostIp", InetAddress.getLocalHost().getHostAddress());
@@ -148,7 +159,12 @@ public class RegisterForm {
         inputDisabled();
         //初始化查询结果表
         String[] columnNames = {"通行卡号", "中文名称", "证件号码"};
-        model = new DefaultTableModel();
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         model.setColumnIdentifiers(columnNames);
         resultTable.setModel(model);
         //获取待拍照人员列表
@@ -171,12 +187,6 @@ public class RegisterForm {
                     }
                 } catch (Exception e1) {
                 }
-            }
-        });
-        //重新加载待拍照人员列表
-        refreshButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                getWaitStaff();
             }
         });
         //取消
@@ -228,6 +238,9 @@ public class RegisterForm {
                     passCardText.setEnabled(false);
                     IdPhoto.setEnabled(true);
                     addButton.setEnabled(false);
+//                    if (resultTable.getSelectedRow() == -1) {
+//                        return;
+//                    }
                     if (resultStaffList.get(resultTable.getSelectedRow()) != null) {
                         staffPhoto = resultStaffList.get(resultTable.getSelectedRow()).getStaffImage();
                         fillStaffInfo(resultStaffList.get(resultTable.getSelectedRow()));
@@ -294,9 +307,12 @@ public class RegisterForm {
     public void displayPhoto() {
         try {
             byte[] pictureBytes = Tool.getPictureStream(System.getProperty("user.dir") + "/snap.jpg");
+            logger.info("是否活体：" + liveTestService.judge(pictureBytes));//attention
+
             takePhoto = pictureBytes;
-            ImageIcon imageIcon = new ImageIcon(pictureBytes);
+            ImageIcon imageIcon = new ImageIcon(bodySegService.seg(pictureBytes));
             takePhotoLabel.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getWidth(), 1));
+
         } catch (Exception e) {
             IdPhoto.setIcon(null);
             logger.error("显示摄像头抓拍图片出错", e);
@@ -307,7 +323,6 @@ public class RegisterForm {
      * 重新连接到服务程序
      * */
     public void reconnectToServer() {
-//        if (JOptionPane.showConfirmDialog(null, "确定重新连接到服务程序吗？", "重连提示", 0) == 0) {
         try {
             NetStateService netStateService = new NetStateService();
             if (netStateService.ping(Egci.configEntity.getFaceCollectionIp())) {
@@ -317,9 +332,7 @@ public class RegisterForm {
                 useIdCardCheckBox.setSelected(true);
             }
         } catch (Exception e) {
-//            Tool.showMessage("重连失败，请确保服务程序运行正常", "提示", 0);
         }
-//        }
     }
 
     /*
@@ -339,6 +352,7 @@ public class RegisterForm {
         changePhotoButton.setEnabled(false);
         getWaitStaff();
         waitStaffTable.getSelectionModel().clearSelection();
+        resultTable.getSelectionModel().clearSelection();//attention
         waitStaffTable.setEnabled(false);
         chineseNameText.requestFocus();
         operationCode = 0;
@@ -377,6 +391,7 @@ public class RegisterForm {
         frame.setContentPane(this.registerForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.getRootPane().setDefaultButton(searchButton);
         frame.setVisible(true);
     }
 
@@ -390,6 +405,7 @@ public class RegisterForm {
             IdNumberText.setText(staffEntity.getStaffCardId());
             birthdayText.setText(staffEntity.getStaffBirthday());
             sexSelectionCombo.setSelectedIndex(staffEntity.getStaffGender());
+            validityComboBox.setSelectedIndex(staffEntity.getStaffValidity());
             companyText.setText(staffEntity.getStaffCompany());
             try {
                 staffEntity.setStaffImage(staffEntity.getStaffImage());
@@ -406,7 +422,6 @@ public class RegisterForm {
         } catch (Exception e) {
             logger.error("将人员信息填入人员表单中出错", e);
             IdPhoto.setIcon(null);
-//            model.setRowCount(0);
         }
     }
 
@@ -446,6 +461,7 @@ public class RegisterForm {
             IdNumberText.setText("");
             birthdayText.setText("");
             sexSelectionCombo.setSelectedIndex(0);
+            validityComboBox.setSelectedIndex(0);
             companyText.setText("");
             idSimilarityLabel.setText("");
             idNameLabel.setText("");
@@ -475,6 +491,7 @@ public class RegisterForm {
         staffEntity.setStaffCardId(IdNumberText.getText());
         staffEntity.setStaffBirthday(birthdayText.getText());
         staffEntity.setStaffGender(sexSelectionCombo.getSelectedIndex());
+        staffEntity.setStaffValidity(validityComboBox.getSelectedIndex());
         staffEntity.setStaffCompany(companyText.getText());
         try {
             staffEntity.setStaffImage(staffPhoto);
@@ -491,6 +508,7 @@ public class RegisterForm {
     public void add() {
         oldStaff.setStaffId(0);
         waitStaffTable.setEnabled(true);
+        validityComboBox.setSelectedIndex(1);
         inputEnable();
         searchButton.setEnabled(false);
         saveButton.setEnabled(true);
@@ -601,6 +619,7 @@ public class RegisterForm {
         IdNumberText.setEnabled(false);
         birthdayText.setEnabled(false);
         sexSelectionCombo.setEnabled(false);
+        validityComboBox.setEnabled(false);
         companyText.setEnabled(false);
         IdPhoto.setEnabled(false);
     }
@@ -613,6 +632,7 @@ public class RegisterForm {
         IdNumberText.setEnabled(true);
         birthdayText.setEnabled(true);
         sexSelectionCombo.setEnabled(true);
+        validityComboBox.setEnabled(true);
         companyText.setEnabled(true);
         IdPhoto.setEnabled(true);
     }
@@ -656,7 +676,7 @@ public class RegisterForm {
                 break;
             case 4:
                 communicationStatusButton.setBackground(Color.lightGray);
-                communicationStatusButton.setText("网络已断开");
+                communicationStatusButton.setText("全部网络已断开");
                 communicationStatusButton.setEnabled(false);
                 useIdCardCheckBox.setEnabled(false);
                 break;
@@ -708,8 +728,9 @@ public class RegisterForm {
             String s = f.getAbsolutePath();//返回路径名
             //JOptionPane弹出对话框类，显示绝对路径名
             byte[] pictureBytes = Tool.getPictureStream(s);
+            logger.info("是否活体：" + liveTestService.judge(pictureBytes));//attention
             IdPhoto.setIcon(null);
-            ImageIcon imageIcon = new ImageIcon(pictureBytes);
+            ImageIcon imageIcon = new ImageIcon(bodySegService.seg(pictureBytes));//attention
             IdPhoto.setIcon(Tool.getImageScale(imageIcon, imageIcon.getIconWidth(), imageIcon.getIconHeight(), photoPanel.getHeight(), 2));
             staffPhoto = pictureBytes;
         } catch (Exception e1) {

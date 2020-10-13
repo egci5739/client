@@ -18,7 +18,7 @@ import java.net.Socket;
 import java.util.List;
 
 public class MonitorReceiveInfoSocketService extends Thread {
-    private Logger logger = LoggerFactory.getLogger(MonitorReceiveInfoSocketService.class);
+    private final Logger logger = LoggerFactory.getLogger(MonitorReceiveInfoSocketService.class);
     private OutputStream os;
     private Socket socket;
 
@@ -28,7 +28,7 @@ public class MonitorReceiveInfoSocketService extends Thread {
      * */
     public MonitorReceiveInfoSocketService() {
         try {
-            socket = new Socket(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());
+            socket = new Socket(Egci.configEntity.getSocketIp(), Egci.configEntity.getSocketMonitorPort());//attention
             os = socket.getOutputStream();
         } catch (IOException e) {
             logger.error("创建消息发送体出错", e);
@@ -85,6 +85,8 @@ public class MonitorReceiveInfoSocketService extends Thread {
                         }
                     } catch (Exception e) {
                         logger.error("接收数据出错", e);
+                        SessionService sessionService = new SessionService();//attention
+                        Egci.session = sessionService.createSession();
                     }
                 }
             } catch (IOException e) {

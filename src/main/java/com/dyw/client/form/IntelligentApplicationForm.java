@@ -3,14 +3,12 @@ package com.dyw.client.form;
 import com.alibaba.fastjson.JSONObject;
 import com.dyw.client.HCNetSDK;
 import com.dyw.client.controller.Egci;
-import com.dyw.client.controller.JDialogPlayBackByTime;
 import com.dyw.client.entity.protection.*;
 import com.dyw.client.functionForm.SearchByPicForm;
 import com.dyw.client.service.*;
 import com.dyw.client.tool.Tool;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
-import com.sun.jna.NativeLong;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 import net.iharder.Base64;
@@ -33,8 +31,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.security.spec.ECGenParameterSpec;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -87,13 +83,13 @@ public class IntelligentApplicationForm extends BaseFormService {
     private JTable snapAlarmContentTable;
     private JButton playButton;
 
-    private Logger logger = LoggerFactory.getLogger(IntelligentApplicationForm.class);
-    private DefaultTableModel snapAlarmContentTableModel;
-    private DefaultTableModel blackAlarmContentTableModel;
-    private DefaultTableModel whiteAlarmContentTableModel;
-    private JScrollBar snapAlarmScrollBar;
-    private JScrollBar blackAlarmScrollBar;
-    private JScrollBar whiteAlarmScrollBar;
+    private final Logger logger = LoggerFactory.getLogger(IntelligentApplicationForm.class);
+    private final DefaultTableModel snapAlarmContentTableModel;
+    private final DefaultTableModel blackAlarmContentTableModel;
+    private final DefaultTableModel whiteAlarmContentTableModel;
+    private final JScrollBar snapAlarmScrollBar;
+    private final JScrollBar blackAlarmScrollBar;
+    private final JScrollBar whiteAlarmScrollBar;
     private int snapAlarmRollingStatus = 1;
     private int blackAlarmRollingStatus = 1;
     private int whiteAlarmRollingStatus = 1;
@@ -103,15 +99,15 @@ public class IntelligentApplicationForm extends BaseFormService {
     private List<MonitorPointEntity> monitorPointEntityList = new ArrayList<>();//监控点列表
     private CtrlCenterEntity ctrlCenterEntity;//根控制中心
     private List<RegionEntity> regionEntityList;//区域列表
-    private HttpServer httpserver = null;
-    private List<JPanel> livePreviewContentPanelList;
-    private List<EmbeddedMediaPlayer> embeddedMediaPlayerList = new ArrayList<>();
-    private List<EmbeddedMediaPlayerComponent> embeddedMediaPlayerComponentList = new ArrayList<>();
+    private final HttpServer httpserver = null;
+    private final List<JPanel> livePreviewContentPanelList;
+    private final List<EmbeddedMediaPlayer> embeddedMediaPlayerList = new ArrayList<>();
+    private final List<EmbeddedMediaPlayerComponent> embeddedMediaPlayerComponentList = new ArrayList<>();
     private List<FDLibEntity> fdLibEntityList = new ArrayList<>();//人脸库列表
 
     private JPopupMenu searchPopupMenu;
-    private JMenuItem searchMenuItem = new JMenuItem("查找人员库");
-    private JMenuItem viewMenuItem = new JMenuItem("查看录像");
+    private final JMenuItem searchMenuItem = new JMenuItem("查找人员库");
+    private final JMenuItem viewMenuItem = new JMenuItem("查看录像");
     private int menuStatus = 0;
 
     public IntelligentApplicationForm() {
@@ -122,11 +118,11 @@ public class IntelligentApplicationForm extends BaseFormService {
         /*
          * 添加报警主机信息
          * */
-        addAlarmHost();
+//        addAlarmHost();
         /*
          * 监听报警消息
          * */
-        monitorAlarmInfo();
+//        monitorAlarmInfo();
         try {
             //获取根控制中心
             ctrlCenterEntity = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, "/ISAPI/SDT/Management/CtrlCenter?source=device", null).getString("ctrlCenter"), CtrlCenterEntity.class).get(0);
@@ -355,63 +351,65 @@ public class IntelligentApplicationForm extends BaseFormService {
         });
     }
 
-    /*
-     * 添加报警主机信息
-     * */
-    private void addAlarmHost() {
-        try {
-            //第一步：获取全部报警主机信息，判断是否已存在,如果存在就删除
-            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
-            String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
-            List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
-            for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
-                if (httpHostNotificationEntity.getUrl().equals(url)) {
-                    Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
-                }
-            }
-            Thread.sleep(1000);
-            //新增报警主机信息
-            String instruction = "/ISAPI/Event/notification/httpHosts?format=json";
-            org.json.JSONObject inboundDataIn = new org.json.JSONObject();
-            org.json.JSONObject inboundDataOut = new org.json.JSONObject();
-            inboundDataIn.put("url", url);
-            inboundDataIn.put("protocolType", "HTTP");//这里要注意
-            inboundDataIn.put("parameterFormatType", "json");
-            inboundDataIn.put("addressingFormatType", "ipaddress");
-            inboundDataIn.put("httpAuthenticationMethod", "none");//这里要注意
-            inboundDataIn.put("eventType", "alarmResult,captureResult,HFPD");
-            inboundDataOut.put("HttpHostNotification", inboundDataIn);
-            org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
-            if (resultData.getInt("statusCode") == 1) {
-//                Tool.showMessage("添加报警主机成功", "提示", 0);
-            } else {
-                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 1);
-            }
-        } catch (JSONException | UnknownHostException | InterruptedException e) {
-            logger.error("添加报警主机出错", e);
-        }
-    }
+//    /*
+//     * 添加报警主机信息
+//     * */
+//    private void addAlarmHost() {
+//        try {
+//            //第一步：获取全部报警主机信息，判断是否已存在,如果存在就删除
+//            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":12346/alarm";
+//            String instructionGet = "/ISAPI/Event/notification/httpHosts?format=json";
+//            List<HttpHostNotificationEntity> httpHostNotificationEntityList = JSONObject.parseArray(Tool.sendInstructionAndReceiveStatusAndData(1, instructionGet, null).getString("HttpHostNotification"), HttpHostNotificationEntity.class);
+//            for (HttpHostNotificationEntity httpHostNotificationEntity : httpHostNotificationEntityList) {
+//                if (httpHostNotificationEntity.getUrl().equals(url)) {
+//                    Tool.deleteHttpHosts(httpHostNotificationEntity.getId());
+//                }
+//            }
+//            Thread.sleep(1000);
+//            //新增报警主机信息
+//            String instruction = "/ISAPI/Event/notification/httpHosts?format=json";
+//            org.json.JSONObject inboundDataIn = new org.json.JSONObject();
+//            org.json.JSONObject inboundDataOut = new org.json.JSONObject();
+//            inboundDataIn.put("url", url);
+//            inboundDataIn.put("protocolType", "HTTP");//这里要注意
+//            inboundDataIn.put("parameterFormatType", "json");
+//            inboundDataIn.put("addressingFormatType", "ipaddress");
+//            inboundDataIn.put("httpAuthenticationMethod", "none");//这里要注意
+//            inboundDataIn.put("eventType", "alarmResult,captureResult,HFPD");
+//            inboundDataOut.put("HttpHostNotification", inboundDataIn);
+//            org.json.JSONObject resultData = Tool.sendInstructionAndReceiveStatus(3, instruction, inboundDataOut);
+//            if (resultData.getInt("statusCode") == 1) {
+////                Tool.showMessage("添加报警主机成功", "提示", 0);
+//            } else {
+//                Tool.showMessage("添加报警主机失败，错误码：" + resultData.getString("errorMsg"), "提示", 1);
+//            }
+//        } catch (JSONException | UnknownHostException | InterruptedException e) {
+//            logger.error("添加报警主机出错", e);
+//        }
+//    }
 
-    /*
-     * 监听报警消息
-     * */
-    private void monitorAlarmInfo() {
-        HttpServerProvider provider = HttpServerProvider.provider();
-        try {
-            httpserver = provider.createHttpServer(new InetSocketAddress(12346), 100);
-            httpserver.createContext("/alarm", new MyHttpHandlerService(this));
-            httpserver.setExecutor(null);
-            httpserver.start();
-        } catch (IOException e) {
-            logger.error("监听报警消息出错", e);
-        }
-    }
+//    /*
+//     * 监听报警消息
+//     * */
+//    private void monitorAlarmInfo() {
+//        HttpServerProvider provider = HttpServerProvider.provider();
+//        try {
+//            httpserver = provider.createHttpServer(new InetSocketAddress(12346), 100);
+//            httpserver.createContext("/alarm", new MyHttpHandlerService(this));
+//            httpserver.setExecutor(null);
+//            httpserver.start();
+//        } catch (IOException e) {
+//            Tool.showMessage("布控报警监听端口被占用，请确认12346端口可用，可尝试重新打开系统，如果继续出现该弹窗，请注销系统后重试！", "端口占用", 0);
+//            logger.error("监听报警消息出错", e);
+//        }
+//    }
 
     /*
      * 显示报警信息
      * status  0：抓拍图；1：名单报警；
      * */
-    public void showAlarmInfo(CaptureLibResultEntity captureLibResultEntity, AlarmResultEntity alarmResultEntity) {
+    @Override
+    public void showAlarmInfo(AlarmResultEntity alarmResultEntity) {
         try {
             if (Egci.fdLibIDForStranger.equals(alarmResultEntity.getFaces().get(0).getIdentify().get(0).getCandidate().get(0).getBlacklist_id())) {
                 //陌生人报警

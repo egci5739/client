@@ -22,14 +22,15 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
 public class Tool {
-    private static Logger logger = LoggerFactory.getLogger(Tool.class);
+    private static final Logger logger = LoggerFactory.getLogger(Tool.class);
     private static String eventName;
-    private static ISAPI.JsonFormatTool JsonFormatTool = new JsonFormatTool();
+    private static final ISAPI.JsonFormatTool JsonFormatTool = new JsonFormatTool();
 
     /*
      * 读取本地配置文件
@@ -78,6 +79,18 @@ public class Tool {
             }
             if (attrName.equals("displayProtectionRowCount")) {
                 configEntity.setDisplayProtectionRowCount(Integer.parseInt(configTableEntity.getConfigValue()));
+            }
+            if (attrName.equals("socketProtectionPort")) {
+                configEntity.setSocketProtectionPort(Short.parseShort(configTableEntity.getConfigValue()));
+            }
+            if (attrName.equals("synchronizationHour")) {
+                configEntity.setSynchronizationHour(Integer.parseInt(configTableEntity.getConfigValue()));
+            }
+            if (attrName.equals("synchronizationMinute")) {
+                configEntity.setSynchronizationMinute(Integer.parseInt(configTableEntity.getConfigValue()));
+            }
+            if (attrName.equals("synchronizationSecond")) {
+                configEntity.setSynchronizationSecond(Integer.parseInt(configTableEntity.getConfigValue()));
             }
         }
         return configEntity;
@@ -154,7 +167,7 @@ public class Tool {
                 "<br>分值：" +
                 passInfoEntity.getPassRecordSimilarity() +
                 "<br>原因：" +
-                Tool.eventIdToEventName(passInfoEntity.getPassRecordEventTypeId()) +
+                Tool.eventIdToEventName(passInfoEntity.getPassRecordPassResult()) +
                 "</body></html>";
     }
 
@@ -177,19 +190,23 @@ public class Tool {
 
     /*
      * 将事件id转为事件名称
+     * 0：卡号不存在
+     * 1：比对通过
+     * 2：比对失败
+     * 3：活体检测失败
      * */
     public static String eventIdToEventName(int value) {
         switch (value) {
-            case 9:
+            case 0:
                 eventName = "卡号不存在";
                 break;
-            case 105:
+            case 1:
                 eventName = "比对通过";
                 break;
-            case 112:
+            case 2:
                 eventName = "比对失败";
                 break;
-            case 1280:
+            case 3:
                 eventName = "活体检测失败";
                 break;
             default:
@@ -400,7 +417,7 @@ public class Tool {
                     JSONObject jsonStorageCloud = new JSONObject();
                     jsonStorageCloud.put("FDID", FDID);
                     jsonStorageCloud.put("storageType", "dynamic");
-                    String strPic = new String(bytePic, "ISO-8859-1");
+                    String strPic = new String(bytePic, StandardCharsets.ISO_8859_1);
                     return new JSONObject(HttpsClientUtil.doPostStorageCloud("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/uploadStorageCloud?format=json", jsonStorageCloud.toString(), strPic, "---------------------------------7e13971310878"));
                 case 2:
                     return new JSONObject(HttpsClientUtil.doPutWithType("https://" + Egci.configEntity.getFaceServerIp() + ":" + Egci.configEntity.getFaceServerPort() + "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&FDID=" + FDID + "&faceLibType=blackFD", deleteInboundData.toString(), null, "application/x-www-form-urlencoded; charset=UTF-8"));

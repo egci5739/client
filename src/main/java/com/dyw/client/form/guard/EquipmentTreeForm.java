@@ -15,12 +15,11 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
 
 public class EquipmentTreeForm extends BaseFormService {
-    private Logger logger = LoggerFactory.getLogger(EquipmentTreeForm.class);
+    private final Logger logger = LoggerFactory.getLogger(EquipmentTreeForm.class);
 
     @Override
     public JPanel getPanel() {
@@ -108,6 +107,12 @@ public class EquipmentTreeForm extends BaseFormService {
                 Tool.showMessage("设备信息正在完善，请稍后重试", "设备状态", 1);
             }
             List<EquipmentEntity> equipmentEntityList = JSON.parseArray(receiveInfo, EquipmentEntity.class);
+            Collections.sort(equipmentEntityList, new Comparator<EquipmentEntity>() {
+                @Override
+                public int compare(EquipmentEntity o1, EquipmentEntity o2) {
+                    return Integer.parseInt(o1.getEquipmentIp().split("\\.")[3]) - Integer.parseInt(o2.getEquipmentIp().split("\\.")[3]);
+                }
+            });
             for (EquipmentEntity equipmentEntity : equipmentEntityList) {
                 if (equipmentEntity.getEquipmentType() == 4) {
                     for (EquipmentEntity equipmentEntity1 : equipmentEntityList) {

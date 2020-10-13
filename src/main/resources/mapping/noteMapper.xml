@@ -5,7 +5,7 @@
 <mapper namespace="mapping.noteMapper">
     <!--获取自动事件-->
     <select id="getAutomaticNote" resultType="com.dyw.client.entity.NoteEntity">
-        select * from NoteTable where noteType = 1 order by noteCode asc;
+        select * from NoteTable where noteType = 1 order by noteCode desc;
     </select>
     <!--获取手动事件-->
     <select id="getManualNote" resultType="com.dyw.client.entity.NoteEntity">

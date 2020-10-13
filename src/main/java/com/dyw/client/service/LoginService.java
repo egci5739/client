@@ -1,6 +1,5 @@
 package com.dyw.client.service;
 
-
 import com.dyw.client.HCNetSDK;
 import com.dyw.client.controller.Egci;
 import com.sun.jna.NativeLong;
@@ -8,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LoginService {
-    private Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private NativeLong lUserID = new NativeLong(-1);
 
     public Boolean login(String ip, short port, String name, String pass) {

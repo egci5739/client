@@ -19,6 +19,11 @@ public class EquipmentTreeCellRenderer extends DefaultTreeCellRenderer {
             setTextSelectionColor(Color.BLUE);
             setBackgroundSelectionColor(Color.GREEN);
             setBackgroundNonSelectionColor(Color.WHITE);
+        } else if (node.getUserObject().toString().trim().contains("停用")) {
+            setForeground(Color.ORANGE);
+            setTextSelectionColor(Color.BLUE);
+            setBackgroundSelectionColor(Color.GREEN);
+            setBackgroundNonSelectionColor(Color.WHITE);
         }
         return this;
     }

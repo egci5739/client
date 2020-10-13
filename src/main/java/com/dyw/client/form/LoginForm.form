@@ -18,10 +18,10 @@
           <component id="5a835" class="javax.swing.JLabel" binding="LoginTitleLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
+              <gridbag top="10" left="20" bottom="10" right="20" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <font size="36" style="1"/>
+              <font name="Microsoft YaHei" size="36" style="1"/>
               <text value="大亚湾人脸识别通行系统"/>
             </properties>
           </component>
@@ -41,7 +41,7 @@
               <gridbag weightx="0.0" weighty="0.0" ipadx="40" ipady="20"/>
             </constraints>
             <properties>
-              <font size="24"/>
+              <font name="Microsoft YaHei" size="24"/>
               <text value="用户名："/>
             </properties>
           </component>
@@ -53,7 +53,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <font size="20"/>
+              <font name="Microsoft YaHei" size="20"/>
               <preferredSize width="200" height="30"/>
             </properties>
           </component>
@@ -63,28 +63,8 @@
               <gridbag weightx="0.0" weighty="0.0" ipadx="40" ipady="20"/>
             </constraints>
             <properties>
-              <font size="24"/>
+              <font name="Microsoft YaHei" size="24"/>
               <text value="密   码："/>
-            </properties>
-          </component>
-          <component id="65062" class="javax.swing.JButton" binding="loginButton">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="30" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font size="20"/>
-              <text value="登  陆"/>
-            </properties>
-          </component>
-          <component id="5a1db" class="javax.swing.JButton" binding="resetButton">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="30" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font size="20"/>
-              <text value="重  置"/>
             </properties>
           </component>
           <component id="5e082" class="javax.swing.JPasswordField" binding="accountPassText">
@@ -95,7 +75,18 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <font name="Microsoft YaHei" size="20"/>
               <preferredSize width="200" height="33"/>
+            </properties>
+          </component>
+          <component id="65062" class="javax.swing.JButton" binding="loginButton">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="30" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font name="Microsoft YaHei" size="20"/>
+              <text value="登  陆"/>
             </properties>
           </component>
         </children>

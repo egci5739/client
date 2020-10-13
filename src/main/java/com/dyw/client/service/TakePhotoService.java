@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.nio.ByteBuffer;
 
 
 /**
@@ -21,8 +20,8 @@ public class TakePhotoService extends JFrame implements Runnable, WebcamListener
     private Webcam webcam = null;
     private WebcamPanel panel = null;
     private WebcamPicker picker = null;
-    private JButton takePicture = new JButton("拍照");
-    private RegisterForm registerForm;
+    private final JButton takePicture = new JButton("拍照");
+    private final RegisterForm registerForm;
 
     public TakePhotoService(RegisterForm registerForm) {
         this.registerForm = registerForm;

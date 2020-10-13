@@ -3,27 +3,18 @@ package com.dyw.client.form;
 import ISAPI.HttpsClientUtil;
 import com.dyw.client.controller.Egci;
 import com.dyw.client.entity.AccountEntity;
-import com.dyw.client.functionForm.PlaybackFunction;
-import com.dyw.client.functionForm.SearchByPicForm;
 import com.dyw.client.service.NetStateService;
-import com.dyw.client.service.PlaybackService;
-import com.sun.jna.NativeLong;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.conn.HttpHostConnectException;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class LoginForm {
@@ -37,8 +28,7 @@ public class LoginForm {
     private JLabel accountNameLabel;
     private JLabel accountPassLabel;
     private JButton loginButton;
-    private JButton resetButton;
-    private Logger logger;
+    private final Logger logger;
 
     public LoginForm() {
         logger = LoggerFactory.getLogger(LoginForm.class);
@@ -47,13 +37,6 @@ public class LoginForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 login();
-            }
-        });
-        //重置
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                reset();
             }
         });
     }
@@ -106,7 +89,7 @@ public class LoginForm {
             } else {
                 //解析返回的xml文件
                 SAXReader saxReader = new SAXReader();
-                Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes("UTF-8")));
+                Document document = saxReader.read(new ByteArrayInputStream(strOut.getBytes(StandardCharsets.UTF_8)));
                 Element employees = document.getRootElement();
                 for (Iterator i = employees.elementIterator(); i.hasNext(); ) {
                     Element employee = (Element) i.next();
@@ -135,6 +118,7 @@ public class LoginForm {
      * 初始化登陆页面
      * */
     public void init() {
+//        frame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("LoginForm");
         frame.setContentPane(this.Login);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

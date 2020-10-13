@@ -14,8 +14,8 @@
         <if test="passRecordEquipmentIp != null">
             and passRecordEquipmentIp=#{passRecordEquipmentIp}
         </if>
-        <if test="passRecordEventTypeId != 0">
-            and passRecordEventTypeId=#{passRecordEventTypeId}
+        <if test="passRecordPassResult != 10">
+            and passRecordPassResult=#{passRecordPassResult}
         </if>
         <if test="passRecordCardNumber != null">
             and passRecordCardNumber=#{passRecordCardNumber}
@@ -32,8 +32,8 @@
         passRecordPassTime
         &lt;
         #{endDate}
-        <if test="passRecordEventTypeId!=0">
-            and passRecordEventTypeId=#{passRecordEventTypeId}
+        <if test="passRecordPassResult!=10">
+            and passRecordPassResult=#{passRecordPassResult}
         </if>
     </select>
     <!--更新事件说明-->
